@@ -144,7 +144,7 @@ Drauger OS %s
 		self.grid.attach(self.button5, 4, 10, 2, 1)
         
 	def onnextclicked(self, button):
-		system("xdg-open http://docs.draugeros.ml/README.pdf")
+		system("xdg-open https://draugeros.ml/docs/README.pdf")
 		
 	def onwebclicked(self, button):
 		system("xdg-open https://draugeros.ml")
