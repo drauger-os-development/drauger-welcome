@@ -1,0 +1,13 @@
+Package: drauger-welcome
+Version: 2.2
+Installed-Size: 128
+Maintainer: Thomas Castleman <draugeros@gmail.com>
+Section: misc
+Architecture: all
+Priority: optional
+Depends: python3 (>=3.5.1-3), python-gtk2 (>=2.24.0-4ubuntu1)
+Replaces: drauger-tutorial (>=1.0), drauger-welcome (<=2.1)
+Breaks: drauger-tutorial (>=1.0)
+Description: Welcome screen and tutorial All-in-One for Drauger OS
+ Welcome screen and tutorial All-in-One for Drauger OS. Combines a Linux Mint inspired welcome screen with an improved version of drauger-os-tutorial
+
