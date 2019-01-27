@@ -236,7 +236,7 @@ Drauger OS %s
 		system("xdg-open https://paypal.me/pools/c/89GtByYaTT")
 
 	def onshortcutclicked(self, button):
-		system("")
+		system("python3 /opt/drauger-welcome/shortcuts.py")
 
 	def onuninstallclicked(self, button):
 		#have an uninstall comfirmation dialouge then uninstall based in the answer
