@@ -29,7 +29,7 @@ message_show="""
   Thank you again for using Drauger OS. Would you like to uninstall drauger-welcome?  
   """
 
-with open("/usr/drauger/updates-config/os-info.txt") as f:
+with open("/usr/drauger/os-info.txt") as f:
 	s = f.read()
 
 class Menu_tut(Gtk.Window):
