@@ -37,7 +37,7 @@ class main_window(Gtk.Window):
 Keyboard Shortcuts for Drauger OS
  """)
 		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 1, 1, 2, 1)
+		self.grid.attach(self.label, 1, 1, 3, 1)
 
 		self.label = Gtk.Label()
 		self.label.set_markup( """
@@ -51,7 +51,7 @@ Ctrl+Alt+T
 Open Terminal
 """)
 		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 2, 2, 1, 1)
+		self.grid.attach(self.label, 3, 2, 1, 1)
 
 		self.label = Gtk.Label()
 		self.label.set_markup( """
@@ -65,11 +65,109 @@ Ctrl+Alt+F
 	Toggle Full Screen on an App
 """)
 		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 2, 3, 1, 1)
+		self.grid.attach(self.label, 3, 3, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+Ctrl+Alt+M
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 1, 4, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+	Launch Clementine
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 3, 4, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+Alt+F
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 1, 5, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+	Launch File Manager
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 3, 5, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+Super L
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 1, 6, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+	Show Application Menu
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 3, 6, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+Ctrl+Alt+L
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 1, 7, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+	Lock Screen
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 3, 7, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+F10
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 1, 8, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+	Toggle Mute
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 3, 8, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+F11
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 1, 9, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+	Lower Volume
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 3, 9, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+F12
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 1, 10, 1, 1)
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+	Increase Volume
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 3, 10, 1, 1)
 
 		self.button1 = Gtk.Button.new_with_label(label="<-- Back")
 		self.button1.connect("clicked", self.onbackclicked)
-		self.grid.attach(self.button1, 2, 20, 1, 1)
+		self.grid.attach(self.button1, 1, 20, 1, 1)
 
 	def onbackclicked(self, button):
 		self.hide()
