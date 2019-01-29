@@ -4,7 +4,7 @@ Maintainer: Thomas Castleman <draugeros@gmail.com>
 Section: misc
 Architecture: all
 Priority: optional
-Depends: python3 (>=3.5.1-3), python-gtk2 (>=2.24.0-4ubuntu1)
+Depends: python3 (>=3.5.1-3), python-gtk2 (>=2.24.0-4ubuntu1), drauger-info (>=7.4.1-2)
 Replaces: drauger-tutorial (>=1.0)
 Breaks: drauger-tutorial (>=1.0)
 Description: Welcome screen and tutorial All-in-One for Drauger OS
