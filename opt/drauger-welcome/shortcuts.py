@@ -177,8 +177,6 @@ def show_shortcuts():
 	window = main_window()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()

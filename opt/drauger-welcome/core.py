@@ -48,8 +48,6 @@ def tutorial_init():
 	window = Menu_tut_init()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()
@@ -104,8 +102,6 @@ def tutorial_abort():
 	window = Menu_tut_abort()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()
@@ -136,8 +132,6 @@ def error_show():
 	window = error()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()
@@ -167,8 +161,6 @@ def notify_show():
 	window = notify()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()
@@ -180,7 +172,7 @@ def menu():
 	back=c
 	if c==0:
 		#run tutorial
-		system("python3 /opt/drauger-welcome/tut.py")
+		system("/usr/bin/python3 /opt/drauger-welcome/tut.py")
 	elif c==1:
 		g=tutorial_abort()
 		menu2(g)
@@ -199,7 +191,7 @@ def menu2(g):
 	elif g==2:
 		#notify of exit and keep
 		print("exit")
-		system("echo '1' >> $HOME/.drauger-tut")
+		system("/bin/echo '1' >> $HOME/.drauger-tut")
 		exit(0)
 	elif g==3:
 		#run opening again and loop

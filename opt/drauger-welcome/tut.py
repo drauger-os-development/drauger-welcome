@@ -56,7 +56,7 @@ class Menu_tut1(Gtk.Window):
 
 	def onyesclicked(self, button):
 		self.hide()
-		system("python3 /opt/drauger-welcome/multi_desktop.py")
+		system("/usr/bin/python3 /opt/drauger-welcome/multi_desktop.py")
 		tutorial_menu2()
 		
 	def onnoclicked(self, button):
@@ -99,8 +99,6 @@ def tutorial_menu1():
 	window = Menu_tut1()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()
@@ -111,8 +109,6 @@ def tutorial_menu2():
 	window = Menu_tut2()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()
@@ -183,8 +179,6 @@ def notify_show():
 	window = notify()
 	window.set_decorated(False)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()

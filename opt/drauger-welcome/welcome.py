@@ -67,8 +67,6 @@ def tutorial_menu():
 	window = Menu_tut()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()
@@ -212,19 +210,19 @@ Drauger OS %s
 		self.grid.attach(self.button9, 4, 12, 2, 1)
         
 	def onnextclicked(self, button):
-		system("xdg-open https://draugeros.ml/docs/README.pdf")
+		system("/usr/bin/xdg-open https://draugeros.ml/docs/README.pdf")
 		
 	def onwebclicked(self, button):
-		system("xdg-open https://draugeros.ml")
+		system("/usr/bin/xdg-open https://draugeros.ml")
 		
 	def ontutclicked(self,button):
-		system("python3 /opt/drauger-welcome/tut.py")
+		system("/usr/bin/python3 /opt/drauger-welcome/tut.py")
 		
 	def onforumclicked(self, button):
-		system("xdg-open https://sourceforge.net/p/drauger-os/discussion/?source=navbar")
+		system("/usr/bin/xdg-open https://sourceforge.net/p/drauger-os/discussion/?source=navbar")
 	
 	def onhelpclicked(self, button):
-		system("xdg-open https://draugeros.ml/page1.html")
+		system("/usr/bin/xdg-open https://draugeros.ml/page1.html")
 		
 	def ondriveclicked(self, button):
 		system("/usr/bin/software-properties-gtk --open-tab=4")
@@ -233,10 +231,10 @@ Drauger OS %s
 		system("gnome-language-selector")
 
 	def ondonateclicked(self, button):
-		system("xdg-open https://paypal.me/pools/c/89GtByYaTT")
+		system("/usr/bin/xdg-open https://paypal.me/pools/c/89GtByYaTT")
 
 	def onshortcutclicked(self, button):
-		system("python3 /opt/drauger-welcome/shortcuts.py")
+		system("/usr/bin/python3 /opt/drauger-welcome/shortcuts.py")
 
 	def onuninstallclicked(self, button):
 		#have an uninstall comfirmation dialouge then uninstall based in the answer
@@ -248,8 +246,6 @@ def welcome_show():
 	window = welcome()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(1,1,1,1))
-	window.modify_fg(Gtk.StateFlags.NORMAL, Gdk.color_parse("black"))
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
 	window.show_all()

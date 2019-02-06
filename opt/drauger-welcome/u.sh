@@ -3,7 +3,7 @@
 #
 #  u.sh
 #  
-#  Copyright 2018 Thomas Castleman <draugeros@gmail.com>
+#  Copyright 2019 Thomas Castleman <draugeros@gmail.com>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -20,4 +20,4 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #  
-( pkexec apt -y purge drauger-welcome | zenity --progress --pulsate --auto-close --no-cancel --text="Removing drauger-welcome . . ." && notify-send "drauger-welcome has been removed" ) || zenity --error --no-wrap --text=zenity --error --no-wrap --text="An error was encountered removing drauger-welcome. Error code $? was thrown from apt.\nPlease run \"sudo apt purge drauger-welcome\" in a terminal in order to remove it."
+( /usr/bin/pkexec /usr/bin/apt -y purge drauger-welcome | /usr/bin/zenity --progress --pulsate --auto-close --no-cancel --text="Removing drauger-welcome . . ." && /usr/bin/notify-send "drauger-welcome has been removed" ) || /usr/bin/zenity --error --no-wrap --text="An error was encountered removing drauger-welcome. Error code $? was thrown from apt.\nPlease run \"sudo apt purge drauger-welcome\" in a terminal in order to remove it."

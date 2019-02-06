@@ -3,7 +3,7 @@
 #
 #  tut.sh
 #  
-#  Copyright 2018 Thomas Castleman <draugeros@gmail.com>
+#  Copyright 2019 Thomas Castleman <draugeros@gmail.com>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -20,12 +20,12 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #  
-if [ ! -e $HOME/.drauger-tut ]; then
-	if [ $(pgrep Systemback && echo "True" || echo "False") == "True" ]; then
+if [ ! -e "$HOME"/.drauger-tut ]; then
+	if [ $(/usr/bin/pgrep Systemback && /bin/echo "True" || /bin/echo "False") == "True" ]; then
 		exit 2
 	else
-		( touch $HOME/.drauger-tut && bash $HOME/.dxvk/setup.sh &
-		python3 /opt/drauger-welcome/welcome.py )
+		( /usr/bin/touch $HOME/.drauger-tut && /bin/bash $HOME/.dxvk/setup.sh &
+		/usr/bin/python3 /opt/drauger-welcome/welcome.py )
 		
 	fi
 else
