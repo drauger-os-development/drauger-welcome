@@ -31,7 +31,6 @@ message_show="""
 
 with open("/usr/drauger/os-info.txt") as f:
 	s = f.read()
-
 class Menu_tut(Gtk.Window):
 
     def __init__(self):
@@ -94,6 +93,8 @@ Drauger OS %s
    We hope you'll enjoy gaming on it as much as we did developing it.   
    Please make yourself familiar with the new features, layout, and the documentation. 
    Please, don't hesitate to send us your feedback, it is greatly appreciated!   
+   
+   Default Admin Password is: 'toor'
  """)
 		self.label.set_justify(Gtk.Justification.CENTER)
 		self.grid.attach(self.label, 1, 2, 4, 1)
