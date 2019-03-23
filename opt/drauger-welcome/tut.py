@@ -3,7 +3,7 @@
 #
 #  tut.py
 #  
-#  Copyright 2019 Thomas Castleman <draugeros@gmail.com>
+#  Copyright 2019 Thomas Castleman <contact@draugeros.org>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -23,8 +23,7 @@
 #
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, Pango
-from ctypes import cdll, byref, create_string_buffer
+from gi.repository import Gtk
 from os import system
 
 message_show="""

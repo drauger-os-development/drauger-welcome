@@ -1,6 +1,6 @@
 Package: drauger-welcome
-Version: 2.8
-Maintainer: Thomas Castleman <contact@draugeros.ml>
+Version: 2.9
+Maintainer: Thomas Castleman <contact@draugeros.org>
 Section: misc
 Homepage: https://github.com/drauger-os-development/drauger-welcome
 Architecture: all
