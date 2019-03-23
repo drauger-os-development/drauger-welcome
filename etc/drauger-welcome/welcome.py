@@ -217,7 +217,7 @@ Drauger OS %s
 		system("/usr/bin/xdg-open https://draugeros.ml")
 		
 	def ontutclicked(self,button):
-		system("/usr/bin/python3 /opt/drauger-welcome/tut.py")
+		system("/usr/bin/python3 /etc/drauger-welcome/tut.py")
 		
 	def onforumclicked(self, button):
 		system("/usr/bin/xdg-open https://sourceforge.net/p/drauger-os/discussion/?source=navbar")
@@ -235,13 +235,13 @@ Drauger OS %s
 		system("/usr/bin/xdg-open https://paypal.me/pools/c/89GtByYaTT")
 
 	def onshortcutclicked(self, button):
-		system("/usr/bin/python3 /opt/drauger-welcome/shortcuts.py")
+		system("/usr/bin/python3 /etc/drauger-welcome/shortcuts.py")
 
 	def onuninstallclicked(self, button):
 		#have an uninstall comfirmation dialouge then uninstall based in the answer
 		x=tutorial_menu()
 		if x==0:
-			system("/opt/drauger-welcome/u.sh")
+			system("/etc/drauger-welcome/u.sh")
 
 def welcome_show():
 	window = welcome()

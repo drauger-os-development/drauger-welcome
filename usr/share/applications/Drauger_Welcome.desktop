@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Drauger Welcome
 Version=1.0
-Exec=/opt/drauger-welcome/welcome.py
+Exec=/etc/drauger-welcome/welcome.py
 Comment=Welcome Screen for Drauger OS
 Icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg
 Type=Application

@@ -187,7 +187,7 @@ def menu():
 	back=c
 	if c==0:
 		#run tutorial
-		system("/usr/bin/python3 /opt/drauger-welcome/tut.py")
+		system("/usr/bin/python3 /etc/drauger-welcome/tut.py")
 	elif c==1:
 		g=tutorial_abort()
 		menu2(g)
@@ -200,7 +200,7 @@ def menu2(g):
 	if g==1:
 		#get password
 		print("uninstall and exit")
-		system("/opt/drauger-welcome/u.sh")
+		system( /etc/drauger-welcome/u.sh")
 		notify_show()
 		exit(1)
 	elif g==2:

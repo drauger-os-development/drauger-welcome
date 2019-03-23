@@ -25,7 +25,7 @@ if [ ! -e "$HOME"/.drauger-tut ]; then
 		exit 2
 	else
 		( /usr/bin/touch $HOME/.drauger-tut && /bin/bash $HOME/.dxvk/setup.sh &
-		/usr/bin/python3 /opt/drauger-welcome/welcome.py )
+		/usr/bin/python3 /etc/drauger-welcome/welcome.py )
 		
 	fi
 else

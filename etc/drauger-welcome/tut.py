@@ -55,7 +55,7 @@ class Menu_tut1(Gtk.Window):
 
 	def onyesclicked(self, button):
 		self.hide()
-		system("/usr/bin/python3 /opt/drauger-welcome/multi_desktop.py")
+		system("/usr/bin/python3 /etc/drauger-welcome/multi_desktop.py")
 		tutorial_menu2()
 		
 	def onnoclicked(self, button):
@@ -87,7 +87,7 @@ class Menu_tut2(Gtk.Window):
 
 	def onyesclicked(self, button):
 		self.hide()
-		system("/opt/drauger-welcome/u.sh")
+		system("/etc/drauger-welcome/u.sh")
 		exit()
 
 	def onnoclicked(self, button):
