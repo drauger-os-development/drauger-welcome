@@ -183,4 +183,9 @@ def show_shortcuts():
 	Gtk.main() 
 	window.connect("delete-event", Gtk.main_quit)
 
-show_shortcuts()
+try:
+	show_shortcuts()
+except:
+	from os import system
+	system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/shortcuts.py 'Unknown error. Function show_shortcuts failed.'")
+	exit(2)

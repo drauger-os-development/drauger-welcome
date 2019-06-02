@@ -61,6 +61,10 @@ class notify(Gtk.Window):
 		elif self.check == 2:
 			self.hide()
 			exit()
+		else:
+			from os import system
+			system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/multi_desktop.py 'Unknown error. Variable self.check in function onnextclicked in class notify outside expected range'")
+			exit(2)
 		self.check=self.check+1
 
 def notify_show():
@@ -73,4 +77,8 @@ def notify_show():
 	Gtk.main() 
 	window.connect("delete-event", Gtk.main_quit)
 
-notify_show()
+try:
+	notify_show()
+except:
+	from os import system
+	system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/multi_desktop.py 'Unknown error. Function notify_show failed.")

@@ -183,5 +183,10 @@ def notify_show():
 	window.show_all()
 	Gtk.main() 
 	window.connect("delete-event", Gtk.main_quit)
-	
-notify_show()
+
+try:
+	notify_show()
+except:
+	from os import system
+	system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/tut.py 'Unknown error. Function notify_show failed'")
+	exit(2)

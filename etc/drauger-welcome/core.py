@@ -194,6 +194,7 @@ def menu():
 	else:
 		#error dialoge
 		error_show()
+		system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/core.py 'Unknown error. Variable c in function menu outside expected range'")
 		exit(2)
 
 def menu2(g):
@@ -217,5 +218,9 @@ def menu2(g):
 		error_show()
 		print("error1")
 		exit(2)
-
-menu()
+try:
+	menu()
+except:
+	from os import system
+	system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/core.py 'Unknown error. Function menu failed.'")
+	exit(2)

@@ -241,8 +241,11 @@ Drauger OS %s
 		#have an uninstall comfirmation dialouge then uninstall based in the answer
 		x=tutorial_menu()
 		if x==0:
-			system("/etc/drauger-welcome/u.sh")
-
+			try:
+				system("/etc/drauger-welcome/u.sh")
+			except:
+				system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/welcome.py '/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.'")
+				
 def welcome_show():
 	window = welcome()
 	window.set_decorated(True)
@@ -253,4 +256,8 @@ def welcome_show():
 	Gtk.main() 
 	window.connect("delete-event", Gtk.main_quit)
 
-welcome_show()
+try:
+	welcome_show()
+except:
+	from os import system
+	system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/welcome.py 'Unknown error. Function welcome_show has failed.'")
