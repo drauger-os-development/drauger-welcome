@@ -209,12 +209,27 @@ Drauger OS %s
 		self.button9 = Gtk.Button.new_from_icon_name("delete",3)
 		self.button9.connect("clicked", self.onuninstallclicked)
 		self.grid.attach(self.button9, 4, 12, 2, 1)
+		
+		self.label = Gtk.Label()
+		self.label.set_markup("""
+	Join the CYGO network and
+	Drauger OS Forums
+	""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 2, 13, 2, 1)
+		
+		self.button10 = Gtk.Button.new_from_icon_name("CYGO",3)
+		self.button10.connect("clicked", self.onCYGOclicked)
+		self.grid.attach(self.button10, 2, 14, 2, 1)
+		
+	def onCYGOclicked(self, button):
+		system("/usr/bin/xdg-open CYGO-URL-HERE")
         
 	def onnextclicked(self, button):
-		system("/usr/bin/xdg-open https://draugeros.ml/docs/README.pdf")
+		system("/usr/bin/xdg-open https://draugeros.org/docs/README.pdf")
 		
 	def onwebclicked(self, button):
-		system("/usr/bin/xdg-open https://draugeros.ml")
+		system("/usr/bin/xdg-open https://draugeros.org/go")
 		
 	def ontutclicked(self,button):
 		system("/usr/bin/python3 /etc/drauger-welcome/tut.py")
@@ -223,7 +238,7 @@ Drauger OS %s
 		system("/usr/bin/xdg-open https://sourceforge.net/p/drauger-os/discussion/?source=navbar")
 	
 	def onhelpclicked(self, button):
-		system("/usr/bin/xdg-open https://draugeros.ml/page1.html")
+		system("/usr/bin/xdg-open https://draugeros.org/go/wiki")
 		
 	def ondriveclicked(self, button):
 		system("/usr/bin/software-properties-gtk --open-tab=4")
