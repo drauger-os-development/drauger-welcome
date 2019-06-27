@@ -2,5 +2,8 @@ drauger-installer (3.2) bionic; urgency=medium
 
   * Corrected URLs for README, website, and help buttons
   * added button for new CYGO integration
+  * added verification program for users who want to verify with CYGO that they are Drauger OS users
+  * removed Forum button
+  * replaced most usages of system() in welcome.py with Popen()
 
- -- Thomas Castleman <contact@draugeros.org>  Tue, 24 Jun 2019 05:16:30 -0500
+ -- Thomas Castleman <contact@draugeros.org>  Wed, 26 Jun 2019 09:13:30 -0500
