@@ -1,0 +1,8 @@
+In order to do development on drauger-welcome, there are a few packages you need installed:
+
+python3
+python-gtk2
+
+It is also strongly recommended you run and develop this in Linux, preferably a Debian-base environment.
+Furthermore, in testing, unless you are on Drauger OS, comment out lines 33 and 34 of etc/drauger-welcome/welcome.py and 
+manually set the variable 's'. Otherwise, it will throw an error.

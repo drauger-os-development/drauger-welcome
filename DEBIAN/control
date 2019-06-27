@@ -1,9 +1,9 @@
 Package: drauger-welcome
-Version: 3.1
+Version: 3.2
 Maintainer: Thomas Castleman <contact@draugeros.org>
 Section: misc
 Homepage: https://github.com/drauger-os-development/drauger-welcome
-Architecture: all
+Architecture: amd64
 Priority: optional
 Depends: python3 (>=3.5.1-3), python-gtk2 (>=2.24.0-4ubuntu1), drauger-info (>=7.4.1-2), drauger-icons (>=0.0.2), bash
 Replaces: drauger-tutorial (>=1.0)
