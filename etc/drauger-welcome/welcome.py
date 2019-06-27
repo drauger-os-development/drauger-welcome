@@ -25,6 +25,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from os import system
+from subprocess import Popen
 message_show="""
   Thank you again for using Drauger OS. Would you like to uninstall drauger-welcome?  
   """
@@ -135,17 +136,6 @@ Drauger OS %s
 		
 		self.label = Gtk.Label()
 		self.label.set_markup("""
-   Visit the forums (SourceForge)  
- """)
-		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 4, 5, 1, 1)
-		
-		self.button4 = Gtk.Button.new_from_icon_name("pidgin",3)
-		self.button4.connect("clicked", self.onforumclicked)
-		self.grid.attach(self.button4, 4, 6, 1, 1)
-		
-		self.label = Gtk.Label()
-		self.label.set_markup("""
    Find Help  
  """)
 		self.label.set_justify(Gtk.Justification.CENTER)
@@ -193,11 +183,11 @@ Drauger OS %s
    Keyboard Shortcuts  
  """)
 		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 1, 11, 1, 1)
+		self.grid.attach(self.label, 4, 5, 1, 1)
 		
 		self.button8 = Gtk.Button.new_from_icon_name("keyboard",3)
 		self.button8.connect("clicked", self.onshortcutclicked)
-		self.grid.attach(self.button8, 1, 12, 1, 1)
+		self.grid.attach(self.button8, 4, 6, 1, 1)
 
 		self.label = Gtk.Label()
 		self.label.set_markup("""
@@ -216,41 +206,38 @@ Drauger OS %s
 	Drauger OS Forums
 	""")
 		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 2, 13, 2, 1)
+		self.grid.attach(self.label, 1, 11, 1, 1)
 		
 		self.button10 = Gtk.Button.new_from_icon_name("CYGO",3)
 		self.button10.connect("clicked", self.onCYGOclicked)
-		self.grid.attach(self.button10, 2, 14, 2, 1)
+		self.grid.attach(self.button10, 1, 12, 1, 1)
 		
 	def onCYGOclicked(self, button):
-		system("/usr/bin/xdg-open CYGO-URL-HERE")
+		Popen(["/etc/drauger-welcome/verifier"])
         
 	def onnextclicked(self, button):
-		system("/usr/bin/xdg-open https://draugeros.org/docs/README.pdf")
+		Popen(["/usr/bin/xdg-open","https://draugeros.org/docs/README.pdf"])
 		
 	def onwebclicked(self, button):
-		system("/usr/bin/xdg-open https://draugeros.org/go")
+		Popen(["/usr/bin/xdg-open","https://draugeros.org/go"])
 		
 	def ontutclicked(self,button):
-		system("/usr/bin/python3 /etc/drauger-welcome/tut.py")
-		
-	def onforumclicked(self, button):
-		system("/usr/bin/xdg-open https://sourceforge.net/p/drauger-os/discussion/?source=navbar")
+		Popen(["/usr/bin/python3","/etc/drauger-welcome/tut.py"])
 	
 	def onhelpclicked(self, button):
-		system("/usr/bin/xdg-open https://draugeros.org/go/wiki")
+		Popen(["/usr/bin/xdg-open","https://draugeros.org/go/wiki"])
 		
 	def ondriveclicked(self, button):
-		system("/usr/bin/software-properties-gtk --open-tab=4")
+		Popen(["/usr/bin/software-properties-gtk","--open-tab=4"])
 		
 	def onlanguageclicked(self, button):
-		system("gnome-language-selector")
+		Popen(["gnome-language-selector"])
 
 	def ondonateclicked(self, button):
-		system("/usr/bin/xdg-open https://paypal.me/pools/c/89GtByYaTT")
+		Popen(["/usr/bin/xdg-open","https://paypal.me/pools/c/89GtByYaTT"])
 
 	def onshortcutclicked(self, button):
-		system("/usr/bin/python3 /etc/drauger-welcome/shortcuts.py")
+		Popen(["/usr/bin/python3","/etc/drauger-welcome/shortcuts.py"])
 
 	def onuninstallclicked(self, button):
 		#have an uninstall comfirmation dialouge then uninstall based in the answer
