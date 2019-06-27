@@ -261,5 +261,4 @@ def welcome_show():
 try:
 	welcome_show()
 except:
-	from os import system
 	system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/welcome.py 'Unknown error. Function welcome_show has failed.'")
