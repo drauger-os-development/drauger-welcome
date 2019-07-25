@@ -14,7 +14,7 @@ mkdir ../"$FOLDER"
 ##############################################################
 cd etc/drauger-welcome
 g++ -Wall -m64 -o "verifier" "verifier.cxx"
-g++ -Wall -m64 -0 "log-out" "log-out.cxx"
+g++ -Wall -m64 -o "log-out" "log-out.cxx"
 cd ../..
 ##############################################################
 #							     #
