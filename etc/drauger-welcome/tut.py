@@ -188,5 +188,5 @@ try:
 	notify_show()
 except:
 	from os import system
-	system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/tut.py 'Unknown error. Function notify_show failed'")
+	system("/etc/drauger-welcome/log-out 2 /etc/drauger-welcome/tut.py 'Unknown error. Function notify_show failed' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
 	exit(2)

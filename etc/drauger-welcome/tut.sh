@@ -24,9 +24,9 @@ if [ ! -e "$HOME"/.drauger-tut ]; then
 	if [ $(/usr/bin/pgrep Systemback && /bin/echo "True" || /bin/echo "False") == "True" ]; then
 		exit 2
 	else
-		/usr/bin/touch $HOME/.drauger-tut || /etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/tut.sh "Could not make $HOME/.drauger-tut Please check file permissions."
+		/usr/bin/touch $HOME/.drauger-tut || /etc/drauger-welcome/log-out 2 /etc/drauger-welcome/tut.sh "Could not make $HOME/.drauger-tut Please check file permissions." "drauger-welcome" "$PWD" "$0"
 		( /usr/bin/python3 /etc/drauger-welcome/welcome.py || /etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/tut.sh 'Unknown error. welcome.py has failed. Check error logs for more info.' ) &
-		( /bin/bash $HOME/.dxvk/setup.sh || /etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/tut.sh 'Unknown error. Variable c in function menu outside expected range' ) &
+		( /bin/bash $HOME/.dxvk/setup.sh || /etc/drauger-welcome/log-out 2 /etc/drauger-welcome/tut.sh 'Unknown error. Variable c in function menu outside expected range' "drauger-welcome" "$PWD" "$0" ) &
 		
 	fi
 else

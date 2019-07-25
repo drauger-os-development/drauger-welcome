@@ -246,7 +246,7 @@ Drauger OS %s
 			try:
 				system("/etc/drauger-welcome/u.sh")
 			except:
-				system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/welcome.py '/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.'")
+				system("/etc/drauger-welcome/log-out 2 /etc/drauger-welcome/welcome.py '/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
 
 def welcome_show():
 	window = welcome()
@@ -261,4 +261,4 @@ def welcome_show():
 try:
 	welcome_show()
 except:
-	system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/welcome.py 'Unknown error. Function welcome_show has failed.'")
+	system("/etc/drauger-welcome/log-out 2 /etc/drauger-welcome/welcome.py 'Unknown error. Function welcome_show has failed.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
