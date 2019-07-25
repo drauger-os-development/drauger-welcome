@@ -14,6 +14,7 @@ mkdir ../"$FOLDER"
 ##############################################################
 cd etc/drauger-welcome
 g++ -Wall -m64 -o "verifier" "verifier.cxx"
+g++ -Wall -m64 -o "log-out" "log-out.cxx"
 cd ../..
 ##############################################################
 #							     #
@@ -79,6 +80,11 @@ if [ -d srv ]; then
 fi
 cp -R DEBIAN ../"$FOLDER"/DEBIAN
 cd ..
+#delete stuff here
 rm "$FOLDER"/etc/drauger-welcome/verifier.cxx
+rm "$FOLDER"/etc/drauger-welcome/log-out.cxx
+rm drauger-welcome/etc/drauger-welcome/verifier
+rm drauger-welcome/etc/drauger-welcome/log-out
+#build the shit
 dpkg-deb --build "$FOLDER"
 rm -rf "$FOLDER"

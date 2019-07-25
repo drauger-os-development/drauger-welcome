@@ -27,6 +27,6 @@
 } || {
 	error="$?"
 	/usr/bin/zenity --error --no-wrap --text="An error was encountered removing drauger-welcome. Error code $error was thrown from apt.\nPlease run \"sudo apt purge drauger-welcome\" in a terminal in order to remove it."
-	/etc/drauger-welcome/log-out.sh "$error" /etc/drauger-welcome/u.sh "apt has throw an error on de-install. Usually a package has been configured wrong and apt is struggling to recover."
+	/etc/drauger-welcome/log-out "$error" /etc/drauger-welcome/u.sh "apt has throw an error on de-install. Usually a package has been configured wrong and apt is struggling to recover." "drauger-installer" "$PWD" "$0"
 	exit 2
 }

@@ -187,5 +187,5 @@ try:
 	show_shortcuts()
 except:
 	from os import system
-	system("/etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/shortcuts.py 'Unknown error. Function show_shortcuts failed.'")
+	system("/etc/drauger-welcome/log-out 2 /etc/drauger-welcome/shortcuts.py 'Unknown error. Function show_shortcuts failed.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
 	exit(2)
