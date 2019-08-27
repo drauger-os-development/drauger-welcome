@@ -117,22 +117,43 @@ def tutorial_menu2():
 class notify(Gtk.Window):
 	
 	def __init__(self):
-		self.check=0
+		self.check = -1 
 		Gtk.Window.__init__(self, title="Drauger OS Tutorial")
-		self.box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-		self.add(self.box)
+		self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,)
+		self.add(self.grid)
 		
 		self.label = Gtk.Label()
 		self.label.set_markup(message_show)
 		self.label.set_justify(Gtk.Justification.CENTER)
-		self.box.pack_start(self.label, True, True, 0)
+		self.grid.attach(self.label, 1, 1, 3, 1)
 		
-		self.button1 = Gtk.Button.new_with_label(label="Next")
-		self.button1.connect("clicked", self.onnextclicked)
-		self.box.pack_start(self.button1, True, True, 0)
+		self.button1 = Gtk.Button.new_with_label(label="Next -->")
+		self.button1.connect("clicked", self.onclicked)
+		self.grid.attach(self.button1, 3, 2, 1, 1)
+		
+		self.button2 = Gtk.Button.new_with_label(label="<-- Previous")
+		self.button2.connect("clicked", self.onclicked)
+		self.grid.attach(self.button2, 1, 2, 1, 1)
+		
+		self.button3 = Gtk.Button.new_with_label(label="EXIT TUTORIAL")
+		self.button3.connect("clicked", self.onexit)
+		self.grid.attach(self.button3, 2, 2, 1, 1)
+		
+	def onexit(self, button):
+		Gtk.main_quit()
+		print("User requested tutorial abort.")
+		exit(1)
 			
-	def onnextclicked(self, button):
-		if self.check == 0:
+	def onclicked(self, button):
+		if (button.get_label() == "Next -->"):
+			self.check = self.check + 1
+		elif (button.get_label() == "<-- Previous"):
+			self.check = self.check - 1
+		if self.check == -1:
+			self.label.set_text("""
+  Thank you for downloading and installing Drauger OS, the free, open-sourced, Linux gaming OS.  
+  """)
+		elif self.check == 0:
 			self.label.set_text("""
   In this tutorial, you will recive a quick introduction into how to work Drauger OS.  
   """)
@@ -170,13 +191,17 @@ buttons for things such as shuting down, logging out, etc.
   Finally, the four rectangles on the far right of the top desktop panel are the four current desktops.  
   """)
 		elif self.check == 7:
+			self.label.set_markup("""
+  If you wish to learn more about how to use the Drauger OS desktop, please visit:
+  <a href="https://www.draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/"> https://www.draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/ </a>
+  """)
+		elif self.check == 8:
 			self.hide()
 			tutorial_menu1()
-		self.check=self.check+1
-
+			
 def notify_show():
 	window = notify()
-	window.set_decorated(False)
+	window.set_decorated(True)
 	window.set_resizable(True)
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
