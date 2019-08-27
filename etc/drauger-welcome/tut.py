@@ -201,7 +201,7 @@ buttons for things such as shuting down, logging out, etc.
 			
 def notify_show():
 	window = notify()
-	window.set_decorated(True)
+	window.set_decorated(False)
 	window.set_resizable(True)
 	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
