@@ -67,11 +67,10 @@ def tutorial_menu():
 	window = Menu_tut()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
+	window.connect("delete-event", Gtk.main_quit)
 	window.show_all()
 	Gtk.main()
-	window.connect("delete-event", Gtk.main_quit)
 	return(Menu_tut.x)
 
 class welcome(Gtk.Window):
@@ -252,11 +251,10 @@ def welcome_show():
 	window = welcome()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
+	window.connect("delete-event", Gtk.main_quit)
 	window.show_all()
 	Gtk.main()
-	window.connect("delete-event", Gtk.main_quit)
 
 try:
 	welcome_show()

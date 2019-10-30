@@ -63,11 +63,10 @@ def tutorial_init():
 	window = Menu_tut_init()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
+	window.connect("delete-event", Gtk.main_quit)
 	window.show_all()
 	Gtk.main()
-	window.connect("delete-event", Gtk.main_quit)
 	return(Menu_tut_init.x)
 
 class Menu_tut_abort(Gtk.Window):
@@ -117,11 +116,10 @@ def tutorial_abort():
 	window = Menu_tut_abort()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
+	window.connect("delete-event", Gtk.main_quit)
 	window.show_all()
 	Gtk.main()
-	window.connect("delete-event", Gtk.main_quit)
 	return(Menu_tut_abort.x)
 
 class error(Gtk.Window):
@@ -147,11 +145,10 @@ def error_show():
 	window = error()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
+	window.connect("delete-event", Gtk.main_quit)
 	window.show_all()
 	Gtk.main()
-	window.connect("delete-event", Gtk.main_quit)
 
 class notify(Gtk.Window):
 
@@ -176,11 +173,10 @@ def notify_show():
 	window = notify()
 	window.set_decorated(True)
 	window.set_resizable(True)
-	window.set_opacity(0.0)
 	window.set_position(Gtk.WindowPosition.CENTER)
+	window.connect("delete-event", Gtk.main_quit)
 	window.show_all()
 	Gtk.main()
-	window.connect("delete-event", Gtk.main_quit)
 
 def menu():
 	c=tutorial_init()
