@@ -183,21 +183,21 @@ def menu():
 	back=c
 	if c==0:
 		#run tutorial
-		system("/usr/bin/python3 /etc/drauger-welcome/tut.py")
+		system("/usr/bin/python3 /usr/share/drauger-welcome/tut.py")
 	elif c==1:
 		g=tutorial_abort()
 		menu2(g)
 	else:
 		#error dialoge
 		error_show()
-		system("/etc/drauger-welcome/log-out 2 /etc/drauger-welcome/core.py 'Unknown error. Variable c in function menu outside expected range' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
+		system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/core.py 'Unknown error. Variable c in function menu outside expected range' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
 		exit(2)
 
 def menu2(g):
 	if g==1:
 		#get password
 		print("uninstall and exit")
-		system("/etc/drauger-welcome/u.sh")
+		system("/usr/share/drauger-welcome/u.sh")
 		notify_show()
 		exit(1)
 	elif g==2:
@@ -218,5 +218,5 @@ try:
 	menu()
 except:
 	from os import system
-	system("/etc/drauger-welcome/log-out 2 /etc/drauger-welcome/core.py 'Unknown error. Function menu failed.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
+	system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/core.py 'Unknown error. Function menu failed.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
 	exit(2)

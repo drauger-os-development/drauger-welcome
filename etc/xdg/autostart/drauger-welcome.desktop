@@ -1,11 +1,10 @@
 [Desktop Entry]
 Name=Drauger Welcome
 Version=1.0
-Exec=/usr/share/drauger-welcome/welcome.py
+Exec=/usr/share/drauger-welcome/tut.sh
 Comment=Welcome Screen for Drauger OS
-Icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg
 Type=Application
 Terminal=false
 StartupNotify=true
 Encoding=UTF-8
-Categories=Application;
+Categories=Accessibility;Application;GTK;System;Utility;

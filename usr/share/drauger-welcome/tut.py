@@ -55,7 +55,7 @@ class Menu_tut1(Gtk.Window):
 
 	def onyesclicked(self, button):
 		self.hide()
-		system("/usr/bin/python3 /etc/drauger-welcome/multi_desktop.py")
+		system("/usr/bin/python3 /usr/share/drauger-welcome/multi_desktop.py")
 		tutorial_menu2()
 
 	def onnoclicked(self, button):
@@ -87,7 +87,7 @@ class Menu_tut2(Gtk.Window):
 
 	def onyesclicked(self, button):
 		self.hide()
-		system("/etc/drauger-welcome/u.sh")
+		system("/usr/share/drauger-welcome/u.sh")
 		exit()
 
 	def onnoclicked(self, button):
@@ -210,5 +210,5 @@ try:
 	notify_show()
 except:
 	from os import system
-	system("/etc/drauger-welcome/log-out 2 /etc/drauger-welcome/tut.py 'Unknown error. Function notify_show failed' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
+	system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/tut.py 'Unknown error. Function notify_show failed' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
 	exit(2)

@@ -212,7 +212,7 @@ Drauger OS %s
 		self.grid.attach(self.button10, 1, 12, 1, 1)
 
 	def onCYGOclicked(self, button):
-		Popen(["/etc/drauger-welcome/verifier"])
+		Popen(["/usr/share/drauger-welcome/verifier"])
 
 	def onnextclicked(self, button):
 		Popen(["/usr/bin/xdg-open","https://draugeros.org/docs/README.pdf"])
@@ -221,7 +221,7 @@ Drauger OS %s
 		Popen(["/usr/bin/xdg-open","https://draugeros.org/go"])
 
 	def ontutclicked(self,button):
-		Popen(["/usr/bin/python3","/etc/drauger-welcome/tut.py"])
+		Popen(["/usr/bin/python3","/usr/share/drauger-welcome/tut.py"])
 
 	def onhelpclicked(self, button):
 		Popen(["/usr/bin/xdg-open","https://draugeros.org/go/wiki"])
@@ -236,16 +236,16 @@ Drauger OS %s
 		Popen(["/usr/bin/xdg-open","https://paypal.me/pools/c/89GtByYaTT"])
 
 	def onshortcutclicked(self, button):
-		Popen(["/usr/bin/python3","/etc/drauger-welcome/shortcuts.py"])
+		Popen(["/usr/bin/python3","/usr/share/drauger-welcome/shortcuts.py"])
 
 	def onuninstallclicked(self, button):
 		#have an uninstall comfirmation dialouge then uninstall based in the answer
 		x=tutorial_menu()
 		if x==0:
 			try:
-				system("/etc/drauger-welcome/u.sh")
+				system("/usr/share/drauger-welcome/u.sh")
 			except:
-				system("/etc/drauger-welcome/log-out 2 /etc/drauger-welcome/welcome.py '/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
+				system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/welcome.py '/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
 
 def welcome_show():
 	window = welcome()
@@ -259,4 +259,4 @@ def welcome_show():
 try:
 	welcome_show()
 except:
-	system("/etc/drauger-welcome/log-out 2 /etc/drauger-welcome/welcome.py 'Unknown error. Function welcome_show has failed.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
+	system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/welcome.py 'Unknown error. Function welcome_show has failed.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
