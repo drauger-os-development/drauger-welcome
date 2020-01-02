@@ -21,13 +21,11 @@
 #  MA 02110-1301, USA.
 #  
 if [ ! -e "$HOME"/.drauger-tut ]; then
-	if [ $(/usr/bin/pgrep Systemback && /bin/echo "True" || /bin/echo "False") == "True" ]; then
+	if [ -f /run/live/medium/live/filesystem.squashfs ]; then
 		exit 2
 	else
 		/usr/bin/touch $HOME/.drauger-tut || /usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/tut.sh "Could not make $HOME/.drauger-tut Please check file permissions." "drauger-welcome" "$PWD" "$0"
-		( /usr/bin/python3 /usr/share/drauger-welcome/welcome.py || /usr/share/drauger-welcome/log-out.sh 2 /usr/share/drauger-welcome/tut.sh 'Unknown error. welcome.py has failed. Check error logs for more info.' ) &
-		( /bin/bash $HOME/.dxvk/setup.sh || /usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/tut.sh 'Unknown error. Variable c in function menu outside expected range' "drauger-welcome" "$PWD" "$0" ) &
-		
+		/usr/bin/python3 /usr/share/drauger-welcome/main.py || /usr/share/drauger-welcome/log-out.sh 2 /usr/share/drauger-welcome/tut.sh 'Unknown error. welcome.py has failed. Check error logs for more info.'
 	fi
 else
 	exit 2
