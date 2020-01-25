@@ -31,7 +31,7 @@ message_show_remove="""
   """
 
 message_show_tutorial="""
-  Thank you for downloading and installing Drauger OS, the free, open-sourced, Linux gaming OS.
+  Thank you for downloading and installing Drauger OS, the free Linux gaming OS.
   """
 
 message_show_multi_desktop="""
@@ -39,8 +39,11 @@ message_show_multi_desktop="""
   This ability makes it so that you can hide windows and tabs for apps on one desktop while you work in another.
   """
 
+show_at_start_up = True
+
 with open("/usr/drauger/os-info.txt") as f:
 	s = f.read()
+# s = "TEST"
 
 class welcome(Gtk.Window):
 
@@ -146,11 +149,11 @@ Drauger OS %s
    Donate
  """)
 		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 4, 9, 2, 1)
+		self.grid.attach(self.label, 4, 9, 1, 1)
 
 		self.button7 = Gtk.Button.new_from_icon_name("money-manager-ex",3)
 		self.button7.connect("clicked", self.ondonateclicked)
-		self.grid.attach(self.button7, 4, 10, 2, 1)
+		self.grid.attach(self.button7, 4, 10, 1, 1)
 
 		self.label = Gtk.Label()
 		self.label.set_markup("""
@@ -168,11 +171,11 @@ Drauger OS %s
    Uninstall drauger-welcome
  """)
 		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 4, 11, 2, 1)
+		self.grid.attach(self.label, 4, 11, 1, 1)
 
 		self.button9 = Gtk.Button.new_from_icon_name("delete",3)
 		self.button9.connect("clicked", self.removal_conf)
-		self.grid.attach(self.button9, 4, 12, 2, 1)
+		self.grid.attach(self.button9, 4, 12, 1, 1)
 
 		self.label = Gtk.Label()
 		self.label.set_markup("""
@@ -186,7 +189,17 @@ Drauger OS %s
 		self.button10.connect("clicked", self.onCYGOclicked)
 		self.grid.attach(self.button10, 1, 12, 1, 1)
 
+		self.start_up = Gtk.CheckButton.new_with_label("Show at start up")
+		self.start_up.set_active(show_at_start_up)
+		self.start_up.connect("toggled", self.start_up_toggle)
+		self.grid.attach(self.start_up, 2, 13, 2, 1)
+
 		self.show_all()
+
+	def start_up_toggle(self, widget):
+		global show_at_start_up
+		show_at_start_up = self.start_up.get_active()
+		print(show_at_start_up)
 
 	def removal_conf(self, button):
 
@@ -517,7 +530,14 @@ buttons for things such as shuting down, logging out, etc.
 		self.removal_conf("clicked")
 
 	def exit(self,button):
+		global show_at_start_up
 		Gtk.main_quit("delete-event")
+		if (not show_at_start_up):
+			from os import getenv
+			HOME = getenv("HOME")
+			with open("%s/.drauger-tut" % HOME, "w+") as flagfile:
+				flagfile.write("")
+				flagfile.close()
 		print(1)
 		exit(1)
 
