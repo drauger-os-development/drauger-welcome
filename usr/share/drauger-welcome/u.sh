@@ -1,7 +1,7 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
 #
-#  tut.sh
+#  u.sh
 #  
 #  Copyright 2019 Thomas Castleman <contact@draugeros.org>
 #  
@@ -20,15 +20,13 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #  
-if [ ! -e "$HOME"/.drauger-tut ]; then
-	if [ $(/usr/bin/pgrep Systemback && /bin/echo "True" || /bin/echo "False") == "True" ]; then
-		exit 2
-	else
-		/usr/bin/touch $HOME/.drauger-tut || /etc/drauger-welcome/log-out 2 /etc/drauger-welcome/tut.sh "Could not make $HOME/.drauger-tut Please check file permissions." "drauger-welcome" "$PWD" "$0"
-		( /usr/bin/python3 /etc/drauger-welcome/welcome.py || /etc/drauger-welcome/log-out.sh 2 /etc/drauger-welcome/tut.sh 'Unknown error. welcome.py has failed. Check error logs for more info.' ) &
-		( /bin/bash $HOME/.dxvk/setup.sh || /etc/drauger-welcome/log-out 2 /etc/drauger-welcome/tut.sh 'Unknown error. Variable c in function menu outside expected range' "drauger-welcome" "$PWD" "$0" ) &
-		
-	fi
-else
+{
+	/usr/bin/pkexec /usr/bin/apt -y purge drauger-welcome | /usr/bin/zenity --progress --pulsate --auto-close --no-cancel --text="Removing drauger-welcome . . ."
+	/usr/bin/notify-send "drauger-welcome has been removed"
+	exit 0
+} || {
+	error="$?"
+	/usr/bin/zenity --error --no-wrap --text="An error was encountered removing drauger-welcome. Error code $error was thrown from apt.\nPlease run \"sudo apt purge drauger-welcome\" in a terminal in order to remove it."
+	/usr/share/drauger-welcome/log-out "$error" /usr/share/drauger-welcome/u.sh "apt has throw an error on de-install. Usually a package has been configured wrong and apt is struggling to recover." "drauger-installer" "$PWD" "$0"
 	exit 2
-fi
+}
