@@ -3,7 +3,7 @@
 #
 #  welcome.py
 #
-#  Copyright 2019 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2020 Thomas Castleman <contact@draugeros.org>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from os import system
+from os import system, path, getenv, remove
 from subprocess import Popen
 message_show_remove="""
   Thank you again for using Drauger OS. Would you like to uninstall drauger-welcome?
@@ -39,11 +39,17 @@ message_show_multi_desktop="""
   This ability makes it so that you can hide windows and tabs for apps on one desktop while you work in another.
   """
 
-show_at_start_up = True
+HOME = getenv("HOME")
+if (not path.exists("%s/.drauger-tut" % (HOME))):
+	show_at_start_up = True
+else:
+	show_at_start_up = False
 
-with open("/usr/drauger/os-info.txt") as f:
-	s = f.read()
-# s = "TEST"
+try:
+	with open("/usr/drauger/os-info.txt") as f:
+		s = f.read()
+except Exception:
+	s = "TEST"
 
 class welcome(Gtk.Window):
 
@@ -55,6 +61,8 @@ class welcome(Gtk.Window):
 		self.reset("clicked")
 
 	def reset(self,button):
+
+		global show_at_start_up
 
 		self.clear_window()
 
@@ -179,7 +187,7 @@ Drauger OS %s
 
 		self.label = Gtk.Label()
 		self.label.set_markup("""
-	Join the CYGO network and
+	Join CYGO network and
 	Drauger OS Forums
 	""")
 		self.label.set_justify(Gtk.Justification.CENTER)
@@ -245,7 +253,80 @@ Drauger OS %s
 		Popen(["/usr/bin/xdg-open","https://draugeros.org/go"])
 
 	def onhelpclicked(self, button):
-		Popen(["/usr/bin/xdg-open","https://draugeros.org/go/wiki"])
+
+		self.clear_window()
+
+		self.label = Gtk.Label()
+		self.label.set_markup( """
+If you can't find a solution, let us know through one
+of these methods, and we will try to help you out!
+ """)
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 1, 3, 3, 1)
+
+		self.label2 = Gtk.Label()
+		self.label2.set_markup("""
+Telegram
+""")
+		self.label2.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label2, 1, 4, 1, 1)
+
+		self.label3 = Gtk.Label()
+		self.label3.set_markup("""
+Discord
+""")
+		self.label3.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label3, 2, 4, 1, 1)
+
+		self.label4 = Gtk.Label()
+		self.label4.set_markup("""
+Email
+""")
+		self.label4.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label4, 3, 4, 1, 1)
+
+		self.label5 = Gtk.Label()
+		self.label5.set_markup("""
+If you are having a problem, try checking our wiki, or other online
+sources for a solution to it
+""")
+		self.label5.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label5, 1, 1, 3, 1)
+
+		self.button2 = Gtk.Button.new_with_label(label="Open Telegram")
+		self.button2.connect("clicked", self.open_telegram)
+		self.grid.attach(self.button2, 1, 5, 1, 1)
+
+		self.button3 = Gtk.Button.new_with_label(label="Open Discord")
+		self.button3.connect("clicked", self.open_discord)
+		self.grid.attach(self.button3, 2, 5, 1, 1)
+
+		self.button4 = Gtk.Button.new_with_label(label="Send Email")
+		self.button4.connect("clicked", self.send_email)
+		self.grid.attach(self.button4, 3, 5, 1, 1)
+
+		self.button5 = Gtk.Button.new_with_label(label="Open Drauger OS Wiki")
+		self.button5.connect("clicked", self.open_wiki)
+		self.grid.attach(self.button5, 1, 2, 3, 1)
+
+		self.button1 = Gtk.Button.new_with_label(label="<-- Back")
+		self.button1.connect("clicked", self.reset)
+		self.grid.attach(self.button1, 1, 20, 1, 1)
+
+		self.show_all()
+
+
+	def open_discord(self,button):
+		Popen(["xdg-open", "https://discord.gg/JW8FGrc"])
+
+	def open_telegram(self,button):
+		Popen(["xdg-open", "https://t.me/draugeros"])
+
+	def send_email(self,button):
+		Popen(["xdg-open","mailto:contact@draugeros.org"])
+
+	def open_wiki(self,button):
+		Popen(["xdg-open","https://draugeros.org/go/wiki"])
 
 	def ondriveclicked(self, button):
 		Popen(["/usr/bin/software-properties-gtk","--open-tab=4"])
@@ -325,7 +406,7 @@ Alt+F
 
 		self.label = Gtk.Label()
 		self.label.set_markup( """
-Super L
+Left Super
 """)
 		self.label.set_justify(Gtk.Justification.CENTER)
 		self.grid.attach(self.label, 1, 6, 1, 1)
@@ -350,48 +431,6 @@ Ctrl+Alt+L
 """)
 		self.label.set_justify(Gtk.Justification.CENTER)
 		self.grid.attach(self.label, 3, 7, 1, 1)
-
-		self.label = Gtk.Label()
-		self.label.set_markup( """
-F10
-""")
-		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 1, 8, 1, 1)
-
-		self.label = Gtk.Label()
-		self.label.set_markup( """
-	Toggle Mute
-""")
-		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 3, 8, 1, 1)
-
-		self.label = Gtk.Label()
-		self.label.set_markup( """
-F11
-""")
-		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 1, 9, 1, 1)
-
-		self.label = Gtk.Label()
-		self.label.set_markup( """
-	Lower Volume
-""")
-		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 3, 9, 1, 1)
-
-		self.label = Gtk.Label()
-		self.label.set_markup( """
-F12
-""")
-		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 1, 10, 1, 1)
-
-		self.label = Gtk.Label()
-		self.label.set_markup( """
-	Increase Volume
-""")
-		self.label.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label, 3, 10, 1, 1)
 
 		self.button1 = Gtk.Button.new_with_label(label="<-- Back")
 		self.button1.connect("clicked", self.reset)
@@ -531,13 +570,15 @@ buttons for things such as shuting down, logging out, etc.
 
 	def exit(self,button):
 		global show_at_start_up
+		global HOME
 		Gtk.main_quit("delete-event")
 		if (not show_at_start_up):
-			from os import getenv
-			HOME = getenv("HOME")
-			with open("%s/.drauger-tut" % HOME, "w+") as flagfile:
+			with open("%s/.drauger-tut" % (HOME), "w+") as flagfile:
 				flagfile.write("")
 				flagfile.close()
+		else:
+			if (path.exists("%s/.drauger-tut" % (HOME))):
+				remove("%s/.drauger-tut" % (HOME))
 		print(1)
 		exit(1)
 

@@ -3,7 +3,7 @@
 #
 #  tut.sh
 #  
-#  Copyright 2019 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2020 Thomas Castleman <contact@draugeros.org>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -21,11 +21,7 @@
 #  MA 02110-1301, USA.
 #  
 if [ ! -e "$HOME"/.drauger-tut ]; then
-	if [ -f /run/live/medium/live/filesystem.squashfs ]; then
-		exit 2
-	else
-		/usr/bin/python3 /usr/share/drauger-welcome/main.py || /usr/share/drauger-welcome/log-out.sh 2 /usr/share/drauger-welcome/tut.sh 'Unknown error. welcome.py has failed. Check error logs for more info.'
-	fi
+	/usr/bin/python3 /usr/share/drauger-welcome/main.py || /usr/share/drauger-welcome/log-out.sh 2 /usr/share/drauger-welcome/tut.sh 'Unknown error. welcome.py has failed. Check error logs for more info.'
 else
 	exit 2
 fi
