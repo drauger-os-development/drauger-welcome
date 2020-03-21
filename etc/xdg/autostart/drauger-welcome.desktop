@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Drauger Welcome
-Version=1.0
+Version=4.1
 Exec=/usr/share/drauger-welcome/tut.sh
 Comment=Welcome Screen for Drauger OS
 Type=Application
