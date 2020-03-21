@@ -104,7 +104,7 @@ Drauger OS %s
 		self.grid.attach(self.label, 4, 3, 1, 1)
 
 		self.button2 = Gtk.Button.new_from_icon_name("document",3)
-		self.button2.connect("clicked", self.onnextclicked)
+		self.button2.connect("clicked", self.show_readme)
 		self.grid.attach(self.button2, 4, 4, 1, 1)
 
 		self.label = Gtk.Label()
@@ -204,6 +204,9 @@ Drauger OS %s
 
 		self.show_all()
 
+	def show_readme(self, widget):
+		Popen(["xdg-open","https://draugeros.org/docs/README.pdf"])
+
 	def start_up_toggle(self, widget):
 		global show_at_start_up
 		show_at_start_up = self.start_up.get_active()
@@ -239,8 +242,8 @@ Drauger OS %s
   """)
 		elif self.check == 1:
 			self.label.set_text("""
-  To switch from one desktop to another, click on the rectangle that is grey between the two
-  on the far right of the top desktop panel.
+  To switch from one desktop to another, click on any of the rectangles at the bottom of the screen,
+  or, hit Ctrl+Alt+Right to move right and Ctrl+Alt+Left to move left.
   """)
 		elif self.check == 2:
 			self.removal_conf("clicked")
@@ -490,10 +493,11 @@ Ctrl+Alt+L
   """)
 		elif self.check == 1:
 			self.label.set_text("""
-The two bars in the middle of your screen are your desktop panels.
-  The top contains quick access to all the most commonly used apps and widgets.
-The bottom one contains the buttons for the windows you currently have open, as well as
-buttons for things such as shuting down, logging out, etc.
+The bars on the top, left, and bottom of your screen are your desktop panels.
+  The left contains quick access to some the most commonly used apps and widgets.
+The top one contains the the main menu, on the far left when you click on the Drauger OS logo,
+and the log out menu on the far right under your username.
+The bottom pannel gives you a quick view of that's on each desktop, more on that later.
 """)
 		elif self.check == 2:
 			self.label.set_text("""
@@ -519,7 +523,8 @@ buttons for things such as shuting down, logging out, etc.
   """)
 		elif self.check == 6:
 			self.label.set_text("""
-  Finally, the four rectangles on the far right of the top desktop panel are the four current desktops.
+  Finally, the four rectangles on the bottom of your screen are the four current desktops.
+  You may not be able to see them very well considering they blend into the default wallpaper very well.
   """)
 		elif self.check == 7:
 			self.label.set_markup("""
