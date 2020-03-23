@@ -57,6 +57,7 @@ class welcome(Gtk.Window):
 		Gtk.Window.__init__(self, title="Welcome to Drauger OS")
 		self.grid=Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,)
 		self.add(self.grid)
+		self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
 
 		self.reset("clicked")
 
