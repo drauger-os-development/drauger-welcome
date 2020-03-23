@@ -25,7 +25,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from os import system, path, getenv, remove
-from subprocess import Popen
+from subprocess import Popen, check_output
 message_show_remove="""
   Thank you again for using Drauger OS. Would you like to uninstall drauger-welcome?
   """
@@ -144,13 +144,13 @@ Drauger OS %s
 
 		self.label = Gtk.Label()
 		self.label.set_markup("""
-   Language Support
+   Accessibility Settings
  """)
 		self.label.set_justify(Gtk.Justification.CENTER)
 		self.grid.attach(self.label, 1, 9, 1, 1)
 
-		self.button6 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",3)
-		self.button6.connect("clicked", self.onlanguageclicked)
+		self.button6 = Gtk.Button.new_from_icon_name("accessibility",3)
+		self.button6.connect("clicked", self.show_accessibility_settings)
 		self.grid.attach(self.button6, 1, 10, 1, 1)
 
 		self.label = Gtk.Label()
@@ -231,6 +231,59 @@ Drauger OS %s
 		self.grid.attach(self.button2, 3, 2, 1, 1)
 
 		self.show_all()
+
+	def show_accessibility_settings(self, button):
+		self.clear_window()
+
+		self.label = Gtk.Label()
+		self.label.set_markup("""
+	\t\tAccessibility Settings\t\t\t
+""")
+		self.label.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label, 1, 1, 2, 1)
+
+		self.label2 = Gtk.Label()
+		self.label2.set_markup("""
+   Language Support\t\t
+ """)
+		self.label2.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label2, 1, 2, 1, 1)
+
+		self.button6 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",3)
+		self.button6.connect("clicked", self.onlanguageclicked)
+		self.grid.attach(self.button6, 2, 2, 1, 1)
+
+		self.label3 = Gtk.Label()
+		self.label3.set_markup("""
+	Font Settings\t\t\t
+""")
+		self.grid.attach(self.label3, 1, 3, 1, 1)
+
+		self.font_button = Gtk.FontButton()
+		# get system font and font size
+		system_font = check_output(["xfconf-query", "--channel", "xsettings", "--property", "/Gtk/FontName"])
+		system_font = list(str(system_font))
+		del(system_font[1])
+		del(system_font[0])
+		length = len(system_font) - 1
+		x = 0
+		while x <= 2:
+			del(system_font[length - x])
+			x = x + 1
+		system_font = "".join(system_font)
+		# set font and size for button
+		self.font_button.set_font(system_font)
+		self.font_button.connect("font-set", self.set_font)
+		self.grid.attach(self.font_button, 2, 3, 1, 1)
+
+		self.button1 = Gtk.Button.new_with_label(label="<-- Back")
+		self.button1.connect("clicked", self.reset)
+		self.grid.attach(self.button1, 1, 20, 1, 1)
+
+		self.show_all()
+
+	def set_font(self, widget):
+		check_output(["xfconf-query", "--channel", "xsettings", "--property", "/Gtk/FontName", "--set", self.font_button.get_font()])
 
 	def onCYGOclicked(self, button):
 		Popen(["/usr/share/drauger-welcome/verifier"])
