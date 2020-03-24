@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Drauger Welcome
-Version=4.1
-Exec=/usr/share/drauger-welcome/tut.sh
+Version=4.4
+Exec=/usr/share/drauger-welcome/tut.py
 Comment=Welcome Screen for Drauger OS
 Type=Application
 Terminal=false

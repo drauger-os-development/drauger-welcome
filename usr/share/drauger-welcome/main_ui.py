@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-#  welcome.py
+#  main_ui.py
 #
 #  Copyright 2020 Thomas Castleman <contact@draugeros.org>
 #
@@ -237,7 +237,7 @@ Drauger OS %s
 
 		self.label = Gtk.Label()
 		self.label.set_markup("""
-	\t\tAccessibility Settings\t\t\t
+	\t\t<b>Accessibility Settings</b>\t\t\t
 """)
 		self.label.set_justify(Gtk.Justification.CENTER)
 		self.grid.attach(self.label, 1, 1, 2, 1)
@@ -276,11 +276,25 @@ Drauger OS %s
 		self.font_button.connect("font-set", self.set_font)
 		self.grid.attach(self.font_button, 2, 3, 1, 1)
 
+		self.label4 = Gtk.Label()
+		self.label4.set_markup("""
+	<b>To access more system-wide accessibility settings, click here</b>\t\t
+""")
+		self.label4.set_justify(Gtk.Justification.CENTER)
+		self.grid.attach(self.label4, 1, 4, 2, 1)
+
+		self.button6 = Gtk.Button.new_from_icon_name("accessibility",3)
+		self.button6.connect("clicked", self.goto_accessibility)
+		self.grid.attach(self.button6, 1, 5, 2, 1)
+
 		self.button1 = Gtk.Button.new_with_label(label="<-- Back")
 		self.button1.connect("clicked", self.reset)
 		self.grid.attach(self.button1, 1, 20, 1, 1)
 
 		self.show_all()
+
+	def goto_accessibility(self, button):
+		Popen("xfce4-accessibility-settings")
 
 	def set_font(self, widget):
 		check_output(["xfconf-query", "--channel", "xsettings", "--property", "/Gtk/FontName", "--set", self.font_button.get_font()])
@@ -655,7 +669,8 @@ def welcome_show():
 	window.show_all()
 	Gtk.main()
 
-try:
-	welcome_show()
-except:
-	system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/welcome.py 'Unknown error. Function welcome_show has failed.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
+if __name__ == '__main__':
+	try:
+		welcome_show()
+	except:
+		system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/welcome.py 'Unknown error. Function welcome_show has failed.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
