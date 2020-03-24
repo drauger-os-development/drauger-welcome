@@ -297,7 +297,7 @@ Drauger OS %s
 		Popen("xfce4-accessibility-settings")
 
 	def set_font(self, widget):
-		check_output(["xfconf-query", "--channel", "xsettings", "--property", "/Gtk/FontName", "--set", self.font_button.get_font()])
+		Popen(["xfconf-query", "--channel", "xsettings", "--property", "/Gtk/FontName", "--set", self.font_button.get_font()])
 
 	def onCYGOclicked(self, button):
 		Popen(["/usr/share/drauger-welcome/verifier"])
