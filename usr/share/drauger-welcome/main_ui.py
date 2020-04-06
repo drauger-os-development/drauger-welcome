@@ -206,7 +206,7 @@ Drauger OS %s
 		self.show_all()
 
 	def show_readme(self, widget):
-		Popen(["xdg-open","https://draugeros.org/docs/README.pdf"])
+		Popen(["xdg-open","https://download.draugeros.org/docs/README.pdf"])
 
 	def start_up_toggle(self, widget):
 		global show_at_start_up
@@ -347,14 +347,7 @@ Telegram
 Discord
 """)
 		self.label3.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label3, 2, 4, 1, 1)
-
-		self.label4 = Gtk.Label()
-		self.label4.set_markup("""
-Email
-""")
-		self.label4.set_justify(Gtk.Justification.CENTER)
-		self.grid.attach(self.label4, 3, 4, 1, 1)
+		self.grid.attach(self.label3, 3, 4, 1, 1)
 
 		self.label5 = Gtk.Label()
 		self.label5.set_markup("""
@@ -370,11 +363,7 @@ sources for a solution to it
 
 		self.button3 = Gtk.Button.new_with_label(label="Open Discord")
 		self.button3.connect("clicked", self.open_discord)
-		self.grid.attach(self.button3, 2, 5, 1, 1)
-
-		self.button4 = Gtk.Button.new_with_label(label="Send Email")
-		self.button4.connect("clicked", self.send_email)
-		self.grid.attach(self.button4, 3, 5, 1, 1)
+		self.grid.attach(self.button3, 3, 5, 1, 1)
 
 		self.button5 = Gtk.Button.new_with_label(label="Open Drauger OS Wiki")
 		self.button5.connect("clicked", self.open_wiki)
