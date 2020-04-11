@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Drauger Welcome
-Version=4.4
+Version=4.6
 Exec=/usr/share/drauger-welcome/main_ui.py
 Comment=Welcome Screen for Drauger OS
 Icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg
