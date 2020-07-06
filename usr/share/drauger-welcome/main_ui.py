@@ -26,28 +26,31 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from os import system, path, getenv, remove
 from subprocess import Popen, check_output
+import json
 
-LANG = list(getenv("LANG"))
-length = len(LANG) - 1
-while (length >= 4):
-    del(LANG[length])
-    length = length - 1
-LANG = "".join(LANG)
+LANG = getenv("LANG").split(".")
+LANG = LANG[0]
 
 try:
-    with open("/etc/drauger-locales/%s/drauger-installer.conf", "r") as FILE:
-        contents = FILE.read()
-    contents = contents.split("\n")
-    for each in range(len(contents)):
-        contents[each] = list(contents[each])
-    length = len(contents) - 1
-    while (length >= 0):
-        if ((contents[length] == []) or (contents[length][0] == "#")):
-            del(contents[length])
-        length = length - 1
-    for each in range(len(contents)):
-        contents[each] = "".join(contents[each])
+    try:
+        with open("/etc/drauger-locales/%s/drauger-installer.conf" % (LANG), "r") as FILE:
+            contents = FILE.read()
+        contents = contents.split("\n")
+        for each in range(len(contents)):
+            contents[each] = list(contents[each])
+        for length in range(len(contents) - 1, -1, -1):
+            if ((contents[length] == []) or (contents[length][0] == "#")):
+                del(contents[length])
+        for each in range(len(contents)):
+            contents[each] = "".join(contents[each])
+    except FileNotFoundError:
+        with open("/etc/drauger-locales/%s/drauger-installer.json" % (LANG), "r") as FILE:
+            contents = json.read(FILE)
+        if "data" in contents.keys():
+            contents = contents["data"]
     for each in contents:
+        if type(contents) == dict:
+            each = [each, contents[each]]
         if (each[0] == "message_show_remove"):
             message_show_remove = each[1]
         elif (each[0] == "message_show_tutorial"):
