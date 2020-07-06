@@ -25,7 +25,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from os import system, path, getenv, remove
-from subprocess import Popen, check_output
+from subprocess import Popen, check_output, check_call, CalledProcessError
 import json
 
 LANG = getenv("LANG").split(".")
@@ -135,8 +135,12 @@ try:
             tut_6 = each[1]
         elif (each[0] == "multi_ask"):
             multi_ask = each[1]
+        elif (each[0] == "lang_sup3"):
+            lang_sup3 = each[1]
+        elif (each[0] == "lang_sup4"):
+            lang_sup4 = each[1]
 
-except:
+except FileNotFoundError:
     message_show_remove = "\n\tThank you again for using Drauger OS. Would you like to uninstall drauger-welcome?\t\n"
     message_show_tutorial = "\n\tThank you for downloading and installing Drauger OS, the free Linux gaming OS.\t\n"
     message_show_multi_desktop = "Having multiple desktops is the ability to switch back and forth between two 'desktops.'\n\tThis ability makes it so that you can hide windows and tabs for apps on one desktop while you work in another.\t\n"
@@ -150,7 +154,6 @@ except:
     donate = "\n\tDonate\t\n"
     shortcuts = "\n\tKeyboard Shortcuts\t\n"
     uninstall = "\n\tUninstall drauger-welcome\t\n"
-    CYGO = "\n\tJoin CYGO network\t\n"
     start_up_label = "Show at start up"
     YES = "Yes"
     NO = "No"
@@ -179,6 +182,8 @@ except:
     tut_5 = "\n\tFinally, the four rectangles on the bottom of your screen are the four current desktops.\t\n\tYou may not be able to see them very well considering they blend into the default wallpaper.\t\n"
     tut_6 = "\n\tIf you wish to learn more about how to use the Drauger OS desktop, please visit:\n\t<a href=\"https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/\"> https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/ </a>\n\t"
     multi_ask = "\n\tWould you like to learn more about multiple desktops?\t\n"
+    lang_sup3 = "\n\tClick Here to install necessary locale files.\t\n"
+    lang_sup4 = "\n\tClick Here for further multi-lingual support settings.\t\n"
 
 
 HOME = getenv("HOME")
@@ -303,11 +308,11 @@ Drauger OS %s
         self.grid.attach(self.button9, 4, 12, 1, 1)
 
         self.label = Gtk.Label()
-        self.label.set_markup(CYGO)
+        self.label.set_markup(lang_sup2)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 1, 11, 1, 1)
 
-        self.button10 = Gtk.Button.new_from_icon_name("CYGO",3)
+        self.button10 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",3)
         self.button10.connect("clicked", self.onCYGOclicked)
         self.grid.attach(self.button10, 1, 12, 1, 1)
 
@@ -355,15 +360,6 @@ Drauger OS %s
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 1, 1, 2, 1)
 
-        self.label2 = Gtk.Label()
-        self.label2.set_markup(lang_sup2)
-        self.label2.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label2, 1, 2, 1, 1)
-
-        self.button6 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",3)
-        self.button6.connect("clicked", self.onlanguageclicked)
-        self.grid.attach(self.button6, 2, 2, 1, 1)
-
         self.label3 = Gtk.Label()
         self.label3.set_markup(font)
         self.grid.attach(self.label3, 1, 3, 1, 1)
@@ -407,7 +403,67 @@ Drauger OS %s
         Popen(["xfconf-query", "--channel", "xsettings", "--property", "/Gtk/FontName", "--set", self.font_button.get_font()])
 
     def onCYGOclicked(self, button):
-        Popen(["xdg-open", "https://cygo.network"])
+        self.clear_window()
+
+        self.label = Gtk.Label()
+        self.label.set_markup("""
+    \t\t<b>%s</b>\t\t\t
+""" % (lang_sup2))
+        self.label.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label, 1, 1, 2, 1)
+
+        self.label1 = Gtk.Label()
+        self.label1.set_markup(lang_sup3)
+        self.label1.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label1, 1, 2, 2, 1)
+
+        self.button0 = Gtk.Button.new_from_icon_name("system-software-install",3)
+        self.button0.connect("clicked", self.install_locale_packages)
+        self.grid.attach(self.button0, 1, 3, 2, 1)
+
+        self.label2 = Gtk.Label()
+        self.label2.set_markup(lang_sup4)
+        self.label2.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label2, 1, 4, 2, 1)
+
+        self.button2 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",3)
+        self.button2.connect("clicked", self.onlanguageclicked)
+        self.grid.attach(self.button2, 1, 5, 2, 1)
+
+        self.button1 = Gtk.Button.new_with_label(label=Back)
+        self.button1.connect("clicked", self.reset)
+        self.grid.attach(self.button1, 1, 20, 1, 1)
+
+        self.show_all()
+
+    def install_locale_packages(self, button):
+        lang = getenv("LANG").split(".")
+        lang = lang[0]
+        lang = lang.split("_")
+        lang = "-".join(lang).lower()
+        if lang[0:2] == "en":
+            check_call(["notify-send", "--app-name='Drauger Welcome'",
+                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                        "Locale packages do not need to be installed."])
+        else:
+            package_name = "drauger-locale-" + lang
+            packages = check_output(["apt", "search", "drauger-locale"]).decode()
+            packages = packages.split("\n")
+            for each in range(len(packages) - 1, -1, -1):
+                if packages[each][:15] != "drauger-locale-":
+                    del packages[each]
+                else:
+                    packages[each] = packages[each].split("/")[0]
+            if package_name in packages:
+                try:
+                    check_call(["pkexec", "apt", "--force-yes", "install", package_name])
+                    check_call(["notify-send", "--app-name='Drauger Welcome'",
+                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                        "%s installed." % (package_name)])
+                except CalledProcessError:
+                    check_call(["notify-send", "--app-name='Drauger Welcome'",
+                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                        "Locale package could not be installed."])
 
     def onnextclicked(self, button):
         if self.check == 0:
