@@ -637,7 +637,6 @@ myDrauger Support System
 
         self.show_all()
 
-
     def open_discord(self, button):
         Popen(["xdg-open", "https://discord.gg/JW8FGrc"])
 
@@ -751,7 +750,8 @@ myDrauger Support System
         self.show_all()
 
     def onuninstallclicked(self, button):
-        # have an uninstall comfirmation dialoge then uninstall based in the answer
+        # have an uninstall comfirmation dialoge then uninstall based on
+        # the answer
         try:
             check_call("/usr/share/drauger-welcome/u.sh")
         except:
