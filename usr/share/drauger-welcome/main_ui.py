@@ -340,6 +340,7 @@ Drauger OS %s
         self.button5.set_margin_end(width)
         self.label2.set_margin_end(width)
         self.label8.set_margin_end(width)
+        self.label5.set_margin_end(width)
         self.label7.set_margin_end(width)
         self.label7.set_margin_start(width)
         self.label4.set_margin_start(width)
