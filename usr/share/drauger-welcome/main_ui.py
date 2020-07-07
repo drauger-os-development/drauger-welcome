@@ -359,7 +359,7 @@ Drauger OS %s
         self.show_all()
 
     def show_readme(self, widget):
-        Popen(["xdg-open","https://download.draugeros.org/docs/README.pdf"])
+        Popen(["xdg-open", "https://download.draugeros.org/docs/README.pdf"])
 
     def start_up_toggle(self, widget):
         global show_at_start_up
@@ -422,7 +422,7 @@ Drauger OS %s
         self.label4.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label4, 1, 4, 1, 1)
 
-        self.button6 = Gtk.Button.new_from_icon_name("accessibility",3)
+        self.button6 = Gtk.Button.new_from_icon_name("accessibility", 3)
         self.button6.connect("clicked", self.goto_accessibility)
         self.grid.attach(self.button6, 2, 4, 1, 1)
 
@@ -477,7 +477,8 @@ Drauger OS %s
         self.label1.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label1, 1, 2, 2, 1)
 
-        self.button0 = Gtk.Button.new_from_icon_name("system-software-install", 3)
+        self.button0 = Gtk.Button.new_from_icon_name("system-software-install",
+                                                     3)
         self.button0.connect("clicked", self.install_locale_packages)
         self.grid.attach(self.button0, 1, 3, 2, 1)
 
@@ -486,7 +487,8 @@ Drauger OS %s
         self.label2.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label2, 1, 4, 2, 1)
 
-        self.button2 = Gtk.Button.new_from_icon_name("preferences-desktop-locale", 3)
+        self.button2 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",
+                                                     3)
         self.button2.connect("clicked", self.onlanguageclicked)
         self.grid.attach(self.button2, 1, 5, 2, 1)
 
@@ -532,14 +534,15 @@ Drauger OS %s
                     packages[each] = packages[each].split("/")[0]
             if package_name in packages:
                 try:
-                    check_call(["pkexec", "apt", "--force-yes", "install", package_name])
+                    check_call(["pkexec", "apt", "--force-yes", "install",
+                               package_name])
                     check_call(["notify-send", "--app-name='Drauger Welcome'",
-                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
-                        "%s installed." % (package_name)])
+                                "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                                "%s installed." % (package_name)])
                 except CalledProcessError:
                     check_call(["notify-send", "--app-name='Drauger Welcome'",
-                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
-                        "Locale package could not be installed."])
+                                "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                                "Locale package could not be installed."])
 
     def onnextclicked(self, button):
         if self.check == 0:
@@ -557,7 +560,7 @@ Drauger OS %s
         self.check = self.check + 1
 
     def onwebclicked(self, button):
-        Popen(["/usr/bin/xdg-open","https://draugeros.org/go"])
+        Popen(["/usr/bin/xdg-open", "https://draugeros.org/go"])
 
     def onhelpclicked(self, button):
 
@@ -645,16 +648,16 @@ myDrauger Support System
         Popen(["xdg-open", "https://t.me/draugeros"])
 
     def open_wiki(self, button):
-        Popen(["xdg-open","https://draugeros.org/go/wiki"])
+        Popen(["xdg-open", "https://draugeros.org/go/wiki"])
 
     def ondriveclicked(self, button):
-        Popen(["/usr/bin/software-properties-gtk","--open-tab=4"])
+        Popen(["/usr/bin/software-properties-gtk", "--open-tab=4"])
 
     def onlanguageclicked(self, button):
         Popen(["gnome-language-selector"])
 
     def ondonateclicked(self, button):
-        Popen(["/usr/bin/xdg-open","https://paypal.me/pools/c/89GtByYaTT"])
+        Popen(["/usr/bin/xdg-open", "https://paypal.me/pools/c/89GtByYaTT"])
 
     def onshortcutclicked(self, button):
         self.clear_window()
@@ -677,7 +680,7 @@ myDrauger Support System
         self.grid.attach(self.label, 3, 2, 1, 1)
 
         self.label = Gtk.Label()
-        self.label.set_markup( """
+        self.label.set_markup("""
 <b>Ctrl+Alt+F</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
@@ -689,7 +692,7 @@ myDrauger Support System
         self.grid.attach(self.label, 3, 3, 1, 1)
 
         self.label = Gtk.Label()
-        self.label.set_markup( """
+        self.label.set_markup("""
 <b>Ctrl+Alt+M</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
@@ -701,7 +704,7 @@ myDrauger Support System
         self.grid.attach(self.label, 3, 4, 1, 1)
 
         self.label = Gtk.Label()
-        self.label.set_markup( """
+        self.label.set_markup("""
 <b>Alt+F</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
@@ -713,7 +716,7 @@ myDrauger Support System
         self.grid.attach(self.label, 3, 5, 1, 1)
 
         self.label = Gtk.Label()
-        self.label.set_markup( """
+        self.label.set_markup("""
 <b>Left Super</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
@@ -725,7 +728,7 @@ myDrauger Support System
         self.grid.attach(self.label, 3, 6, 1, 1)
 
         self.label = Gtk.Label()
-        self.label.set_markup( """
+        self.label.set_markup("""
 <b>Ctrl+Alt+L</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
@@ -748,7 +751,7 @@ myDrauger Support System
         self.show_all()
 
     def onuninstallclicked(self, button):
-        #have an uninstall comfirmation dialoge then uninstall based in the answer
+        # have an uninstall comfirmation dialoge then uninstall based in the answer
         try:
             check_call("/usr/share/drauger-welcome/u.sh")
         except:
@@ -811,7 +814,7 @@ myDrauger Support System
         elif self.check == 7:
             self.multi_desktop("clicked")
 
-    def multi_desktop(self,button):
+    def multi_desktop(self, button):
 
         self.clear_window()
 
