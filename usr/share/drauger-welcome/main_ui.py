@@ -160,7 +160,7 @@ except FileNotFoundError:
     lang_sup2 = "\n\t\tLanguage Support\t\t\n"
     font = "\n\t\tFont Settings\t\t\n"
     Back = "<-- Back"
-    access_label = "\t\tTo access more system-wide accessibility settings, click here\t\t"
+    access_label = "\t\tSystem Accessibility Settings\t\t"
     multi_0 = "\n\tThis allows for greater organization, privacy, control,\t\n\tand productivity.\t"
     multi_1 = "\n\tTo switch from one desktop to another, click on any of the rectangles at the bottom of the screen,\t\n\tor, hit Ctrl+Alt+Right to move right and Ctrl+Alt+Left to move left.\t\n"
     HELP = "\t\nIf you can't find a solution, let us know through one\t\n\tof these methods, and we will try to help you out!\t\n"
@@ -414,17 +414,40 @@ Drauger OS %s
         self.grid.attach(self.font_button, 2, 3, 1, 1)
 
         self.label4 = Gtk.Label()
-        self.label4.set_markup("<b>%s</b>" % (access_label))
+        self.label4.set_markup("%s" % (access_label))
         self.label4.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label4, 1, 4, 2, 1)
+        self.grid.attach(self.label4, 1, 4, 1, 1)
 
         self.button6 = Gtk.Button.new_from_icon_name("accessibility",3)
         self.button6.connect("clicked", self.goto_accessibility)
-        self.grid.attach(self.button6, 1, 5, 2, 1)
+        self.grid.attach(self.button6, 2, 4, 1, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=Back)
         self.button1.connect("clicked", self.reset)
         self.grid.attach(self.button1, 1, 20, 1, 1)
+
+        width = self.get_size()[0]
+        height = int(width * 0.025)
+        width = int(width * 0.05)
+        # self.label4.set_margin_top(height)
+        self.label4.set_margin_bottom(height)
+        self.label4.set_margin_start(width)
+        # self.label4.set_margin_end(width)
+        # self.label3.set_margin_end(width)
+        self.label3.set_margin_start(width)
+        # self.label3.set_margin_top(height)
+        self.label3.set_margin_bottom(height)
+        self.button6.set_margin_top(height)
+        self.button6.set_margin_bottom(height)
+        self.button6.set_margin_start(width)
+        self.button6.set_margin_end(width)
+        self.button1.set_margin_bottom(height)
+        self.button1.set_margin_start(width)
+        self.button1.set_margin_end(width)
+        self.font_button.set_margin_end(width)
+        self.font_button.set_margin_start(width)
+        self.font_button.set_margin_top(height)
+        self.font_button.set_margin_bottom(height)
 
         self.show_all()
 
@@ -471,12 +494,15 @@ Drauger OS %s
         self.button1.connect("clicked", self.reset)
         self.grid.attach(self.button1, 1, 20, 1, 1)
 
-        width = self.get_size()[0]
-        width = int(width * 0.125)
+        width1 = self.get_size()[0]
+        width = int(width1 * 0.125)
         self.button0.set_margin_start(width)
         self.button0.set_margin_end(width)
         self.button2.set_margin_start(width)
         self.button2.set_margin_end(width)
+        self.button1.set_margin_end(width)
+        self.button1.set_margin_start(int(width1 * 0.025))
+        self.button1.set_margin_bottom(int(width1 * 0.025))
 
         self.show_all()
 
@@ -552,7 +578,13 @@ Discord
         self.label5.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label5, 1, 1, 3, 1)
 
-        self.button2 = Gtk.Button.new_with_label(label="Open Telegram")
+        self.label6 = Gtk.Label()
+        self.label6.set_markup("""
+myDrauger Support System
+""")
+        self.label6.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label6, 2, 4, 1, 1)
+
         self.button2 = Gtk.Button.new_with_label(label="%s Telegram" % (Open))
         self.button2.connect("clicked", self.open_telegram)
         self.grid.attach(self.button2, 1, 5, 1, 1)
@@ -565,15 +597,40 @@ Discord
         self.button5.connect("clicked", self.open_wiki)
         self.grid.attach(self.button5, 1, 2, 3, 1)
 
+        self.button6 = Gtk.Button.new_with_label(label="%s myDrauger" % (Open))
+        self.button6.connect("clicked", self.open_mydrauger)
+        self.grid.attach(self.button6, 2, 5, 1, 1)
+
         self.button1 = Gtk.Button.new_with_label(label=Back)
         self.button1.connect("clicked", self.reset)
         self.grid.attach(self.button1, 1, 20, 1, 1)
+
+        width = self.get_size()[0]
+        width = int(width * 0.025)
+        self.button5.set_margin_start(width)
+        self.button5.set_margin_end(width)
+        self.button2.set_margin_start(width)
+        self.button2.set_margin_end(width)
+        self.button3.set_margin_start(width)
+        self.button3.set_margin_end(width)
+        self.button6.set_margin_end(width)
+        self.button6.set_margin_start(width)
+        self.button1.set_margin_start(width)
+        self.button1.set_margin_end(width)
+        self.button1.set_margin_top(width)
+        self.button1.set_margin_bottom(width)
+        print(self.button1.get_size_request())
+        # self.button1.set_margin_top(int(width / 2))
+        # self.button1.set_margin_bottom(int(width / 2))
 
         self.show_all()
 
 
     def open_discord(self,button):
         Popen(["xdg-open", "https://discord.gg/JW8FGrc"])
+
+    def open_mydrauger(self, button):
+        Popen(["xdg-open", "https://draugeros.org/go/my"])
 
     def open_telegram(self,button):
         Popen(["xdg-open", "https://t.me/draugeros"])
@@ -591,7 +648,6 @@ Discord
         Popen(["/usr/bin/xdg-open","https://paypal.me/pools/c/89GtByYaTT"])
 
     def onshortcutclicked(self, button):
-
         self.clear_window()
 
         self.label = Gtk.Label()
