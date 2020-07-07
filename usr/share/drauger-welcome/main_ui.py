@@ -144,7 +144,7 @@ except FileNotFoundError:
     message_show_remove = "\n\tThank you again for using Drauger OS. Would you like to uninstall drauger-welcome?\t\n"
     message_show_tutorial = "\n\tThank you for downloading and installing Drauger OS, the free Linux gaming OS.\t\n"
     message_show_multi_desktop = "Having multiple desktops is the ability to switch back and forth between two 'desktops.'\n\tThis ability makes it so that you can hide windows and tabs for apps on one desktop while you work in another.\t\n"
-    welcome_label = "\n\tWelcome and thank you for choosing Drauger OS.\n\tWe hope you'll enjoy gaming on it as much as we did developing it.\n\tPlease make yourself familiar with the new features, layout, and the documentation.\n\tPlease, don't hesitate to send us your feedback, it is greatly appreciated!\n\n\tDefault Admin Password is: 'toor'\n"
+    welcome_label = "\n\tWelcome and thank you for choosing Drauger OS.\n\tWe hope you'll enjoy gaming on it as much as we did developing it.\n\tPlease make yourself familiar with the new features, layout, and the documentation.\n\tPlease, don't hesitate to send us your feedback, it is greatly appreciated!\n\n\tdefault admin password is: 'toor'\n"
     website = "\n\tDrauger OS website\t\n"
     README = "\n\tView the README file\t\n"
     tutorial_label = "\n\tTake the Drauger OS Tutorial\t\n\t(Recommended for new users)\t\n"
@@ -219,107 +219,138 @@ class welcome(Gtk.Window):
 Drauger OS %s
  """ % (s) + "</b>")
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 2, 1, 1, 1)
+        self.grid.attach(self.label, 1, 1, 8, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup(welcome_label)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 2, 4, 1)
+        self.grid.attach(self.label, 1, 2, 8, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup(website)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 3, 1, 1)
+        self.label1 = Gtk.Label()
+        self.label1.set_markup(website)
+        self.label1.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label1, 1, 3, 1, 1)
 
         self.button1 = Gtk.Button.new_from_icon_name("cs-network",3)
         self.button1.connect("clicked", self.onwebclicked)
         self.grid.attach(self.button1, 1, 4, 1, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup(README)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 4, 3, 1, 1)
+        self.label2 = Gtk.Label()
+        self.label2.set_markup(README)
+        self.label2.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label2, 6, 3, 1, 1)
 
         self.button2 = Gtk.Button.new_from_icon_name("document",3)
         self.button2.connect("clicked", self.show_readme)
-        self.grid.attach(self.button2, 4, 4, 1, 1)
+        self.grid.attach(self.button2, 6, 4, 1, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup(tutorial_label)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 5, 1, 1)
+        self.label3 = Gtk.Label()
+        self.label3.set_markup(tutorial_label)
+        self.label3.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label3, 1, 5, 1, 1)
 
         self.button3 = Gtk.Button.new_from_icon_name("dictionary",3)
         self.button3.connect("clicked", self.tutorial)
         self.grid.attach(self.button3, 1, 6, 1, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup(help_button)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 7, 1, 1)
+        self.label4 = Gtk.Label()
+        self.label4.set_markup(help_button)
+        self.label4.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label4, 1, 7, 1, 1)
 
-        self.button5 = Gtk.Button.new_from_icon_name("help",3)
-        self.button5.connect("clicked", self.onhelpclicked)
-        self.grid.attach(self.button5, 1, 8, 1, 1)
+        self.button4 = Gtk.Button.new_from_icon_name("help",3)
+        self.button4.connect("clicked", self.onhelpclicked)
+        self.grid.attach(self.button4, 1, 8, 1, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup(drivers)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 4, 7, 1, 1)
+        self.label5 = Gtk.Label()
+        self.label5.set_markup(drivers)
+        self.label5.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label5, 6, 7, 1, 1)
 
         self.button5 = Gtk.Button.new_from_icon_name("jockey",3)
         self.button5.connect("clicked", self.ondriveclicked)
-        self.grid.attach(self.button5, 4, 8, 1, 1)
+        self.grid.attach(self.button5, 6, 8, 1, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup("\n\t%s\t\n" % (lang_sup))
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 9, 1, 1)
+        self.label6 = Gtk.Label()
+        self.label6.set_markup(lang_sup)
+        self.label6.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label6, 4, 5, 1, 1)
 
         self.button6 = Gtk.Button.new_from_icon_name("accessibility",3)
         self.button6.connect("clicked", self.show_accessibility_settings)
-        self.grid.attach(self.button6, 1, 10, 1, 1)
+        self.grid.attach(self.button6, 4, 6, 1, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup(donate)
+        self.label7 = Gtk.Label()
+        self.label7.set_markup(donate)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 4, 9, 1, 1)
+        self.grid.attach(self.label7, 4, 7, 1, 1)
 
         self.button7 = Gtk.Button.new_from_icon_name("money-manager-ex",3)
         self.button7.connect("clicked", self.ondonateclicked)
-        self.grid.attach(self.button7, 4, 10, 1, 1)
+        self.grid.attach(self.button7, 4, 8, 1, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup(shortcuts)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 4, 5, 1, 1)
+        self.label8 = Gtk.Label()
+        self.label8.set_markup(shortcuts)
+        self.label8.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label8, 6, 5, 1, 1)
 
         self.button8 = Gtk.Button.new_from_icon_name("keyboard",3)
         self.button8.connect("clicked", self.onshortcutclicked)
-        self.grid.attach(self.button8, 4, 6, 1, 1)
+        self.grid.attach(self.button8, 6, 6, 1, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup(uninstall)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 4, 11, 1, 1)
+        self.label9 = Gtk.Label()
+        self.label9.set_markup(uninstall)
+        self.label9.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label9, 4, 9, 1, 1)
 
         self.button9 = Gtk.Button.new_from_icon_name("delete",3)
         self.button9.connect("clicked", self.removal_conf)
-        self.grid.attach(self.button9, 4, 12, 1, 1)
+        self.grid.attach(self.button9, 4, 10, 1, 1)
 
-        self.label = Gtk.Label()
-        self.label.set_markup(lang_sup2)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 11, 1, 1)
+        self.label10 = Gtk.Label()
+        self.label10.set_markup(lang_sup2)
+        self.label10.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label10, 4, 3, 1, 1)
 
         self.button10 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",3)
         self.button10.connect("clicked", self.onCYGOclicked)
-        self.grid.attach(self.button10, 1, 12, 1, 1)
+        self.grid.attach(self.button10, 4, 4, 1, 1)
 
         self.start_up = Gtk.CheckButton.new_with_label(start_up_label)
         self.start_up.set_active(show_at_start_up)
         self.start_up.connect("toggled", self.start_up_toggle)
-        self.grid.attach(self.start_up, 2, 13, 2, 1)
+        self.grid.attach(self.start_up, 1, 13, 2, 1)
+
+        width = self.get_size()[0]
+        width = int(width * 0.125)
+        self.button10.set_margin_start(width)
+        self.button10.set_margin_end(width)
+        self.button6.set_margin_start(width)
+        self.button6.set_margin_end(width)
+        self.button4.set_margin_start(width)
+        self.button2.set_margin_end(width)
+        self.button3.set_margin_start(width)
+        self.button1.set_margin_start(width)
+        self.button9.set_margin_end(width)
+        self.button9.set_margin_start(width)
+        self.button8.set_margin_end(width)
+        self.button7.set_margin_end(width)
+        self.button7.set_margin_start(width)
+        self.button5.set_margin_end(width)
+        self.label2.set_margin_end(width)
+        self.label8.set_margin_end(width)
+        self.label7.set_margin_end(width)
+        self.label7.set_margin_start(width)
+        self.label4.set_margin_start(width)
+        self.label10.set_margin_start(width)
+        self.label9.set_margin_start(width)
+        self.label10.set_margin_end(width)
+        self.label9.set_margin_end(width)
+        self.label6.set_margin_end(width)
+        self.label6.set_margin_start(width)
+        self.label1.set_margin_start(width)
+        self.start_up.set_margin_start(int(width / 2))
+        self.start_up.set_margin_bottom(int(width / 2))
 
         self.show_all()
 
@@ -430,9 +461,21 @@ Drauger OS %s
         self.button2.connect("clicked", self.onlanguageclicked)
         self.grid.attach(self.button2, 1, 5, 2, 1)
 
+        self.label3 = Gtk.Label()
+        self.label3.set_markup("\n")
+        self.label3.set_justify(Gtk.Justification.CENTER)
+        self.grid.attach(self.label3, 1, 6, 2, 1)
+
         self.button1 = Gtk.Button.new_with_label(label=Back)
         self.button1.connect("clicked", self.reset)
         self.grid.attach(self.button1, 1, 20, 1, 1)
+
+        width = self.get_size()[0]
+        width = int(width * 0.125)
+        self.button0.set_margin_start(width)
+        self.button0.set_margin_end(width)
+        self.button2.set_margin_start(width)
+        self.button2.set_margin_end(width)
 
         self.show_all()
 
@@ -508,15 +551,15 @@ Discord
         self.label5.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label5, 1, 1, 3, 1)
 
-        self.button2 = Gtk.Button.new_with_label(label="%s Telegram" % (Open))
+        self.button2 = Gtk.Button.new_with_label(label="Open Telegram")
         self.button2.connect("clicked", self.open_telegram)
         self.grid.attach(self.button2, 1, 5, 1, 1)
 
-        self.button3 = Gtk.Button.new_with_label(label="%s Discord" % (Open))
+        self.button3 = Gtk.Button.new_with_label(label="Open Discord")
         self.button3.connect("clicked", self.open_discord)
         self.grid.attach(self.button3, 3, 5, 1, 1)
 
-        self.button5 = Gtk.Button.new_with_label(label="%s Drauger OS Wiki" % (Open))
+        self.button5 = Gtk.Button.new_with_label(label="Open Drauger OS Wiki")
         self.button5.connect("clicked", self.open_wiki)
         self.grid.attach(self.button5, 1, 2, 3, 1)
 
@@ -550,13 +593,13 @@ Discord
         self.clear_window()
 
         self.label = Gtk.Label()
-        self.label.set_markup(TITLE_sc)
+        self.label.set_markup("<b>" + TITLE_sc + "</b>")
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 1, 1, 3, 1)
 
         self.label = Gtk.Label()
-        self.label.set_markup( """
-Ctrl+Alt+T
+        self.label.set_markup("""
+<b>Ctrl+Alt+T</b>
  """)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 1, 2, 1, 1)
@@ -568,7 +611,7 @@ Ctrl+Alt+T
 
         self.label = Gtk.Label()
         self.label.set_markup( """
-Ctrl+Alt+F
+<b>Ctrl+Alt+F</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 1, 3, 1, 1)
@@ -580,7 +623,7 @@ Ctrl+Alt+F
 
         self.label = Gtk.Label()
         self.label.set_markup( """
-Ctrl+Alt+M
+<b>Ctrl+Alt+M</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 1, 4, 1, 1)
@@ -592,7 +635,7 @@ Ctrl+Alt+M
 
         self.label = Gtk.Label()
         self.label.set_markup( """
-Alt+F
+<b>Alt+F</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 1, 5, 1, 1)
@@ -604,7 +647,7 @@ Alt+F
 
         self.label = Gtk.Label()
         self.label.set_markup( """
-Left Super
+<b>Left Super</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 1, 6, 1, 1)
@@ -616,7 +659,7 @@ Left Super
 
         self.label = Gtk.Label()
         self.label.set_markup( """
-Ctrl+Alt+L
+<b>Ctrl+Alt+L</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 1, 7, 1, 1)
@@ -628,7 +671,12 @@ Ctrl+Alt+L
 
         self.button1 = Gtk.Button.new_with_label(label=Back)
         self.button1.connect("clicked", self.reset)
-        self.grid.attach(self.button1, 1, 20, 1, 1)
+        self.grid.attach(self.button1, 1, 20, 3, 1)
+
+        width = self.get_size()[0]
+        width = int(width * 0.25)
+        self.button1.set_margin_start(width)
+        self.button1.set_margin_end(width)
 
         self.show_all()
 
