@@ -33,7 +33,8 @@ LANG = LANG[0]
 
 try:
     try:
-        with open("/etc/drauger-locales/%s/drauger-installer.conf" % (LANG), "r") as FILE:
+        with open("/etc/drauger-locales/%s/drauger-installer.conf" % (LANG),
+                  "r") as FILE:
             contents = FILE.read()
         contents = contents.split("\n")
         for each in range(len(contents)):
@@ -44,7 +45,8 @@ try:
         for each in range(len(contents)):
             contents[each] = "".join(contents[each])
     except FileNotFoundError:
-        with open("/etc/drauger-locales/%s/drauger-installer.json" % (LANG), "r") as FILE:
+        with open("/etc/drauger-locales/%s/drauger-installer.json" % (LANG),
+                  "r") as FILE:
             contents = json.read(FILE)
         if "data" in contents.keys():
             contents = contents["data"]
@@ -203,13 +205,13 @@ class welcome(Gtk.Window):
 
     def __init__(self):
         Gtk.Window.__init__(self, title="Welcome to Drauger OS")
-        self.grid=Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,)
+        self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,)
         self.add(self.grid)
         self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
 
         self.reset("clicked")
 
-    def reset(self,button):
+    def reset(self, button):
 
         global show_at_start_up
 
@@ -232,7 +234,7 @@ Drauger OS %s
         self.label1.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label1, 1, 3, 1, 1)
 
-        self.button1 = Gtk.Button.new_from_icon_name("cs-network",3)
+        self.button1 = Gtk.Button.new_from_icon_name("cs-network", 3)
         self.button1.connect("clicked", self.onwebclicked)
         self.grid.attach(self.button1, 1, 4, 1, 1)
 
@@ -241,7 +243,7 @@ Drauger OS %s
         self.label2.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label2, 6, 3, 1, 1)
 
-        self.button2 = Gtk.Button.new_from_icon_name("document",3)
+        self.button2 = Gtk.Button.new_from_icon_name("document", 3)
         self.button2.connect("clicked", self.show_readme)
         self.grid.attach(self.button2, 6, 4, 1, 1)
 
@@ -250,7 +252,7 @@ Drauger OS %s
         self.label3.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label3, 1, 5, 1, 1)
 
-        self.button3 = Gtk.Button.new_from_icon_name("dictionary",3)
+        self.button3 = Gtk.Button.new_from_icon_name("dictionary", 3)
         self.button3.connect("clicked", self.tutorial)
         self.grid.attach(self.button3, 1, 6, 1, 1)
 
@@ -259,7 +261,7 @@ Drauger OS %s
         self.label4.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label4, 1, 7, 1, 1)
 
-        self.button4 = Gtk.Button.new_from_icon_name("help",3)
+        self.button4 = Gtk.Button.new_from_icon_name("help", 3)
         self.button4.connect("clicked", self.onhelpclicked)
         self.grid.attach(self.button4, 1, 8, 1, 1)
 
@@ -268,7 +270,7 @@ Drauger OS %s
         self.label5.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label5, 6, 7, 1, 1)
 
-        self.button5 = Gtk.Button.new_from_icon_name("jockey",3)
+        self.button5 = Gtk.Button.new_from_icon_name("jockey", 3)
         self.button5.connect("clicked", self.ondriveclicked)
         self.grid.attach(self.button5, 6, 8, 1, 1)
 
@@ -277,7 +279,7 @@ Drauger OS %s
         self.label6.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label6, 4, 5, 1, 1)
 
-        self.button6 = Gtk.Button.new_from_icon_name("accessibility",3)
+        self.button6 = Gtk.Button.new_from_icon_name("accessibility", 3)
         self.button6.connect("clicked", self.show_accessibility_settings)
         self.grid.attach(self.button6, 4, 6, 1, 1)
 
@@ -286,7 +288,7 @@ Drauger OS %s
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label7, 4, 7, 1, 1)
 
-        self.button7 = Gtk.Button.new_from_icon_name("money-manager-ex",3)
+        self.button7 = Gtk.Button.new_from_icon_name("money-manager-ex", 3)
         self.button7.connect("clicked", self.ondonateclicked)
         self.grid.attach(self.button7, 4, 8, 1, 1)
 
@@ -295,7 +297,7 @@ Drauger OS %s
         self.label8.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label8, 6, 5, 1, 1)
 
-        self.button8 = Gtk.Button.new_from_icon_name("keyboard",3)
+        self.button8 = Gtk.Button.new_from_icon_name("keyboard", 3)
         self.button8.connect("clicked", self.onshortcutclicked)
         self.grid.attach(self.button8, 6, 6, 1, 1)
 
@@ -304,7 +306,7 @@ Drauger OS %s
         self.label9.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label9, 4, 9, 1, 1)
 
-        self.button9 = Gtk.Button.new_from_icon_name("delete",3)
+        self.button9 = Gtk.Button.new_from_icon_name("delete", 3)
         self.button9.connect("clicked", self.removal_conf)
         self.grid.attach(self.button9, 4, 10, 1, 1)
 
@@ -313,7 +315,7 @@ Drauger OS %s
         self.label10.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label10, 4, 3, 1, 1)
 
-        self.button10 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",3)
+        self.button10 = Gtk.Button.new_from_icon_name("preferences-desktop-locale", 3)
         self.button10.connect("clicked", self.onCYGOclicked)
         self.grid.attach(self.button10, 4, 4, 1, 1)
 
@@ -399,7 +401,8 @@ Drauger OS %s
 
         self.font_button = Gtk.FontButton()
         # get system font and font size
-        system_font = check_output(["xfconf-query", "--channel", "xsettings", "--property", "/Gtk/FontName"])
+        system_font = check_output(["xfconf-query", "--channel", "xsettings",
+                                    "--property", "/Gtk/FontName"])
         system_font = list(str(system_font))
         del(system_font[1])
         del(system_font[0])
@@ -456,7 +459,8 @@ Drauger OS %s
         Popen("xfce4-accessibility-settings")
 
     def set_font(self, widget):
-        Popen(["xfconf-query", "--channel", "xsettings", "--property", "/Gtk/FontName", "--set", self.font_button.get_font()])
+        Popen(["xfconf-query", "--channel", "xsettings", "--property",
+               "/Gtk/FontName", "--set", self.font_button.get_font()])
 
     def onCYGOclicked(self, button):
         self.clear_window()
@@ -473,7 +477,7 @@ Drauger OS %s
         self.label1.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label1, 1, 2, 2, 1)
 
-        self.button0 = Gtk.Button.new_from_icon_name("system-software-install",3)
+        self.button0 = Gtk.Button.new_from_icon_name("system-software-install", 3)
         self.button0.connect("clicked", self.install_locale_packages)
         self.grid.attach(self.button0, 1, 3, 2, 1)
 
@@ -482,7 +486,7 @@ Drauger OS %s
         self.label2.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label2, 1, 4, 2, 1)
 
-        self.button2 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",3)
+        self.button2 = Gtk.Button.new_from_icon_name("preferences-desktop-locale", 3)
         self.button2.connect("clicked", self.onlanguageclicked)
         self.grid.attach(self.button2, 1, 5, 2, 1)
 
@@ -518,7 +522,8 @@ Drauger OS %s
                         "Locale packages do not need to be installed."])
         else:
             package_name = "drauger-locale-" + lang
-            packages = check_output(["apt", "search", "drauger-locale"]).decode()
+            packages = check_output(["apt", "search",
+                                     "drauger-locale"]).decode()
             packages = packages.split("\n")
             for each in range(len(packages) - 1, -1, -1):
                 if packages[each][:15] != "drauger-locale-":
@@ -544,7 +549,10 @@ Drauger OS %s
         elif self.check == 2:
             self.removal_conf("clicked")
         else:
-            system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/multi_desktop.py 'Unknown error. Variable self.check in function onnextclicked in class notify outside expected range' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
+            check_call(["/usr/share/drauger-welcome/log-out", "2",
+                        "/usr/share/drauger-welcome/multi_desktop.py",
+                        "Unknown error. Variable self.check in function onnextclicked in class notify outside expected range",
+                        "drauger-welcome", "UNKNOWN", "UNKNOWN"])
             exit(2)
         self.check = self.check + 1
 
@@ -627,16 +635,16 @@ myDrauger Support System
         self.show_all()
 
 
-    def open_discord(self,button):
+    def open_discord(self, button):
         Popen(["xdg-open", "https://discord.gg/JW8FGrc"])
 
     def open_mydrauger(self, button):
         Popen(["xdg-open", "https://draugeros.org/go/my"])
 
-    def open_telegram(self,button):
+    def open_telegram(self, button):
         Popen(["xdg-open", "https://t.me/draugeros"])
 
-    def open_wiki(self,button):
+    def open_wiki(self, button):
         Popen(["xdg-open","https://draugeros.org/go/wiki"])
 
     def ondriveclicked(self, button):
@@ -742,9 +750,12 @@ myDrauger Support System
     def onuninstallclicked(self, button):
         #have an uninstall comfirmation dialoge then uninstall based in the answer
         try:
-            system("/usr/share/drauger-welcome/u.sh")
+            check_call("/usr/share/drauger-welcome/u.sh")
         except:
-            system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/main.py '/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
+            check_call(["/usr/share/drauger-welcome/log-out",
+                        "2", "/usr/share/drauger-welcome/main.py",
+                        "/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.",
+                        "drauger-welcome", "UNKNOWN", "UNKNOWN"])
 
     def onyesclicked(self, button):
         self.onuninstallclicked("clicked")
@@ -752,7 +763,7 @@ myDrauger Support System
     def onnoclicked(self, button):
         self.reset("clicked")
 
-    def tutorial(self,button):
+    def tutorial(self, button):
 
         self.clear_window()
         self.check = -1
@@ -837,7 +848,7 @@ myDrauger Support System
     def onmultinoclicked(self, button):
         self.removal_conf("clicked")
 
-    def exit(self,button):
+    def exit(self, button):
         global show_at_start_up
         global HOME
         Gtk.main_quit("delete-event")
@@ -869,4 +880,7 @@ if __name__ == '__main__':
     try:
         welcome_show()
     except:
-        system("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/main_ui.py 'Unknown error. Function welcome_show has failed.' 'drauger-welcome' 'UNKNOWN' 'UNKNOWN'")
+        check_call(["/usr/share/drauger-welcome/log-out",
+                    "2 /usr/share/drauger-welcome/main_ui.py",
+                    "Unknown error. Function welcome_show has failed.",
+                    "drauger-welcome", "UNKNOWN", "UNKNOWN"])
