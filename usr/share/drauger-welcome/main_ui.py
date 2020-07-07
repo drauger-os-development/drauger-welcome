@@ -754,7 +754,7 @@ myDrauger Support System
         # the answer
         try:
             check_call("/usr/share/drauger-welcome/u.sh")
-        except:
+        except CalledProcessError:
             check_call(["/usr/share/drauger-welcome/log-out",
                         "2", "/usr/share/drauger-welcome/main.py",
                         "/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.",
