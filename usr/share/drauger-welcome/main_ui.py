@@ -184,6 +184,7 @@ except FileNotFoundError:
     multi_ask = "\n\tWould you like to learn more about multiple desktops?\t\n"
     lang_sup3 = "\n\tClick Here to install necessary locale files.\t\n"
     lang_sup4 = "\n\tClick Here for further multi-lingual support settings.\t\n"
+    Open = "Open"
 
 
 HOME = getenv("HOME")
@@ -552,14 +553,15 @@ Discord
         self.grid.attach(self.label5, 1, 1, 3, 1)
 
         self.button2 = Gtk.Button.new_with_label(label="Open Telegram")
+        self.button2 = Gtk.Button.new_with_label(label="%s Telegram" % (Open))
         self.button2.connect("clicked", self.open_telegram)
         self.grid.attach(self.button2, 1, 5, 1, 1)
 
-        self.button3 = Gtk.Button.new_with_label(label="Open Discord")
+        self.button3 = Gtk.Button.new_with_label(label="%s Discord" % (Open))
         self.button3.connect("clicked", self.open_discord)
         self.grid.attach(self.button3, 3, 5, 1, 1)
 
-        self.button5 = Gtk.Button.new_with_label(label="Open Drauger OS Wiki")
+        self.button5 = Gtk.Button.new_with_label(label="%s Drauger OS Wiki" % (Open))
         self.button5.connect("clicked", self.open_wiki)
         self.grid.attach(self.button5, 1, 2, 3, 1)
 
