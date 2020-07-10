@@ -145,8 +145,8 @@ try:
 except FileNotFoundError:
     message_show_remove = "\n\tThank you again for using Drauger OS. Would you like to uninstall drauger-welcome?\t\n"
     message_show_tutorial = "\n\tThank you for downloading and installing Drauger OS, the free Linux gaming OS.\t\n"
-    message_show_multi_desktop = "Having multiple desktops is the ability to switch back and forth between two 'desktops.'\n\tThis ability makes it so that you can hide windows and tabs for apps on one desktop while you work in another.\t\n"
-    welcome_label = "\n\tWelcome and thank you for choosing Drauger OS.\n\tWe hope you'll enjoy gaming on it as much as we did developing it.\n\tPlease make yourself familiar with the new features, layout, and the documentation.\n\tPlease, don't hesitate to send us your feedback, it is greatly appreciated!\n\n\tdefault admin password is: 'toor'\n"
+    message_show_multi_desktop = "Having multiple desktops is the ability to switch back and forth between two 'desktops'.n\tThis ability enableswindows and tabs for apps on one desktop while you work in another.\t\n"
+    welcome_label = "Welcome! <b>Thank you for choosing Drauger OS.</b>\n\tWe hope you'll enjoy gaming on it as much as we enjoyed developing it.\n\tPlease make yourself familiar with the new features, layout, and documentation.\n\tPlease, don't hesitate to send us your feedback, it's greatly appreciated!\n\n\tThe default admin password is <b>'toor'.</b>"
     website = "\n\tDrauger OS website\t\n"
     README = "\n\tView the README file\t\n"
     tutorial_label = "\n\tTake the Drauger OS Tutorial\t\n\t(Recommended for new users)\t\n"
@@ -207,7 +207,7 @@ class welcome(Gtk.Window):
         Gtk.Window.__init__(self, title="Welcome to Drauger OS")
         self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,)
         self.add(self.grid)
-        self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
+       # self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
 
         self.reset("clicked")
 
