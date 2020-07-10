@@ -4,6 +4,7 @@
 #  main_ui.py
 #
 #  Copyright 2020 Thomas Castleman <contact@draugeros.org>
+#  Additional contributors: Logan L Johnson
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -145,7 +146,7 @@ try:
 except FileNotFoundError:
     message_show_remove = "\n\tThank you again for using Drauger OS. Would you like to uninstall drauger-welcome?\t\n"
     message_show_tutorial = "\n\tThank you for downloading and installing Drauger OS, the free Linux gaming OS.\t\n"
-    message_show_multi_desktop = "Having multiple desktops is the ability to switch back and forth between two 'desktops'.n\tThis ability enableswindows and tabs for apps on one desktop while you work in another.\t\n"
+    message_show_multi_desktop = "Having multiple desktops is the ability to switch back and forth between two 'desktops'.n\tThis ability enables you to hide windows and tabs for apps on one desktop while you work in another.\t\n"
     welcome_label = "Welcome! <b>Thank you for choosing Drauger OS.</b>\n\tWe hope you'll enjoy gaming on it as much as we enjoyed developing it.\n\tPlease make yourself familiar with the new features, layout, and documentation.\n\tPlease, don't hesitate to send us your feedback, it's greatly appreciated!\n\n\tThe default admin password is <b>'toor'.</b>"
     website = "\n\tDrauger OS website\t\n"
     README = "\n\tView the README file\t\n"
@@ -165,7 +166,7 @@ except FileNotFoundError:
     access_label = "\t\tSystem Accessibility Settings\t\t"
     multi_0 = "\n\tThis allows for greater organization, privacy, control,\t\n\tand productivity.\t"
     multi_1 = "\n\tTo switch from one desktop to another, click on any of the rectangles at the bottom of the screen,\t\n\tor, hit Ctrl+Alt+Right to move right and Ctrl+Alt+Left to move left.\t\n"
-    HELP = "\t\nIf you can't find a solution, let us know through one\t\n\tof these methods, and we will try to help you out!\t\n"
+    HELP = "\t\nIf you can't find a solution, let us know using one\t\n\tof these methods, and we will try our best to assist!\t\n"
     help_yourself = "\n\tIf you are having a problem, try checking our wiki, or other online\t\n\tsources for a solution to it\t\n"
     TITLE_sc = "\n\tKeyboard shortcuts for Drauger OS\t\n"
     sc_0 = "\n\tOpen Terminal\t\n"
@@ -176,8 +177,8 @@ except FileNotFoundError:
     sc_5 = "\n\tLock Screen\t\n"
     Next = "Next -->"
     Exit = "Exit"
-    tut_0 = "\n\tIn this tutorial, you will recive a quick introduction into how to work Drauger OS.  \n"
-    tut_1 = "\n\tThe bars on the top, left, and bottom of your screen are your desktop panels.\t\n\tThe left contains quick access to some the most commonly used apps and widgets.\t\n\tThe top one contains the the main menu, on the far left when you click on the Drauger OS logo,\t\n\tand the log out menu on the far right under your username.\t\n\tThe bottom pannel gives you a quick view of what's on each desktop, more on that later.\t\n"
+    tut_0 = "\n\tIn this tutorial, you will recive a quick introduction regarding how to work Drauger OS.  \n"
+    tut_1 = "\n\tThe bars on the top, left, and bottom of your screen are your desktop panels.\t\n\tThe left contains quick access to some the most commonly used apps and widgets.\t\n\tThe top one contains the the main menu, on the far left when you click on the Drauger OS logo,\t\n\tand the log out menu on the far right under your username.\t\n\tThe bottom pannel gives you a quick view of what's on each desktop, but more on that later.\t\n"
     tut_2 = "\n\tIn order to see any apps in the left desktop panel that are not\t\n\tcurrently on display, simply click on the drop down arrow underneath\t\n\tthe icon\t\n"
     tut_3 = "\n\tIn order to see any apps not on the left desktop panel, click the Drauger OS Logo\t\n\ton the far left of the top panel.\t\n"
     tut_4 = "\n\tDrauger OS also has support for not only keyboards and mice,\t\n\tas well as touchpads and touchscreens,\t\n\tit also has support for most Xbox and Xbox 360 controllers,\t\n\tas well as some Playstation controllers.\t\n"
@@ -207,7 +208,7 @@ class welcome(Gtk.Window):
         Gtk.Window.__init__(self, title="Welcome to Drauger OS")
         self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,)
         self.add(self.grid)
-       # self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
+        self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
 
         self.reset("clicked")
 
