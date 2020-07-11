@@ -185,8 +185,8 @@ except FileNotFoundError:
     tut_5 = "\n\tFinally, the four rectangles on the bottom of your screen are the four current desktops.\t\n\tYou may not be able to see them very well considering they blend into the default wallpaper.\t\n"
     tut_6 = "\n\tIf you wish to learn more about how to use the Drauger OS desktop, please visit:\n\t<a href=\"https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/\"> https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/ </a>\n\t"
     multi_ask = "\n\tWould you like to learn more about multiple desktops?\t\n"
-    lang_sup3 = "\n\tClick Here to install necessary locale files.\t\n"
-    lang_sup4 = "\n\tClick Here for further multi-lingual support settings.\t\n"
+    lang_sup3 = "\n\tInstall locale packages.\t\n"
+    lang_sup4 = "\n\tMulti-lingual support settings.\t\n"
     Open = "Open"
 
 
@@ -506,6 +506,10 @@ Drauger OS %s
         width1 = self.get_size()[0]
         width = int(width1 * 0.125)
         self.button0.set_margin_start(width)
+        self.label1.set_margin_start(width)
+        self.label2.set_margin_start(width)
+        self.label2.set_margin_end(width)
+        self.label1.set_margin_end(width)
         self.button0.set_margin_end(width)
         self.button2.set_margin_start(width)
         self.button2.set_margin_end(width)
