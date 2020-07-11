@@ -351,6 +351,7 @@ Drauger OS %s
         self.label9.set_margin_start(width)
         self.label10.set_margin_end(width)
         self.label9.set_margin_end(width)
+        self.label9.set_margin_start(width)
         self.label6.set_margin_end(width)
         self.label6.set_margin_start(width)
         self.label1.set_margin_start(width)
@@ -747,6 +748,7 @@ myDrauger Support System
         width = int(width * 0.25)
         self.button1.set_margin_start(width)
         self.button1.set_margin_end(width)
+        self.button1.set_margin_bottom(int(width / 10))
 
         self.show_all()
 
