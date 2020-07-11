@@ -4,7 +4,7 @@
 #  main_ui.py
 #
 #  Copyright 2020 Thomas Castleman <contact@draugeros.org>
-#  Additional contributors: Logan L Johnson
+#  Additional contributors: Logan L Johnson <logan@cygo.network>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
