@@ -3,7 +3,7 @@
 #
 #  tut.py
 #
-#  Copyright 2020 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2021 Thomas Castleman <contact@draugeros.org>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,13 @@ def eprint(*args, **kwargs):
 	print(*args, file=stderr, **kwargs)
 
 HOME = getenv("HOME")
-if (not path.exists(HOME + "/.drauger-tut")):
+# check if system-installer will be running, if it is, do not show the welcome screen
+with open("/proc/cmdline", "r") as cmdline_file:
+            cmdline = cmdline_file.read()[:-1].split(" ")
+if "system-installer" in cmdline:
+            # Not wanted to be running ootb
+            sys.exit(0)
+if not path.exists(HOME + "/.drauger-tut"):
 	try:
 		main_ui.welcome_show()
 	except Exception as e:

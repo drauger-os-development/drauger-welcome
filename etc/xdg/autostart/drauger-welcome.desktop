@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Drauger Welcome
-Version=4.6
+Version=4.9
 Exec=/usr/share/drauger-welcome/tut.py
 Comment=Welcome Screen for Drauger OS
 Type=Application
