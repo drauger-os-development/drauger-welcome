@@ -22,19 +22,19 @@
 #
 #
 from __future__ import print_function
-from sys import stderr
+import sys
 from os import path, getenv
 from subprocess import Popen
 import main_ui
 
 # Make it easier for us to print to stderr
 def eprint(*args, **kwargs):
-	print(*args, file=stderr, **kwargs)
+	print(*args, file=sys.stderr, **kwargs)
 
 HOME = getenv("HOME")
 # check if system-installer will be running, if it is, do not show the welcome screen
 with open("/proc/cmdline", "r") as cmdline_file:
-            cmdline = cmdline_file.read()[:-1].split(" ")
+            cmdline = cmdline_file.read()
 if "system-installer" in cmdline:
             # Not wanted to be running ootb
             sys.exit(0)
