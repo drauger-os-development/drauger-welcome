@@ -38,7 +38,7 @@ with open("/proc/cmdline", "r") as cmdline_file:
 if "system-installer" in cmdline:
             # Not wanted to be running ootb
             sys.exit(0)
-if not path.exists(HOME + "/.drauger-tut"):
+if ((not path.exists(HOME + "/.drauger-tut")) and (not path.exists("/etc/system-installer/oem-post-install.flag"))):
 	try:
 		main_ui.welcome_show()
 	except Exception as e:
