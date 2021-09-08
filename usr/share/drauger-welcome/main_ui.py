@@ -3,7 +3,7 @@
 #
 #  main_ui.py
 #
-#  Copyright 2020 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2021 Thomas Castleman <contact@draugeros.org>
 #  Additional contributors: Logan L Johnson <logan@cygo.network>
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -26,8 +26,9 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from os import system, path, getenv, remove
-from subprocess import Popen, check_output, check_call, CalledProcessError
+import subprocess
 import json
+import apt
 
 LANG = getenv("LANG").split(".")
 LANG = LANG[0]
@@ -208,7 +209,7 @@ class welcome(Gtk.Window):
         Gtk.Window.__init__(self, title="Welcome to Drauger OS")
         self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,)
         self.add(self.grid)
-        self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
+        # self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
 
         self.reset("clicked")
 
@@ -317,7 +318,7 @@ Drauger OS %s
         self.grid.attach(self.label10, 4, 3, 1, 1)
 
         self.button10 = Gtk.Button.new_from_icon_name("preferences-desktop-locale", 3)
-        self.button10.connect("clicked", self.onCYGOclicked)
+        self.button10.connect("clicked", self.onlangsupportclicked)
         self.grid.attach(self.button10, 4, 4, 1, 1)
 
         self.start_up = Gtk.CheckButton.new_with_label(start_up_label)
@@ -361,7 +362,7 @@ Drauger OS %s
         self.show_all()
 
     def show_readme(self, widget):
-        Popen(["xdg-open", "https://download.draugeros.org/docs/README.pdf"])
+        subprocess.Popen(["xdg-open", "https://download.draugeros.org/docs/README.pdf"])
 
     def start_up_toggle(self, widget):
         global show_at_start_up
@@ -403,7 +404,7 @@ Drauger OS %s
 
         self.font_button = Gtk.FontButton()
         # get system font and font size
-        system_font = check_output(["xfconf-query", "--channel", "xsettings",
+        system_font = subprocess.check_output(["xfconf-query", "--channel", "xsettings",
                                     "--property", "/Gtk/FontName"])
         system_font = list(str(system_font))
         del(system_font[1])
@@ -458,13 +459,13 @@ Drauger OS %s
         self.show_all()
 
     def goto_accessibility(self, button):
-        Popen("xfce4-accessibility-settings")
+        subprocess.Popen("xfce4-accessibility-settings")
 
     def set_font(self, widget):
-        Popen(["xfconf-query", "--channel", "xsettings", "--property",
+        subprocess.Popen(["xfconf-query", "--channel", "xsettings", "--property",
                "/Gtk/FontName", "--set", self.font_button.get_font()])
 
-    def onCYGOclicked(self, button):
+    def onlangsupportclicked(self, button):
         self.clear_window()
 
         self.label = Gtk.Label()
@@ -525,12 +526,12 @@ Drauger OS %s
         lang = lang.split("_")
         lang = "-".join(lang).lower()
         if lang[0:2] == "en":
-            check_call(["notify-send", "--app-name='Drauger Welcome'",
+            subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
                         "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                         "Locale packages do not need to be installed."])
         else:
             package_name = "drauger-locale-" + lang
-            packages = check_output(["apt", "search",
+            packages = subprocess.check_output(["apt", "search",
                                      "drauger-locale"]).decode()
             packages = packages.split("\n")
             for each in range(len(packages) - 1, -1, -1):
@@ -540,13 +541,13 @@ Drauger OS %s
                     packages[each] = packages[each].split("/")[0]
             if package_name in packages:
                 try:
-                    check_call(["pkexec", "apt", "--force-yes", "install",
+                    subprocess.check_call(["pkexec", "apt", "--force-yes", "install",
                                package_name])
-                    check_call(["notify-send", "--app-name='Drauger Welcome'",
+                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "%s installed." % (package_name)])
-                except CalledProcessError:
-                    check_call(["notify-send", "--app-name='Drauger Welcome'",
+                except subprocess.CalledProcessError:
+                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "Locale package could not be installed."])
 
@@ -558,7 +559,7 @@ Drauger OS %s
         elif self.check == 2:
             self.removal_conf("clicked")
         else:
-            check_call(["/usr/share/drauger-welcome/log-out", "2",
+            subprocess.check_call(["/usr/share/drauger-welcome/log-out", "2",
                         "/usr/share/drauger-welcome/multi_desktop.py",
                         "Unknown error. Variable self.check in function onnextclicked in class notify outside expected range",
                         "drauger-welcome", "UNKNOWN", "UNKNOWN"])
@@ -566,7 +567,7 @@ Drauger OS %s
         self.check = self.check + 1
 
     def onwebclicked(self, button):
-        Popen(["/usr/bin/xdg-open", "https://draugeros.org/go"])
+        subprocess.Popen(["/usr/bin/xdg-open", "https://draugeros.org/go"])
 
     def onhelpclicked(self, button):
 
@@ -637,32 +638,62 @@ myDrauger Support System
         self.button1.set_margin_end(width)
         self.button1.set_margin_top(width)
         self.button1.set_margin_bottom(width)
-        print(self.button1.get_size_request())
         # self.button1.set_margin_top(int(width / 2))
         # self.button1.set_margin_bottom(int(width / 2))
 
         self.show_all()
 
     def open_discord(self, button):
-        Popen(["xdg-open", "https://discord.gg/JW8FGrc"])
+        cache = apt.cache.Cache()
+        cache.open()
+        installed = False
+        with cache.actiongroup():
+            for each in cache:
+                if "discord" == each.name:
+                    installed = each.is_installed
+                    break
+        if not installed:
+            check = subprocess.check_output("snap list | awk '{print $1}' | grep 'discord'",
+                                            shell=True).decode()[:-1]
+            if check == "discord":
+                installed = True
+        if not installed:
+            subprocess.check_call(["snap", "install", "discord"])
+        subprocess.Popen(["discord", "https://discord.gg/JW8FGrc"])
 
     def open_mydrauger(self, button):
-        Popen(["xdg-open", "https://draugeros.org/go/my"])
+        subprocess.Popen(["xdg-open", "https://draugeros.org/go/my"])
 
     def open_telegram(self, button):
-        Popen(["xdg-open", "https://t.me/draugeros"])
+        cache = apt.cache.Cache()
+        cache.open()
+        installed = False
+        with cache.actiongroup():
+            for each in cache:
+                if "telegram-desktop" == each.name:
+                    installed = each.is_installed
+                    break
+        if not installed:
+            check = subprocess.check_output("snap list | awk '{print $1}' | grep 'telegram-desktop'",
+                                            shell=True).decode()[:-1]
+            if check == "telegram-desktop":
+                installed = True
+        if not installed:
+            subprocess.check_call(["snap", "install", "telegram-desktop"])
+        subprocess.Popen(["telegram-desktop", "https://t.me/draugeros"])
 
     def open_wiki(self, button):
-        Popen(["xdg-open", "https://draugeros.org/go/wiki"])
+        subprocess.Popen(["xdg-open", "https://draugeros.org/go/wiki"])
 
     def ondriveclicked(self, button):
-        Popen(["/usr/bin/software-properties-gtk", "--open-tab=4"])
+        subprocess.Popen(["/usr/bin/software-properties-gtk", "--open-tab=4"])
 
     def onlanguageclicked(self, button):
-        Popen(["gnome-language-selector"])
+        subprocess.Popen(["gnome-language-selector"])
 
     def ondonateclicked(self, button):
-        Popen(["/usr/bin/xdg-open", "https://paypal.me/pools/c/89GtByYaTT"])
+        subprocess.Popen(["/usr/bin/xdg-open",
+               "https://liberapay.com/Drauger_OS_Development/donate"])
 
     def onshortcutclicked(self, button):
         self.clear_window()
@@ -760,9 +791,9 @@ myDrauger Support System
         # have an uninstall comfirmation dialoge then uninstall based on
         # the answer
         try:
-            check_call("/usr/share/drauger-welcome/u.sh")
-        except CalledProcessError:
-            check_call(["/usr/share/drauger-welcome/log-out",
+            subprocess.check_call("/usr/share/drauger-welcome/u.sh")
+        except subprocess.CalledProcessError:
+            subprocess.check_call(["/usr/share/drauger-welcome/log-out",
                         "2", "/usr/share/drauger-welcome/main.py",
                         "/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.",
                         "drauger-welcome", "UNKNOWN", "UNKNOWN"])
@@ -890,7 +921,7 @@ if __name__ == '__main__':
     try:
         welcome_show()
     except:
-        check_call(["/usr/share/drauger-welcome/log-out",
+        subprocess.check_call(["/usr/share/drauger-welcome/log-out",
                     "2 /usr/share/drauger-welcome/main_ui.py",
                     "Unknown error. Function welcome_show has failed.",
                     "drauger-welcome", "UNKNOWN", "UNKNOWN"])
