@@ -361,7 +361,9 @@ Drauger OS %s
         self.show_all()
 
     def show_readme(self, widget):
-        Popen(["xdg-open", "https://download.draugeros.org/docs/README.pdf"])
+        version = check_output(["lsb_release", "-rs"]).decode()
+        Popen(["xdg-open",
+               f"https://download.draugeros.org/docs/{version}/README.pdf"])
 
     def start_up_toggle(self, widget):
         global show_at_start_up
