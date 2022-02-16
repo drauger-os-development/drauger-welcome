@@ -28,6 +28,7 @@ from gi.repository import Gtk
 from os import system, path, getenv, remove
 import subprocess
 import json
+import shlex
 import apt
 
 LANG = getenv("LANG").split(".")
@@ -688,7 +689,48 @@ myDrauger Support System
         subprocess.Popen(["xdg-open", "https://draugeros.org/go/wiki"])
 
     def ondriveclicked(self, button):
-        subprocess.Popen(["/usr/bin/software-properties-gtk", "--open-tab=4"])
+        self.clear_window()
+
+        # we need to make a window here to manage drivers
+        # start off by getting all our PCI devices
+        devices = subprocess.check_output(["lspci", "-qmm"]).decode()
+        # we need to parse this so that we can check for devices in need of drivers
+        # this will do most of that for us
+        devices = devices.split("\n")
+        for each in range(len(data) - 1, -1, -1):
+            data[each] = shlex.split(data[each])
+
+        # now we need to get rid of anything that we don't need
+        for each in range(len(data) - 1, -1, -1):
+            if len(data[each]) < 2:
+                del data[each]
+                continue
+            if "VGA" in data[each][1]:
+                continue
+            elif data[each][1].lower() == "network controller":
+                continue
+            elif data[each][1].lower() == "ethernet controller": # these don't always need drivers. But sometimes they do.
+                continue
+            del data[each]
+
+        # now we have a list of all devices that MIGHT need drivers: GPUs, Wifi cards, Ethernet cards
+        # check if they have chips that need drivers or not
+        for each in range(len(data) - 1, -1, -1):
+            if "VGA" in data[each][1]: # GPUs
+                if "nvidia" not in data[each][2].lower():
+                    del data[each]
+            elif data[each][1].lower() in ("network controller",
+                                           "ethernet controller"): # Networking controllers (Wifi & Ethernet)
+                if "broadcom" in data[each][2].lower():
+                    continue
+                elif "realtek" in data[each][2].lower():
+                    continue
+                del data[each]
+
+        # now we have a list of JUST devices that need drivers
+        # now we need to figure out what drivers are suited to what generation of card and handle that accordingly.
+
+        self.show_all()
 
     def onlanguageclicked(self, button):
         subprocess.Popen(["gnome-language-selector"])
