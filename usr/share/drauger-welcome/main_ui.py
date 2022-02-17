@@ -689,14 +689,14 @@ myDrauger Support System
         subprocess.Popen(["xdg-open", "https://draugeros.org/go/wiki"])
 
     def ondriveclicked(self, button):
-        self.clear_window()
+        # self.clear_window()
 
         # we need to make a window here to manage drivers
         # start off by getting all our PCI devices
-        devices = subprocess.check_output(["lspci", "-qmm"]).decode()
+        devices = subprocess.check_output(["lspci", "-qmmnn"]).decode()
         # we need to parse this so that we can check for devices in need of drivers
         # this will do most of that for us
-        devices = devices.split("\n")
+        data = devices.split("\n")
         for each in range(len(data) - 1, -1, -1):
             data[each] = shlex.split(data[each])
 
@@ -729,8 +729,61 @@ myDrauger Support System
 
         # now we have a list of JUST devices that need drivers
         # now we need to figure out what drivers are suited to what generation of card and handle that accordingly.
+        drivers = {}
+        for each in data:
+            if "nvidia" in each[2].lower():
+                if "nvidia" not in drivers:
+                    drivers["nvidia"] = []
+                device = each[3].split(" ")
+                for each1 in device:
+                    if each1.isdigit():
+                        if len(each1) >= 4:
+                            device = each1[:2]
+                        else:
+                            device = each1[0]
+                        break
+                if device not in drivers["nvidia"]:
+                    drivers["nvidia"] = device
+                break
+            elif "broadcom" in each[2].lower():
+                if "broadcom" not in drivers:
+                    drivers["broadcom"] = []
+                device = each[3].split(" ")[-1][1:-1]
+                if device not in drivers["broadcom"]:
+                    drivers["broadcom"].append(device)
+                break
+            elif "realtek" in each[2].lower():
+                if "realtek" not in drivers:
+                    drivers["realtek"] = []
+                device = each[3].split(" ")[0].lower()
+                if device not in drivers["realtek"]:
+                    drivers["realtek"].append(device)
+                break
 
-        self.show_all()
+        guide = {}
+        if "nvidia" in drivers:
+            with open("../../../etc/drauger-welcome/nvidia_driver_guide.json",
+                      "r") as file:
+                      guide.update({"nvidia": json.load(file)})
+        if "broadcom" in drivers:
+            with open("../../../etc/drauger-welcome/broadcom_driver_guide.json",
+                      "r") as file:
+                      guide.update({"broadcom": json.load(file)})
+        if "realtek" in drivers:
+            with open("../../../etc/drauger-welcome/realtek_driver_guide.json",
+                      "r") as file:
+                      guide.update({"realtek": json.load(file)})
+
+        # we now have all the data and correlations to figure out what driver we need where
+        # just need to actually follow the correlations
+        to_install = []
+        if "nvidia" in drivers:
+            to_install.append(f"nvidia-driver-{guide['nvidia'][drivers['nvidia']]}")
+        print(json.dumps(drivers, indent=2))
+        print(json.dumps(guide, indent=2))
+        print(to_install)
+
+        # self.show_all()
 
     def onlanguageclicked(self, button):
         subprocess.Popen(["gnome-language-selector"])
