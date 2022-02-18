@@ -690,7 +690,7 @@ myDrauger Support System
         subprocess.Popen(["xdg-open", "https://draugeros.org/go/wiki"])
 
     def ondriveclicked(self, button):
-        # self.clear_window()
+        self.clear_window()
 
         # we need to make a window here to manage drivers
         # start off by getting all our PCI devices
@@ -777,14 +777,58 @@ myDrauger Support System
 
         # we now have all the data and correlations to figure out what driver we need where
         # just need to actually follow the correlations
-        to_install = []
+        to_install = {}
         if "nvidia" in drivers:
-            to_install.append(f"nvidia-driver-{guide['nvidia'][drivers['nvidia']]}")
+            to_install[f"nvidia-driver-{guide['nvidia'][drivers['nvidia']]}"] = {"installed": None, "desc": ""}
+
+        # check and see if the package is already installed. If it is, then the user is good to go
+        # so delete the package from the list
+        cache = apt.cache.Cache()
+        cache.open()
+        installed = False
+        with cache.actiongroup():
+            for pkg in to_install:
+                for each in cache:
+                    if pkg == each.name:
+                        to_install[pkg]["installed"] = each.is_installed
+                        to_install[pkg]["desc"] = each.versions[0].description
         print(json.dumps(drivers, indent=2))
         print(json.dumps(guide, indent=2))
-        print(to_install)
+        print(json.dumps(to_install, indent=2))
 
-        # self.show_all()
+        label = Gtk.Label()
+        label.set_markup("<b>Below are all the drivers we suggest for your system</b>")
+        label.set_justify(Gtk.Justification.CENTER)
+        label = self._set_default_margins(label)
+        self.grid.attach(label, 1, 1, 3, 1)
+
+        label1 = Gtk.Label()
+        label1.set_markup("Alternatively, you may use Synaptic Package Manager to install drivers yourself.")
+        label1.set_justify(Gtk.Justification.CENTER)
+        label1 = self._set_default_margins(label1)
+        self.grid.attach(label1, 1, 2, 3, 1)
+
+        # labels detailing all drivers
+
+        button1 = Gtk.Button.new_with_label(label=Back)
+        button1.connect("clicked", self.reset)
+        button1 = self._set_default_margins(button1)
+        self.grid.attach(button1, 1, 20, 1, 1)
+
+        button2 = Gtk.Button.new_with_label(label="Install Drivers")
+        button2.connect("clicked", self.reset)
+        button2 = self._set_default_margins(button2)
+        self.grid.attach(button2, 2, 20, 1, 1)
+
+        button3 = Gtk.Button.new_with_label(label="Open Synaptic")
+        button3.connect("clicked", self.open_synaptic)
+        button3 = self._set_default_margins(button3)
+        self.grid.attach(button3, 3, 20, 1, 1)
+
+        self.show_all()
+
+    def open_synaptic(self, button):
+        subprocess.Popen(["synaptic-pkexec"])
 
     def onlanguageclicked(self, button):
         subprocess.Popen(["gnome-language-selector"])
