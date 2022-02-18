@@ -576,73 +576,66 @@ Drauger OS %s
 
         self.clear_window()
 
-        self.label = Gtk.Label()
-        self.label.set_markup(HELP)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 3, 3, 1)
+        label = Gtk.Label()
+        label.set_markup(HELP)
+        label.set_justify(Gtk.Justification.CENTER)
+        label = self._set_default_margins(label)
+        self.grid.attach(label, 1, 3, 3, 1)
 
-        self.label2 = Gtk.Label()
-        self.label2.set_markup("""
+        label2 = Gtk.Label()
+        label2.set_markup("""
 Telegram
 """)
-        self.label2.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label2, 1, 4, 1, 1)
+        label2.set_justify(Gtk.Justification.CENTER)
+        label2 = self._set_default_margins(label2)
+        self.grid.attach(label2, 1, 4, 1, 1)
 
-        self.label3 = Gtk.Label()
-        self.label3.set_markup("""
+        label3 = Gtk.Label()
+        label3.set_markup("""
 Discord
 """)
-        self.label3.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label3, 3, 4, 1, 1)
+        label3.set_justify(Gtk.Justification.CENTER)
+        label3 = self._set_default_margins(label3)
+        self.grid.attach(label3, 3, 4, 1, 1)
 
-        self.label5 = Gtk.Label()
-        self.label5.set_markup(help_yourself)
-        self.label5.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label5, 1, 1, 3, 1)
+        label5 = Gtk.Label()
+        label5.set_markup(help_yourself)
+        label5.set_justify(Gtk.Justification.CENTER)
+        label5 = self._set_default_margins(label5)
+        self.grid.attach(label5, 1, 1, 3, 1)
 
-        self.label6 = Gtk.Label()
-        self.label6.set_markup("""
+        label6 = Gtk.Label()
+        label6.set_markup("""
 myDrauger Support System
 """)
-        self.label6.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label6, 2, 4, 1, 1)
+        label6.set_justify(Gtk.Justification.CENTER)
+        label6 = self._set_default_margins(label6)
+        self.grid.attach(label6, 2, 4, 1, 1)
 
-        self.button2 = Gtk.Button.new_with_label(label="%s Telegram" % (Open))
-        self.button2.connect("clicked", self.open_telegram)
-        self.grid.attach(self.button2, 1, 5, 1, 1)
+        button2 = Gtk.Button.new_with_label(label="%s Telegram" % (Open))
+        button2.connect("clicked", self.open_telegram)
+        button2 = self._set_default_margins(button2)
+        self.grid.attach(button2, 1, 5, 1, 1)
 
-        self.button3 = Gtk.Button.new_with_label(label="%s Discord" % (Open))
-        self.button3.connect("clicked", self.open_discord)
-        self.grid.attach(self.button3, 3, 5, 1, 1)
+        button3 = Gtk.Button.new_with_label(label="%s Discord" % (Open))
+        button3.connect("clicked", self.open_discord)
+        button3 = self._set_default_margins(button3)
+        self.grid.attach(button3, 3, 5, 1, 1)
 
-        self.button5 = Gtk.Button.new_with_label(label="%s Drauger OS Wiki" % (Open))
-        self.button5.connect("clicked", self.open_wiki)
-        self.grid.attach(self.button5, 1, 2, 3, 1)
+        button5 = Gtk.Button.new_with_label(label="%s Drauger OS Wiki" % (Open))
+        button5.connect("clicked", self.open_wiki)
+        button5 = self._set_default_margins(button5)
+        self.grid.attach(button5, 1, 2, 3, 1)
 
-        self.button6 = Gtk.Button.new_with_label(label="%s myDrauger" % (Open))
-        self.button6.connect("clicked", self.open_mydrauger)
-        self.grid.attach(self.button6, 2, 5, 1, 1)
+        button6 = Gtk.Button.new_with_label(label="%s myDrauger" % (Open))
+        button6.connect("clicked", self.open_mydrauger)
+        button6 = self._set_default_margins(button6)
+        self.grid.attach(button6, 2, 5, 1, 1)
 
-        self.button1 = Gtk.Button.new_with_label(label=Back)
-        self.button1.connect("clicked", self.reset)
-        self.grid.attach(self.button1, 1, 20, 1, 1)
-
-        width = self.get_size()[0]
-        width = int(width * 0.025)
-        self.button5.set_margin_start(width)
-        self.button5.set_margin_end(width)
-        self.button2.set_margin_start(width)
-        self.button2.set_margin_end(width)
-        self.button3.set_margin_start(width)
-        self.button3.set_margin_end(width)
-        self.button6.set_margin_end(width)
-        self.button6.set_margin_start(width)
-        self.button1.set_margin_start(width)
-        self.button1.set_margin_end(width)
-        self.button1.set_margin_top(width)
-        self.button1.set_margin_bottom(width)
-        # self.button1.set_margin_top(int(width / 2))
-        # self.button1.set_margin_bottom(int(width / 2))
+        button1 = Gtk.Button.new_with_label(label=Back)
+        button1.connect("clicked", self.reset)
+        button1 = self._set_default_margins(button1)
+        self.grid.attach(button1, 1, 20, 1, 1)
 
         self.show_all()
 
@@ -663,6 +656,14 @@ myDrauger Support System
         if not installed:
             subprocess.check_call(["snap", "install", "discord"])
         subprocess.Popen(["discord", "https://discord.gg/JW8FGrc"])
+
+    def _set_default_margins(self, widget):
+        """Set default margin size"""
+        widget.set_margin_start(10)
+        widget.set_margin_end(10)
+        widget.set_margin_top(10)
+        widget.set_margin_bottom(10)
+        return widget
 
     def open_mydrauger(self, button):
         subprocess.Popen(["xdg-open", "https://draugeros.org/go/my"])
