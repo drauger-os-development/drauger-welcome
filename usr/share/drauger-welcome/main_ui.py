@@ -208,11 +208,15 @@ class welcome(Gtk.Window):
 
     def __init__(self):
         Gtk.Window.__init__(self, title="Welcome to Drauger OS")
-        self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,)
+        self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL)
         self.add(self.grid)
-        # self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
+        self.icon = "/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg"
+        self.set_icon_from_file(self.icon)
 
+        self.drivers = []
         self.reset("clicked")
+
+
 
     def reset(self, button):
 
@@ -792,40 +796,167 @@ myDrauger Support System
                     if pkg == each.name:
                         to_install[pkg]["installed"] = each.is_installed
                         to_install[pkg]["desc"] = each.versions[0].description
-        print(json.dumps(drivers, indent=2))
-        print(json.dumps(guide, indent=2))
-        print(json.dumps(to_install, indent=2))
+
+        # this makes an if-statement later on easier to write
+        all_installed = True
+        for each in to_install:
+            if not to_install[each]["installed"]:
+                all_installed = False
+                break
+
+        self.drivers = to_install
 
         label = Gtk.Label()
         label.set_markup("<b>Below are all the drivers we suggest for your system</b>")
         label.set_justify(Gtk.Justification.CENTER)
         label = self._set_default_margins(label)
-        self.grid.attach(label, 1, 1, 3, 1)
+        self.grid.attach(label, 1, 1, 5, 1)
 
         label1 = Gtk.Label()
         label1.set_markup("Alternatively, you may use Synaptic Package Manager to install drivers yourself.")
         label1.set_justify(Gtk.Justification.CENTER)
         label1 = self._set_default_margins(label1)
-        self.grid.attach(label1, 1, 2, 3, 1)
+        self.grid.attach(label1, 1, 2, 5, 1)
+
+        label2 = Gtk.Label()
+        label2.set_markup("<b>Package Name</b>")
+        label2.set_justify(Gtk.Justification.CENTER)
+        label2 = self._set_default_margins(label2)
+        self.grid.attach(label2, 1, 4, 1, 1)
+
+        label3 = Gtk.Label()
+        label3.set_markup("<b>Description</b>")
+        label3.set_justify(Gtk.Justification.CENTER)
+        label3 = self._set_default_margins(label3)
+        self.grid.attach(label3, 3, 4, 1, 1)
+
+        label4 = Gtk.Label()
+        label4.set_markup("<b>Installation Status</b>")
+        label4.set_justify(Gtk.Justification.CENTER)
+        label4 = self._set_default_margins(label4)
+        self.grid.attach(label4, 5, 4, 1, 1)
+
+        sep = Gtk.Separator.new(Gtk.Orientation.HORIZONTAL)
+        sep = self._set_default_margins(sep)
+        self.grid.attach(sep, 1, 5, 5, 1)
 
         # labels detailing all drivers
+        x = 1
+        y = 6
+        for each in to_install:
+            label = Gtk.Label()
+            label.set_markup(f"<b>{each}</b>")
+            label.set_justify(Gtk.Justification.CENTER)
+            label = self._set_default_margins(label)
+            self.grid.attach(label, x, y, 1, 1)
+
+            label = Gtk.Label()
+            label.set_markup(f"{to_install[each]['desc']}")
+            label.set_justify(Gtk.Justification.CENTER)
+            label = self._set_default_margins(label)
+            self.grid.attach(label, x + 2, y, 1, 1)
+
+            label = Gtk.Label()
+            if to_install[each]["installed"]:
+                label.set_markup("Installed")
+            else:
+                label.set_markup("Installed")
+            label.set_justify(Gtk.Justification.CENTER)
+            label = self._set_default_margins(label)
+            self.grid.attach(label, x + 4, y, 1, 1)
+
+            y += 1
+
+        sep = Gtk.Separator.new(Gtk.Orientation.VERTICAL)
+        sep = self._set_default_margins(sep)
+        self.grid.attach(sep, 2, 4, 1, y)
+
+        sep = Gtk.Separator.new(Gtk.Orientation.VERTICAL)
+        sep = self._set_default_margins(sep)
+        self.grid.attach(sep, 4, 4, 1, y)
 
         button1 = Gtk.Button.new_with_label(label=Back)
         button1.connect("clicked", self.reset)
         button1 = self._set_default_margins(button1)
         self.grid.attach(button1, 1, 20, 1, 1)
 
-        button2 = Gtk.Button.new_with_label(label="Install Drivers")
-        button2.connect("clicked", self.reset)
+        if not all_installed:
+            button2 = Gtk.Button.new_with_label(label="Install Missing Drivers")
+            button2.connect("clicked", self.install_missing_drivers)
+        else:
+            button2 = Gtk.Label()
+            button2.set_markup("<b>All Drivers Already Installed</b>")
         button2 = self._set_default_margins(button2)
-        self.grid.attach(button2, 2, 20, 1, 1)
+        self.grid.attach(button2, 3, 20, 1, 1)
+
 
         button3 = Gtk.Button.new_with_label(label="Open Synaptic")
         button3.connect("clicked", self.open_synaptic)
         button3 = self._set_default_margins(button3)
-        self.grid.attach(button3, 3, 20, 1, 1)
+        self.grid.attach(button3, 5, 20, 1, 1)
 
         self.show_all()
+
+    def install_missing_drivers(self, button):
+        # setup
+        cmd = ["pkexec", "apt-get", "-y", "-o",
+               "Dpkg::Options::='--force-confold'", "--force-yes", "install"]
+        # filter down to just uninstalled drivers
+        to_install = []
+        for each in self.drivers:
+            if self.drivers[each]["installed"]:
+                continue
+            to_install.append(each)
+        if len(to_install) <= 0:
+            return
+        cmd = cmd + to_install
+        # this is arguably the easiest way to do this
+        pid = os.fork()
+        if pid == 0:
+            # this will run as a seperate thread. It's safe to call exit()
+            try:
+                subprocess.check_call(cmd)
+            except subprocess.CalledProcessError:
+                subprocess.check_call(["notify-send", "-i", self.icon, "-a",
+                                       "Drauger OS Welcome Screen",
+                                       "Driver Installation Error",
+                                       "Installing Drivers Encountered An Error. Please contact support."])
+                exit(2)
+            subprocess.check_call(["notify-send", "-i", self.icon, "-a",
+                                   "Drauger OS Welcome Screen",
+                                   "Driver Installation Success",
+                                   "Drivers Successfully Installed. Please Reboot for changes to take effect."])
+            exit(0)
+        self.post_install_window()
+
+    def post_install_window(self):
+        self.clear_window()
+
+        label1 = Gtk.Label()
+        label1.set_markup("<b>Installing Drivers</b>")
+        label1.set_justify(Gtk.Justification.CENTER)
+        label1 = self._set_default_margins(label1)
+        self.grid.attach(label1, 1, 1, 4, 1)
+
+        label2 = Gtk.Label()
+        label2.set_markup("Please give the background process about 10 minutes max in order to install your drivers for you.")
+        label2.set_justify(Gtk.Justification.CENTER)
+        label2 = self._set_default_margins(label2)
+        self.grid.attach(label2, 1, 2, 4, 1)
+
+        label3 = Gtk.Label()
+        label3.set_markup("If you do not receive a notification about how installation went, please check System Monitor to see if installation is still ongoing.")
+        label3.set_justify(Gtk.Justification.CENTER)
+        label3 = self._set_default_margins(label3)
+        self.grid.attach(label3, 1, 3, 4, 1)
+
+        button1 = Gtk.Button.new_with_label(label=Back)
+        button1.connect("clicked", self.reset)
+        button1 = self._set_default_margins(button1)
+        self.grid.attach(button1, 1, 20, 1, 1)
+
+        self.show_all()
+
 
     def open_synaptic(self, button):
         subprocess.Popen(["synaptic-pkexec"])
@@ -1049,6 +1180,7 @@ myDrauger Support System
         children = self.grid.get_children()
         for each in children:
             self.grid.remove(each)
+
 
 def welcome_show():
     window = welcome()
