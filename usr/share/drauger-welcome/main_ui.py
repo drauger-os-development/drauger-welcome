@@ -25,13 +25,13 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from os import system, path, getenv, remove
+import os
 import subprocess
 import json
 import shlex
 import apt
 
-LANG = getenv("LANG").split(".")
+LANG = os.getenv("LANG").split(".")
 LANG = LANG[0]
 
 try:
@@ -192,8 +192,8 @@ except FileNotFoundError:
     Open = "Open"
 
 
-HOME = getenv("HOME")
-if (not path.exists("%s/.drauger-tut" % (HOME))):
+HOME = os.getenv("HOME")
+if (not os.path.exists("%s/.drauger-tut" % (HOME))):
     show_at_start_up = True
 else:
     show_at_start_up = False
@@ -528,7 +528,7 @@ Drauger OS %s
         self.show_all()
 
     def install_locale_packages(self, button):
-        lang = getenv("LANG").split(".")
+        lang = os.getenv("LANG").split(".")
         lang = lang[0]
         lang = lang.split("_")
         lang = "-".join(lang).lower()
@@ -1171,8 +1171,8 @@ myDrauger Support System
                 flagfile.write("")
                 flagfile.close()
         else:
-            if (path.exists("%s/.drauger-tut" % (HOME))):
-                remove("%s/.drauger-tut" % (HOME))
+            if (os.path.exists("%s/.drauger-tut" % (HOME))):
+                os.remove("%s/.drauger-tut" % (HOME))
         print(1)
         exit(1)
 
