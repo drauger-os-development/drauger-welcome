@@ -136,8 +136,6 @@ try:
             tut_4 = each[1]
         elif (each[0] == "tut_5"):
             tut_5 = each[1]
-        elif (each[0] == "tut_6"):
-            tut_6 = each[1]
         elif (each[0] == "multi_ask"):
             multi_ask = each[1]
         elif (each[0] == "lang_sup3"):
@@ -147,7 +145,11 @@ try:
 
 except FileNotFoundError:
     message_show_remove = "\n\tThank you again for using Drauger OS. Would you like to uninstall drauger-welcome?\t\n"
-    message_show_tutorial = "\n\tThank you for downloading and installing Drauger OS, the free Linux gaming OS.\t\n"
+    message_show_tutorial = """
+\tThank you for downloading and installing Drauger OS, the free Linux gaming OS.\t
+
+\tIn this tutorial, you will recive a quick introduction regarding how to work Drauger OS.\t
+"""
     message_show_multi_desktop = "Having multiple desktops is the ability to switch back and forth between two 'desktops'.\n\tThis ability enables you to hide windows and tabs for apps on one desktop while you work in another.\t\n"
     welcome_label = "Welcome! <b>Thank you for choosing Drauger OS.</b>\n\tWe hope you'll enjoy gaming on it as much as we enjoyed developing it.\n\tPlease make yourself familiar with the new features, layout, and documentation.\n\tPlease, don't hesitate to send us your feedback, it's greatly appreciated!\n\n\tThe default admin password is <b>'toor'.</b>"
     website = "\n\tDrauger OS website\t\n"
@@ -179,13 +181,27 @@ except FileNotFoundError:
     sc_5 = "\n\tLock Screen\t\n"
     Next = "Next -->"
     Exit = "Exit"
-    tut_0 = "\n\tIn this tutorial, you will recive a quick introduction regarding how to work Drauger OS.  \n"
-    tut_1 = "\n\tThe bars on the top, left, and bottom of your screen are your desktop panels.\t\n\tThe left contains quick access to some the most commonly used apps and widgets.\t\n\tThe top one contains the the main menu, on the far left when you click on the Drauger OS logo,\t\n\tand the log out menu on the far right under your username.\t\n\tThe bottom pannel gives you a quick view of what's on each desktop, but more on that later.\t\n"
-    tut_2 = "\n\tIn order to see any apps in the left desktop panel that are not\t\n\tcurrently on display, simply click on the drop down arrow underneath\t\n\tthe icon\t\n"
-    tut_3 = "\n\tIn order to see any apps not on the left desktop panel, click the Drauger OS Logo\t\n\ton the far left of the top panel.\t\n"
-    tut_4 = "\n\tDrauger OS also has support for not only keyboards and mice,\t\n\tas well as touchpads and touchscreens,\t\n\tit also has support for most Xbox and Xbox 360 controllers,\t\n\tas well as some Playstation controllers.\t\n"
-    tut_5 = "\n\tFinally, the four rectangles on the bottom of your screen are the four current desktops.\t\n\tYou may not be able to see them very well considering they blend into the default wallpaper.\t\n"
-    tut_6 = "\n\tIf you wish to learn more about how to use the Drauger OS desktop, please visit:\n\t<a href=\"https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/\"> https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/ </a>\n\t"
+    tut_1 = """
+\tThe bars on the top, left, and bottom of your screen are your desktop panels.\t
+"""
+    tut_2 = """
+\tThis top bar provides the applications menu (the Drauger OS logo), clock, and power menu (accessed by clicking your username)\t
+"""
+    tut_3 = """
+\tThis left bar contains links, or launchers, for Steam, Firefox, and the Software Center.\t
+\tAlso, under the launchers for Steam and the Software Center, the arrows pointing to your right open sub-menus.\t
+\tThese allow you quicker access to other, related, apps.\t
+"""
+    tut_4 = """
+\tFinally, this bottom panel provides you with a quick view of what is on each virtual desktop,\t
+\tas well as the ability to switch between them using your mouse.\t
+
+\tMore on virtual desktops later.\t
+"""
+    tut_5 = """
+\tIf you wish to learn more about how to use the Drauger OS desktop, please visit:
+\t<a href="https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/"> https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/ </a>
+\t"""
     multi_ask = "\n\tWould you like to learn more about multiple desktops?\t\n"
     lang_sup3 = "\n\tInstall locale packages.\t\n"
     lang_sup4 = "\n\tMulti-lingual support settings.\t\n"
@@ -1132,22 +1148,18 @@ myDrauger Support System
         elif (button.get_label() == Back):
             self.check = self.check - 1
         if self.check == -1:
-            self.label.set_text(message_show_tutorial)
+            self.label.set_markup(message_show_tutorial)
         elif self.check == 0:
-            self.label.set_text(tut_0)
+            self.label.set_markup(tut_1)
         elif self.check == 1:
-            self.label.set_text(tut_1)
+            self.label.set_markup(tut_2)
         elif self.check == 2:
-            self.label.set_text(tut_2)
+            self.label.set_markup(tut_3)
         elif self.check == 3:
-            self.label.set_text(tut_3)
+            self.label.set_markup(tut_4)
         elif self.check == 4:
-            self.label.set_text(tut_4)
+            self.label.set_markup(tut_5)
         elif self.check == 5:
-            self.label.set_text(tut_5)
-        elif self.check == 6:
-            self.label.set_markup(tut_6)
-        elif self.check == 7:
             self.multi_desktop("clicked")
         elif self.check < -1:
             self.reset("clicked")
