@@ -393,7 +393,6 @@ Drauger OS %s
         print(show_at_start_up)
 
     def removal_conf(self, button):
-
         self.clear_window()
 
         self.label = Gtk.Label()
@@ -596,7 +595,6 @@ Drauger OS %s
         subprocess.Popen(["/usr/bin/xdg-open", "https://draugeros.org/go"])
 
     def onhelpclicked(self, button):
-
         self.clear_window()
 
         label = Gtk.Label()
@@ -1172,7 +1170,6 @@ myDrauger Support System
             self.reset("clicked")
 
     def multi_desktop(self, button):
-
         self.clear_window()
 
         self.label = Gtk.Label()
