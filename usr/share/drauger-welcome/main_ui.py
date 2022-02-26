@@ -882,7 +882,7 @@ myDrauger Support System
 
         if not all_installed:
             button2 = Gtk.Button.new_with_label(label="Install Missing Drivers")
-            button2.connect("clicked", self.install_missing_drivers)
+            button2.connect("clicked", self.driver_install_confirmation)
         else:
             button2 = Gtk.Label()
             button2.set_markup("<b>All Drivers Already Installed</b>")
@@ -894,6 +894,31 @@ myDrauger Support System
         button3.connect("clicked", self.open_synaptic)
         button3 = self._set_default_margins(button3)
         self.grid.attach(button3, 5, 20, 1, 1)
+
+        self.show_all()
+
+    def driver_install_confirmation(self, button):
+        self.clear_window()
+
+        label = Gtk.Label()
+        label.set_markup("<b>Are you sure you want to install the following packages?</b>")
+        label = self._set_default_margins(label)
+        self.grid.attach(label, 1, 1, 3, 1)
+
+        label2 = Gtk.Label()
+        label2.set_markup(", ".join(self.drivers))
+        label2 = self._set_default_margins(label2)
+        self.grid.attach(label2, 1, 2, 3, 1)
+
+        button = Gtk.Button.new_with_label(label="Cancel")
+        button.connect("clicked", self.reset)
+        button = self._set_default_margins(button)
+        self.grid.attach(button, 1, 3, 1, 1)
+
+        button2 = Gtk.Button.new_with_label(label="Install Missing Drivers")
+        button2.connect("clicked", self.install_missing_drivers)
+        button2 = self._set_default_margins(button2)
+        self.grid.attach(button2, 3, 3, 1, 1)
 
         self.show_all()
 
