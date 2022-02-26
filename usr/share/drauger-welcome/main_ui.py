@@ -1187,7 +1187,7 @@ myDrauger Support System
         self.grid.attach(self.button1, 1, 2, 1, 1)
 
         self.button2 = Gtk.Button.new_with_label(label=NO)
-        self.button2.connect("clicked", self.onmultinoclicked)
+        self.button2.connect("clicked", self.removal_conf)
         self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 3, 2, 1, 1)
 
@@ -1209,9 +1209,6 @@ myDrauger Support System
         self.grid.attach(self.button1, 3, 2, 1, 1)
 
         self.show_all()
-
-    def onmultinoclicked(self, button):
-        self.removal_conf("clicked")
 
     def exit(self, button):
         global show_at_start_up
