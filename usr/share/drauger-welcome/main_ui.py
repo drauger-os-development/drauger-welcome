@@ -1149,6 +1149,8 @@ myDrauger Support System
             self.label.set_markup(tut_6)
         elif self.check == 7:
             self.multi_desktop("clicked")
+        elif self.check < -1:
+            self.reset("clicked")
 
     def multi_desktop(self, button):
 
