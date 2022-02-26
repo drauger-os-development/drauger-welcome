@@ -399,14 +399,17 @@ Drauger OS %s
         self.label = Gtk.Label()
         self.label.set_markup(message_show_remove)
         self.label.set_justify(Gtk.Justification.CENTER)
+        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 3, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=YES)
         self.button1.connect("clicked", self.onuninstallclicked)
+        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 1, 2, 1, 1)
 
         self.button2 = Gtk.Button.new_with_label(label=NO)
         self.button2.connect("clicked", self.reset)
+        self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 3, 2, 1, 1)
 
         self.show_all()
@@ -576,9 +579,9 @@ Drauger OS %s
 
     def onnextclicked(self, button):
         if self.check == 0:
-            self.label.set_text(multi_0)
+            self.label.set_markup(multi_0)
         elif self.check == 1:
-            self.label.set_text(multi_1)
+            self.label.set_markup(multi_1)
         elif self.check == 2:
             self.removal_conf("clicked")
         else:
@@ -1126,18 +1129,22 @@ myDrauger Support System
         self.label = Gtk.Label()
         self.label.set_markup(message_show_tutorial)
         self.label.set_justify(Gtk.Justification.CENTER)
+        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 3, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=Next)
         self.button1.connect("clicked", self.onclicked)
+        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 3, 2, 1, 1)
 
         self.button2 = Gtk.Button.new_with_label(label=Back)
         self.button2.connect("clicked", self.onclicked)
+        self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 1, 2, 1, 1)
 
         self.button3 = Gtk.Button.new_with_label(label=Exit)
         self.button3.connect("clicked", self.reset)
+        self.button3 = self._set_default_margins(self.button3)
         self.grid.attach(self.button3, 2, 2, 1, 1)
 
         self.show_all()
@@ -1171,14 +1178,17 @@ myDrauger Support System
         self.label = Gtk.Label()
         self.label.set_markup(multi_ask)
         self.label.set_justify(Gtk.Justification.CENTER)
+        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 3, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=YES)
         self.button1.connect("clicked", self.onmultiyesclicked)
+        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 1, 2, 1, 1)
 
         self.button2 = Gtk.Button.new_with_label(label=NO)
         self.button2.connect("clicked", self.onmultinoclicked)
+        self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 3, 2, 1, 1)
 
         self.show_all()
@@ -1190,10 +1200,12 @@ myDrauger Support System
         self.label = Gtk.Label()
         self.label.set_markup(message_show_multi_desktop)
         self.label.set_justify(Gtk.Justification.CENTER)
+        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 3, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=Next)
         self.button1.connect("clicked", self.onnextclicked)
+        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 3, 2, 1, 1)
 
         self.show_all()
