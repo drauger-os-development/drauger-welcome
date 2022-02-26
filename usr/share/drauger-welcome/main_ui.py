@@ -1168,7 +1168,7 @@ myDrauger Support System
             self.label.set_markup(tut_3)
         elif self.check == 3:
             self.move((width / 2) - (self.get_size()[0] / 2),
-                      (height - 65) - self.get_size()[1])
+                      (height - 155) - self.get_size()[1])
             self.label.set_markup(tut_4)
         elif self.check == 4:
             self.move((width / 2) - (self.get_size()[0] / 2),
