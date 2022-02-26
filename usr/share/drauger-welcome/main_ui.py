@@ -34,6 +34,11 @@ import apt
 LANG = os.getenv("LANG").split(".")
 LANG = LANG[0]
 
+results = subprocess.Popen(['xrandr'], stdout=subprocess.PIPE).communicate()[0]
+results = results.decode().split("current")[1].split(",")[0]
+width = int(results.split("x")[0].strip())
+height = int(results.split("x")[1].strip())
+
 try:
     try:
         with open("/etc/drauger-locales/%s/drauger-installer.conf" % (LANG),
@@ -1120,7 +1125,6 @@ myDrauger Support System
         self.reset("clicked")
 
     def tutorial(self, button):
-
         self.clear_window()
         self.check = -1
 
@@ -1157,17 +1161,25 @@ myDrauger Support System
         elif self.check == 0:
             self.label.set_markup(tut_1)
         elif self.check == 1:
+            self.move((width / 2) - (self.get_size()[0] / 2), 65)
             self.label.set_markup(tut_2)
         elif self.check == 2:
+            self.move(95, (height / 2) - (self.get_size()[1] / 2))
             self.label.set_markup(tut_3)
         elif self.check == 3:
+            self.move((width / 2) - (self.get_size()[0] / 2),
+                      (height - 65) - self.get_size()[1])
             self.label.set_markup(tut_4)
         elif self.check == 4:
+            self.move((width / 2) - (self.get_size()[0] / 2),
+                      (height / 2) - (self.get_size()[1] / 2))
             self.label.set_markup(tut_5)
         elif self.check == 5:
             self.multi_desktop("clicked")
         elif self.check < -1:
             self.reset("clicked")
+
+        self.show_all()
 
     def multi_desktop(self, button):
         self.clear_window()
