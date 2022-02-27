@@ -25,7 +25,7 @@ from __future__ import print_function
 import sys
 from os import path, getenv
 from subprocess import Popen
-import main_ui
+import drauger_welcome.main_ui as main_ui
 
 # Make it easier for us to print to stderr
 def eprint(*args, **kwargs):

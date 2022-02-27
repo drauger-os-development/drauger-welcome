@@ -789,15 +789,16 @@ myDrauger Support System
 
         guide = {}
         if "nvidia" in drivers:
-            with open("../../../etc/drauger-welcome/nvidia_driver_guide.json",
+            path = "/etc/drauger-welcome"
+            with open(f"{path}/nvidia_driver_guide.json",
                       "r") as file:
                       guide.update({"nvidia": json.load(file)})
         if "broadcom" in drivers:
-            with open("../../../etc/drauger-welcome/broadcom_driver_guide.json",
+            with open(f"{path}/broadcom_driver_guide.json",
                       "r") as file:
                       guide.update({"broadcom": json.load(file)})
         if "realtek" in drivers:
-            with open("../../../etc/drauger-welcome/realtek_driver_guide.json",
+            with open(f"{path}e/realtek_driver_guide.json",
                       "r") as file:
                       guide.update({"realtek": json.load(file)})
 
@@ -945,9 +946,6 @@ myDrauger Support System
         self.show_all()
 
     def install_missing_drivers(self, button):
-        # setup
-        cmd = ["pkexec", "apt-get", "-y", "-o",
-               "Dpkg::Options::='--force-confold'", "--force-yes", "install"]
         # filter down to just uninstalled drivers
         to_install = []
         for each in self.drivers:
@@ -956,24 +954,35 @@ myDrauger Support System
             to_install.append(each)
         if len(to_install) <= 0:
             return
-        cmd = cmd + to_install
-        # this is arguably the easiest way to do this
-        pid = os.fork()
-        if pid == 0:
-            # this will run as a seperate thread. It's safe to call exit()
-            try:
-                subprocess.check_call(cmd)
-            except subprocess.CalledProcessError:
-                subprocess.check_call(["notify-send", "-i", self.icon, "-a",
-                                       "Drauger OS Welcome Screen",
-                                       "Driver Installation Error",
-                                       "Installing Drivers Encountered An Error. Please contact support."])
-                exit(2)
-            subprocess.check_call(["notify-send", "-i", self.icon, "-a",
-                                   "Drauger OS Welcome Screen",
-                                   "Driver Installation Success",
-                                   "Drivers Successfully Installed. Please Reboot for changes to take effect."])
-            exit(0)
+        subprocess.Popen(["pkexec",
+                          "/usr/share/drauger-welcome/install_drivers.sh",
+                          " ".join(to_install),
+                          self.icon])
+        # cmd = cmd + to_install
+        # # this is arguably the easiest way to do this
+        # pid = os.fork()
+        # if pid == 0:
+        #     # this will run as a seperate thread. It's safe to call exit()
+        #     for each in self.drivers:
+        #         if "nvidia-driver-" in each:
+        #             if each != "nvidia-driver-latest":
+        #                 with open("/etc/modprobe.d/blacklist-nvidia-nouveau.conf",
+        #                           "w") as file:
+        #                     file.write("blacklist nouveau\noptions nouveau modeset=0")
+        #             break
+        #     try:
+        #         subprocess.check_call(cmd)
+        #     except subprocess.CalledProcessError:
+        #         subprocess.check_call(["notify-send", "-i", self.icon, "-a",
+        #                                "Drauger OS Welcome Screen",
+        #                                "Driver Installation Error",
+        #                                "Installing Drivers Encountered An Error. Please contact support."])
+        #         exit(2)
+        #     subprocess.check_call(["notify-send", "-i", self.icon, "-a",
+        #                            "Drauger OS Welcome Screen",
+        #                            "Driver Installation Success",
+        #                            "Drivers Successfully Installed. Please Reboot for changes to take effect."])
+        #     exit(0)
         self.post_install_window()
 
     def post_install_window(self):
