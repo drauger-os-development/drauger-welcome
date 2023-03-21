@@ -22,29 +22,23 @@
 #  MA 02110-1301, USA.
 #
 #
-"""UI for drauger-welcome"""
 import gi
-gi.require_version('Gtk', '4.0')
-gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 import os
 import subprocess
 import json
 import shlex
 import apt
 
-# intitial multi-lingual support
 LANG = os.getenv("LANG").split(".")
 LANG = LANG[0]
 
-# get screen resolution
 results = subprocess.Popen(['xrandr'], stdout=subprocess.PIPE).communicate()[0]
 results = results.decode().split("current")[1].split(",")[0]
 width = int(results.split("x")[0].strip())
 height = int(results.split("x")[1].strip())
 
-# this is where we expand upon the multi-lingual support more. This relies upon
-# the community, and as such will likely throw a FileNotFoundError fairly often
 try:
     try:
         with open("/etc/drauger-locales/%s/drauger-installer.conf" % (LANG),
@@ -219,50 +213,34 @@ except FileNotFoundError:
     Open = "Open"
 
 
-# Get the user's home directory, so we know where to look for the auto-start blocking flag file
 HOME = os.getenv("HOME")
 if (not os.path.exists("%s/.drauger-tut" % (HOME))):
     show_at_start_up = True
 else:
     show_at_start_up = False
 
-# get current Drauger OS version
-# this will likely get replaced with a call to lsb_release at some point
 try:
     with open("/usr/drauger/os-info.txt") as f:
         s = f.read()
 except Exception:
     s = "TEST"
 
+class welcome(Gtk.Window):
 
-class MainWindow(Gtk.ApplicationWindow):
-    """The GUI itself"""
-    def __init__(self, *args, **kwargs):
-        super().__init__(title="Welcome to Drauger OS", *args, **kwargs)
-        self.set_resizable(False)
+    def __init__(self):
+        Gtk.Window.__init__(self, title="Welcome to Drauger OS")
         self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL)
-        self.set_child(self.grid)
+        self.add(self.grid)
         self.icon = "/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg"
-        # not sure if this is the best way to handle this
-        print("ICON CHECK")
-        print("-" * 20)
-        for each in dir(Gtk.ApplicationWindow):
-            if "icon" in each:
-                print(each)
-        print("-" * 20)
-        print("REMOVE CHECK")
-        print("-" * 20)
-        for each in dir(self.grid):
-            if "clear" in each:
-                print(each)
-        self.set_icon_name("drauger_os-logo")
-        # self.set_icon_from_file(self.icon)
+        self.set_icon_from_file(self.icon)
 
         self.drivers = []
-        self.present()
         self.reset("clicked")
 
+
+
     def reset(self, button):
+
         global show_at_start_up
 
         self.clear_window()
@@ -272,132 +250,142 @@ class MainWindow(Gtk.ApplicationWindow):
 Drauger OS %s
  """ % (s) + "</b>")
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 8, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup(welcome_label)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 2, 8, 1)
 
         self.label1 = Gtk.Label()
         self.label1.set_markup(website)
         self.label1.set_justify(Gtk.Justification.CENTER)
-        self.label1 = self._set_default_margins(self.label1)
         self.grid.attach(self.label1, 1, 3, 1, 1)
 
-        self.button1 = Gtk.Button.new_from_icon_name("cs-network")
+        self.button1 = Gtk.Button.new_from_icon_name("cs-network", 3)
         self.button1.connect("clicked", self.onwebclicked)
-        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 1, 4, 1, 1)
 
         self.label2 = Gtk.Label()
         self.label2.set_markup(README)
         self.label2.set_justify(Gtk.Justification.CENTER)
-        self.label2 = self._set_default_margins(self.label2)
         self.grid.attach(self.label2, 6, 3, 1, 1)
 
-        self.button2 = Gtk.Button.new_from_icon_name("document")
+        self.button2 = Gtk.Button.new_from_icon_name("document", 3)
         self.button2.connect("clicked", self.show_readme)
-        self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 6, 4, 1, 1)
 
         self.label3 = Gtk.Label()
         self.label3.set_markup(tutorial_label)
         self.label3.set_justify(Gtk.Justification.CENTER)
-        self.label3 = self._set_default_margins(self.label3)
         self.grid.attach(self.label3, 1, 5, 1, 1)
 
-        self.button3 = Gtk.Button.new_from_icon_name("dictionary")
+        self.button3 = Gtk.Button.new_from_icon_name("dictionary", 3)
         self.button3.connect("clicked", self.tutorial)
-        self.button3 = self._set_default_margins(self.button3)
         self.grid.attach(self.button3, 1, 6, 1, 1)
 
         self.label4 = Gtk.Label()
         self.label4.set_markup(help_button)
         self.label4.set_justify(Gtk.Justification.CENTER)
-        self.label4 = self._set_default_margins(self.label4)
         self.grid.attach(self.label4, 1, 7, 1, 1)
 
-        self.button4 = Gtk.Button.new_from_icon_name("help")
+        self.button4 = Gtk.Button.new_from_icon_name("help", 3)
         self.button4.connect("clicked", self.onhelpclicked)
-        self.button4 = self._set_default_margins(self.button4)
         self.grid.attach(self.button4, 1, 8, 1, 1)
 
         self.label5 = Gtk.Label()
         self.label5.set_markup(drivers)
         self.label5.set_justify(Gtk.Justification.CENTER)
-        self.label5 = self._set_default_margins(self.label5)
         self.grid.attach(self.label5, 6, 7, 1, 1)
 
-        self.button5 = Gtk.Button.new_from_icon_name("jockey")
+        self.button5 = Gtk.Button.new_from_icon_name("jockey", 3)
         self.button5.connect("clicked", self.ondriveclicked)
-        self.button5 = self._set_default_margins(self.button5)
         self.grid.attach(self.button5, 6, 8, 1, 1)
 
         self.label6 = Gtk.Label()
         self.label6.set_markup(lang_sup)
         self.label6.set_justify(Gtk.Justification.CENTER)
-        self.label6 = self._set_default_margins(self.label6)
         self.grid.attach(self.label6, 4, 5, 1, 1)
 
-        self.button6 = Gtk.Button.new_from_icon_name("accessibility")
+        self.button6 = Gtk.Button.new_from_icon_name("accessibility", 3)
         self.button6.connect("clicked", self.show_accessibility_settings)
-        self.button6 = self._set_default_margins(self.button6)
         self.grid.attach(self.button6, 4, 6, 1, 1)
 
         self.label7 = Gtk.Label()
         self.label7.set_markup(donate)
-        self.label7.set_justify(Gtk.Justification.CENTER)
-        self.label7 = self._set_default_margins(self.label7)
+        self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label7, 4, 7, 1, 1)
 
-        self.button7 = Gtk.Button.new_from_icon_name("money-manager-ex")
+        self.button7 = Gtk.Button.new_from_icon_name("money-manager-ex", 3)
         self.button7.connect("clicked", self.ondonateclicked)
-        self.button7 = self._set_default_margins(self.button7)
         self.grid.attach(self.button7, 4, 8, 1, 1)
 
         self.label8 = Gtk.Label()
         self.label8.set_markup(shortcuts)
         self.label8.set_justify(Gtk.Justification.CENTER)
-        self.label8 = self._set_default_margins(self.label8)
         self.grid.attach(self.label8, 6, 5, 1, 1)
 
-        self.button8 = Gtk.Button.new_from_icon_name("keyboard")
+        self.button8 = Gtk.Button.new_from_icon_name("keyboard", 3)
         self.button8.connect("clicked", self.onshortcutclicked)
-        self.button8 = self._set_default_margins(self.button8)
         self.grid.attach(self.button8, 6, 6, 1, 1)
 
         self.label9 = Gtk.Label()
         self.label9.set_markup(uninstall)
         self.label9.set_justify(Gtk.Justification.CENTER)
-        self.label9 = self._set_default_margins(self.label9)
         self.grid.attach(self.label9, 4, 9, 1, 1)
 
-        self.button9 = Gtk.Button.new_from_icon_name("delete")
+        self.button9 = Gtk.Button.new_from_icon_name("delete", 3)
         self.button9.connect("clicked", self.removal_conf)
-        self.button9 = self._set_default_margins(self.button9)
         self.grid.attach(self.button9, 4, 10, 1, 1)
 
         self.label10 = Gtk.Label()
         self.label10.set_markup(lang_sup2)
         self.label10.set_justify(Gtk.Justification.CENTER)
-        self.label10 = self._set_default_margins(self.label10)
         self.grid.attach(self.label10, 4, 3, 1, 1)
 
-        self.button10 = Gtk.Button.new_from_icon_name("preferences-desktop-locale")
+        self.button10 = Gtk.Button.new_from_icon_name("preferences-desktop-locale", 3)
         self.button10.connect("clicked", self.onlangsupportclicked)
-        self.button10 = self._set_default_margins(self.button10)
         self.grid.attach(self.button10, 4, 4, 1, 1)
 
         self.start_up = Gtk.CheckButton.new_with_label(start_up_label)
         self.start_up.set_active(show_at_start_up)
         self.start_up.connect("toggled", self.start_up_toggle)
-        self.start_up = self._set_default_margins(self.start_up)
         self.grid.attach(self.start_up, 1, 13, 2, 1)
 
-        self.show()
+        width = self.get_size()[0]
+        width = int(width * 0.125)
+        self.button10.set_margin_start(width)
+        self.button10.set_margin_end(width)
+        self.button6.set_margin_start(width)
+        self.button6.set_margin_end(width)
+        self.button4.set_margin_start(width)
+        self.button2.set_margin_end(width)
+        self.button3.set_margin_start(width)
+        self.button1.set_margin_start(width)
+        self.button9.set_margin_end(width)
+        self.button9.set_margin_start(width)
+        self.button8.set_margin_end(width)
+        self.button7.set_margin_end(width)
+        self.button7.set_margin_start(width)
+        self.button5.set_margin_end(width)
+        self.label2.set_margin_end(width)
+        self.label8.set_margin_end(width)
+        self.label5.set_margin_end(width)
+        self.label7.set_margin_end(width)
+        self.label7.set_margin_start(width)
+        self.label4.set_margin_start(width)
+        self.label10.set_margin_start(width)
+        self.label9.set_margin_start(width)
+        self.label10.set_margin_end(width)
+        self.label9.set_margin_end(width)
+        self.label9.set_margin_start(width)
+        self.label6.set_margin_end(width)
+        self.label6.set_margin_start(width)
+        self.label1.set_margin_start(width)
+        self.start_up.set_margin_start(int(width / 2))
+        self.start_up.set_margin_bottom(int(width / 2))
+
+        self.show_all()
 
     def show_readme(self, widget):
         version = subprocess.check_output(["lsb_release", "-rs"]).decode()
@@ -428,7 +416,7 @@ Drauger OS %s
         self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 3, 2, 1, 1)
 
-        self.show()
+        self.show_all()
 
     def show_accessibility_settings(self, button):
         self.clear_window()
@@ -438,12 +426,10 @@ Drauger OS %s
     \t\t<b>%s</b>\t\t\t
 """ % (lang_sup))
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 2, 1)
 
         self.label3 = Gtk.Label()
         self.label3.set_markup(font)
-        self.label3 = self._set_default_margins(self.label3)
         self.grid.attach(self.label3, 1, 3, 1, 1)
 
         self.font_button = Gtk.FontButton()
@@ -462,26 +448,45 @@ Drauger OS %s
         # set font and size for button
         self.font_button.set_font(system_font)
         self.font_button.connect("font-set", self.set_font)
-        self.font_button = self._set_default_margins(self.font_button)
         self.grid.attach(self.font_button, 2, 3, 1, 1)
 
         self.label4 = Gtk.Label()
         self.label4.set_markup("%s" % (access_label))
         self.label4.set_justify(Gtk.Justification.CENTER)
-        self.label4 = self._set_default_margins(self.label4)
         self.grid.attach(self.label4, 1, 4, 1, 1)
 
-        self.button6 = Gtk.Button.new_from_icon_name("accessibility")
+        self.button6 = Gtk.Button.new_from_icon_name("accessibility", 3)
         self.button6.connect("clicked", self.goto_accessibility)
-        self.button6 = self._set_default_margins(self.button6)
         self.grid.attach(self.button6, 2, 4, 1, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=Back)
         self.button1.connect("clicked", self.reset)
-        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 1, 20, 1, 1)
 
-        self.show()
+        width = self.get_size()[0]
+        height = int(width * 0.025)
+        width = int(width * 0.05)
+        # self.label4.set_margin_top(height)
+        self.label4.set_margin_bottom(height)
+        self.label4.set_margin_start(width)
+        # self.label4.set_margin_end(width)
+        # self.label3.set_margin_end(width)
+        self.label3.set_margin_start(width)
+        # self.label3.set_margin_top(height)
+        self.label3.set_margin_bottom(height)
+        self.button6.set_margin_top(height)
+        self.button6.set_margin_bottom(height)
+        self.button6.set_margin_start(width)
+        self.button6.set_margin_end(width)
+        self.button1.set_margin_bottom(height)
+        self.button1.set_margin_start(width)
+        self.button1.set_margin_end(width)
+        self.font_button.set_margin_end(width)
+        self.font_button.set_margin_start(width)
+        self.font_button.set_margin_top(height)
+        self.font_button.set_margin_bottom(height)
+
+        self.show_all()
 
     def goto_accessibility(self, button):
         subprocess.Popen("xfce4-accessibility-settings")
@@ -498,43 +503,52 @@ Drauger OS %s
     \t\t<b>%s</b>\t\t\t
 """ % (lang_sup2))
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 2, 1)
 
         self.label1 = Gtk.Label()
         self.label1.set_markup(lang_sup3)
         self.label1.set_justify(Gtk.Justification.CENTER)
-        self.label1 = self._set_default_margins(self.label1)
         self.grid.attach(self.label1, 1, 2, 2, 1)
 
-        self.button0 = Gtk.Button.new_from_icon_name("system-software-install")
+        self.button0 = Gtk.Button.new_from_icon_name("system-software-install",
+                                                     3)
         self.button0.connect("clicked", self.install_locale_packages)
-        self.button0 = self._set_default_margins(self.button0)
         self.grid.attach(self.button0, 1, 3, 2, 1)
 
         self.label2 = Gtk.Label()
         self.label2.set_markup(lang_sup4)
         self.label2.set_justify(Gtk.Justification.CENTER)
-        self.label2 = self._set_default_margins(self.label2)
         self.grid.attach(self.label2, 1, 4, 2, 1)
 
-        self.button2 = Gtk.Button.new_from_icon_name("preferences-desktop-locale")
+        self.button2 = Gtk.Button.new_from_icon_name("preferences-desktop-locale",
+                                                     3)
         self.button2.connect("clicked", self.onlanguageclicked)
-        self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 1, 5, 2, 1)
 
         self.label3 = Gtk.Label()
         self.label3.set_markup("\n")
         self.label3.set_justify(Gtk.Justification.CENTER)
-        self.label3 = self._set_default_margins(self.label3)
         self.grid.attach(self.label3, 1, 6, 2, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=Back)
         self.button1.connect("clicked", self.reset)
-        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 1, 20, 1, 1)
 
-        self.show()
+        width1 = self.get_size()[0]
+        width = int(width1 * 0.125)
+        self.button0.set_margin_start(width)
+        self.label1.set_margin_start(width)
+        self.label2.set_margin_start(width)
+        self.label2.set_margin_end(width)
+        self.label1.set_margin_end(width)
+        self.button0.set_margin_end(width)
+        self.button2.set_margin_start(width)
+        self.button2.set_margin_end(width)
+        self.button1.set_margin_end(width)
+        self.button1.set_margin_start(int(width1 * 0.025))
+        self.button1.set_margin_bottom(int(width1 * 0.025))
+
+        self.show_all()
 
     def install_locale_packages(self, button):
         lang = os.getenv("LANG").split(".")
@@ -649,7 +663,7 @@ myDrauger Support System
         button1 = self._set_default_margins(button1)
         self.grid.attach(button1, 1, 20, 1, 1)
 
-        self.show()
+        self.show_all()
 
     def open_discord(self, button):
         cache = apt.cache.Cache()
@@ -904,7 +918,7 @@ myDrauger Support System
         button3 = self._set_default_margins(button3)
         self.grid.attach(button3, 5, 20, 1, 1)
 
-        self.show()
+        self.show_all()
 
     def driver_install_confirmation(self, button):
         self.clear_window()
@@ -929,7 +943,7 @@ myDrauger Support System
         button2 = self._set_default_margins(button2)
         self.grid.attach(button2, 3, 3, 1, 1)
 
-        self.show()
+        self.show_all()
 
     def install_missing_drivers(self, button):
         # filter down to just uninstalled drivers
@@ -997,7 +1011,7 @@ myDrauger Support System
         button1 = self._set_default_margins(button1)
         self.grid.attach(button1, 1, 20, 1, 1)
 
-        self.show()
+        self.show_all()
 
 
     def open_synaptic(self, button):
@@ -1016,7 +1030,6 @@ myDrauger Support System
         self.label = Gtk.Label()
         self.label.set_markup("<b>" + TITLE_sc + "</b>")
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 3, 1)
 
         self.label = Gtk.Label()
@@ -1024,13 +1037,11 @@ myDrauger Support System
 <b>Ctrl+Alt+T</b>
  """)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 2, 1, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup(sc_0)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 3, 2, 1, 1)
 
         self.label = Gtk.Label()
@@ -1038,13 +1049,11 @@ myDrauger Support System
 <b>Ctrl+Alt+F</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 3, 1, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup(sc_1)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 3, 3, 1, 1)
 
         self.label = Gtk.Label()
@@ -1052,13 +1061,11 @@ myDrauger Support System
 <b>Ctrl+Alt+M</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 4, 1, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup(sc_2)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 3, 4, 1, 1)
 
         self.label = Gtk.Label()
@@ -1066,13 +1073,11 @@ myDrauger Support System
 <b>Alt+F</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 5, 1, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup(sc_3)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 3, 5, 1, 1)
 
         self.label = Gtk.Label()
@@ -1080,13 +1085,11 @@ myDrauger Support System
 <b>Left Super</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 6, 1, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup(sc_4)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 3, 6, 1, 1)
 
         self.label = Gtk.Label()
@@ -1094,21 +1097,24 @@ myDrauger Support System
 <b>Ctrl+Alt+L</b>
 """)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 7, 1, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup(sc_5)
         self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 3, 7, 1, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=Back)
         self.button1.connect("clicked", self.reset)
-        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 1, 20, 3, 1)
 
-        self.show()
+        width = self.get_size()[0]
+        width = int(width * 0.25)
+        self.button1.set_margin_start(width)
+        self.button1.set_margin_end(width)
+        self.button1.set_margin_bottom(int(width / 10))
+
+        self.show_all()
 
     def onuninstallclicked(self, button):
         # have an uninstall comfirmation dialoge then uninstall based on
@@ -1152,7 +1158,7 @@ myDrauger Support System
         self.button3 = self._set_default_margins(self.button3)
         self.grid.attach(self.button3, 2, 2, 1, 1)
 
-        self.show()
+        self.show_all()
 
     def onclicked(self, button):
         if (button.get_label() == Next):
@@ -1182,7 +1188,7 @@ myDrauger Support System
         elif self.check < -1:
             self.reset("clicked")
 
-        self.show()
+        self.show_all()
 
     def multi_desktop(self, button):
         self.clear_window()
@@ -1203,7 +1209,7 @@ myDrauger Support System
         self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 3, 2, 1, 1)
 
-        self.show()
+        self.show_all()
 
     def onmultiyesclicked(self, button):
         self.clear_window()
@@ -1220,7 +1226,7 @@ myDrauger Support System
         self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 3, 2, 1, 1)
 
-        self.show()
+        self.show_all()
 
     def exit(self, button):
         global show_at_start_up
@@ -1237,26 +1243,19 @@ myDrauger Support System
         exit(1)
 
     def clear_window(self):
-        width = self.grid.get_width()
-        height = self.grid.get_height()
-        for each in range(height, -1, -1):
-            self.grid.remove_row(each)
-
-
-class welcome(Adw.Application):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.connect('activate', self.on_activate)
-
-    def on_activate(self, app):
-        self.win = MainWindow(application=app)
-        self.win.present()
+        children = self.grid.get_children()
+        for each in children:
+            self.grid.remove(each)
 
 
 def welcome_show():
-    app = welcome(application_id="org.draugeros.welcome")
-    app.run()
-
+    window = welcome()
+    window.set_decorated(True)
+    window.set_resizable(False)
+    window.set_position(Gtk.WindowPosition.CENTER)
+    window.connect("delete-event", welcome.exit)
+    window.show_all()
+    Gtk.main()
 
 if __name__ == '__main__':
     try:
