@@ -244,6 +244,17 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_child(self.grid)
         self.icon = "/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg"
         # not sure if this is the best way to handle this
+        print("ICON CHECK")
+        print("-" * 20)
+        for each in dir(Gtk.ApplicationWindow):
+            if "icon" in each:
+                print(each)
+        print("-" * 20)
+        print("REMOVE CHECK")
+        print("-" * 20)
+        for each in dir(self.grid):
+            if "clear" in each:
+                print(each)
         self.set_icon_name("drauger_os-logo")
         # self.set_icon_from_file(self.icon)
 
