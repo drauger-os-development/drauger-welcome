@@ -3,7 +3,7 @@
 #
 #  main_ui.py
 #
-#  Copyright 2022 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2023 Thomas Castleman <contact@draugeros.org>
 #  Additional contributors: Logan L Johnson <logan@cygo.network>
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -329,15 +329,6 @@ Drauger OS %s
         self.button8.connect("clicked", self.onshortcutclicked)
         self.grid.attach(self.button8, 6, 6, 1, 1)
 
-        self.label9 = Gtk.Label()
-        self.label9.set_markup(uninstall)
-        self.label9.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label9, 4, 9, 1, 1)
-
-        self.button9 = Gtk.Button.new_from_icon_name("delete", 3)
-        self.button9.connect("clicked", self.removal_conf)
-        self.grid.attach(self.button9, 4, 10, 1, 1)
-
         self.label10 = Gtk.Label()
         self.label10.set_markup(lang_sup2)
         self.label10.set_justify(Gtk.Justification.CENTER)
@@ -362,8 +353,6 @@ Drauger OS %s
         self.button2.set_margin_end(width)
         self.button3.set_margin_start(width)
         self.button1.set_margin_start(width)
-        self.button9.set_margin_end(width)
-        self.button9.set_margin_start(width)
         self.button8.set_margin_end(width)
         self.button7.set_margin_end(width)
         self.button7.set_margin_start(width)
@@ -377,8 +366,6 @@ Drauger OS %s
         self.label10.set_margin_start(width)
         self.label9.set_margin_start(width)
         self.label10.set_margin_end(width)
-        self.label9.set_margin_end(width)
-        self.label9.set_margin_start(width)
         self.label6.set_margin_end(width)
         self.label6.set_margin_start(width)
         self.label1.set_margin_start(width)
@@ -396,27 +383,6 @@ Drauger OS %s
         global show_at_start_up
         show_at_start_up = self.start_up.get_active()
         print(show_at_start_up)
-
-    def removal_conf(self, button):
-        self.clear_window()
-
-        self.label = Gtk.Label()
-        self.label.set_markup(message_show_remove)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.label = self._set_default_margins(self.label)
-        self.grid.attach(self.label, 1, 1, 3, 1)
-
-        self.button1 = Gtk.Button.new_with_label(label=YES)
-        self.button1.connect("clicked", self.onuninstallclicked)
-        self.button1 = self._set_default_margins(self.button1)
-        self.grid.attach(self.button1, 1, 2, 1, 1)
-
-        self.button2 = Gtk.Button.new_with_label(label=NO)
-        self.button2.connect("clicked", self.reset)
-        self.button2 = self._set_default_margins(self.button2)
-        self.grid.attach(self.button2, 3, 2, 1, 1)
-
-        self.show_all()
 
     def show_accessibility_settings(self, button):
         self.clear_window()
@@ -1115,18 +1081,7 @@ myDrauger Support System
         self.button1.set_margin_bottom(int(width / 10))
 
         self.show_all()
-
-    def onuninstallclicked(self, button):
-        # have an uninstall comfirmation dialoge then uninstall based on
-        # the answer
-        try:
-            subprocess.check_call("/usr/share/drauger-welcome/u.sh")
-        except subprocess.CalledProcessError:
-            subprocess.check_call(["/usr/share/drauger-welcome/log-out",
-                        "2", "/usr/share/drauger-welcome/main.py",
-                        "/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.",
-                        "drauger-welcome", "UNKNOWN", "UNKNOWN"])
-
+        
     def onyesclicked(self, button):
         self.onuninstallclicked("clicked")
 
