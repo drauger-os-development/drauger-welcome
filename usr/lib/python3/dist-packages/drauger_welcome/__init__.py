@@ -3,7 +3,7 @@
 #
 #  __init__.py
 #
-#  Copyright 2022 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2023 Thomas Castleman <contact@draugeros.org>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -23,3 +23,4 @@
 #
 """__init__ for drauger-welcome"""
 from drauger_welcome import main_ui as main_ui
+from drauger_welcome import alerts as alerts
