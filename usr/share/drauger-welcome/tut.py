@@ -23,9 +23,10 @@
 #
 from __future__ import print_function
 import sys
-from os import path, getenv
+import os
 import subprocess
 import urllib3
+import json
 import drauger_welcome.main_ui as main_ui
 import drauger_welcome.alerts as alerts
 
@@ -105,15 +106,29 @@ def has_support(url):
     return 4
 
 
-HOME = getenv("HOME")
+HOME = os.getenv("HOME")
 http = urllib3.PoolManager()
 support_status = has_support(http)
+
+# Check for show settings
+show_settings = {"EOL": True, "EBA": True, "EWR": True, "AEL": True}
+if not os.path.exists(f"{ HOME }/.config/drauger-welcome"):
+    os.mkdir(f"{ HOME }/.config/drauger-welcome")
+if not os.path.exists(f"{ HOME }/.config/drauger-welcome/no-show.json"):
+    with open(f"{ HOME }/.config/drauger-welcome/no-show.json", "w") as file:
+        json.dump(show_settings, file, indent=2)
+else:
+    with open(f"{ HOME }/.config/drauger-welcome/no-show.json", "r") as file:
+        show_settings = json.load(file)
+
+# show settings loaded or generated
+
 # check if system-installer will be running, if it is, do not show the welcome screen
 with open("/proc/cmdline", "r") as cmdline_file:
     cmdline = cmdline_file.read()
 if "system-installer" in cmdline:
     # Not wanted to be running ootb
-    if support_status == 2:
+    if ((support_status == 2) and (show_settings["EWR"])):
         # notify of lack of support
         alerts.post_alert("No Longer Supported", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is no
@@ -126,7 +141,7 @@ sudo apt install drauger-upgrade-script
 upgrade-drauger
 </tt>
 """)
-    elif support_status == 3:
+    elif ((support_status == 3) and (show_settings["EBA"])):
         alerts.post_alert("No Longer Supported, Upgrade No Longer Available", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is no
 longer supported, and upgrading to the next version must be
@@ -134,7 +149,7 @@ done manually, or you must install a new OS.
 
 You have been warned.
 """)
-    elif support_status == 4:
+    elif ((support_status == 4) and (show_settings["EOL"])):
         alerts.post_alert("Extremely Old Release", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is extremely old
 and no longer supported. No updates are available. Upgrading is extremely
@@ -143,9 +158,9 @@ risky, as is continuing to run this version of Drauger OS.
 Here be dragons. Proceed at your own peril.
 <b>You have been warned.</b>
 """)
-    elif support_status == 1:
-        post_alert("Support Ending Soon", """<b>NOTICE</b>
-Your current version of Drauger OS (7.6) is going to
+    elif ((support_status == 1) and (show_settings["AEL"])):
+        post_alert("Support Ending Soon", f"""<b>NOTICE</b>
+Your current version of Drauger OS ({ get_release() }) is going to
 be losing support soon. In order to avoid this, and upgrade to the
 new version, please run these commands in a terminal at your
 earliest convenience:
@@ -157,13 +172,13 @@ upgrade-drauger
 </tt>
 """)
     sys.exit(0)
-if ((not path.exists(HOME + "/.drauger-tut")) and (not path.exists("/etc/system-installer/oem-post-install.flag"))):
+if ((not os.path.exists(HOME + "/.drauger-tut")) and (not os.path.exists("/etc/system-installer/oem-post-install.flag"))):
     try:
         main_ui.welcome_show()
     except Exception as e:
         subprocess.Popen("/usr/share/drauger-welcome/log-out 2 /usr/share/drauger-welcome/tut.py \"Error: %s . main_ui.py has failed.\"" % (e))
 # Notify of lack of support
-if support_status == 2:
+if ((support_status == 2) and (show_settings["EWR"])):
     # notify of lack of support
     alerts.post_alert("No Longer Supported", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is no
@@ -176,7 +191,7 @@ sudo apt install drauger-upgrade-script
 upgrade-drauger
 </tt>
 """)
-elif support_status == 3:
+elif ((support_status == 3) and (show_settings["EBA"])):
     alerts.post_alert("\tNo Longer Supported, Upgrade No Longer Available\t", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is no
 longer supported, and upgrading to the next version must be
@@ -184,7 +199,7 @@ done manually, or you must install a new OS.
 
 You have been warned.
 """)
-elif support_status == 4:
+elif ((support_status == 4) and (show_settings["EOL"])):
     alerts.post_alert("Extremely Old Release", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is extremely old
 and no longer supported. No updates are available. Upgrading is extremely
@@ -193,9 +208,9 @@ risky, as is continuing to run this version of Drauger OS.
 Here be dragons. Proceed at your own peril.
 <b>You have been warned.</b>
 """)
-elif support_status == 1:
-    alerts.post_alert("Support Ending Soon", """<b>NOTICE</b>
-Your current version of Drauger OS (7.6) is going to
+elif ((support_status == 1) and (show_settings["AEL"])):
+    alerts.post_alert("Support Ending Soon", f"""<b>NOTICE</b>
+Your current version of Drauger OS ({ get_release() }) is going to
 be losing support soon. In order to avoid this, and upgrade to the
 new version, please run these commands in a terminal at your
 earliest convenience:
