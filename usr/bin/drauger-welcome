@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+#  drauger-welcome
+#
+#  Copyright 2022 Thomas Castleman <contact@draugeros.org>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#
+#
+"""Explain what this program does here!!!"""
+from __future__ import print_function
+import sys
+import drauger_welcome
+VERSION = "4.9.8"
+HELP = """
+drauger-welcome, Version %s
+\t-h, --help              print this help dialoge.
+\t-v, --version           print current version.
+Pass nothing to show welcome screen.
+"""
+R = "\033[0;31m"
+G = "\033[0;32m"
+Y = "\033[1;33m"
+NC = "\033[0m"
+
+def eprint(args, *kwargs, color=R):
+    """Print to stderr easier"""
+    print(color, file=sys.stderr, end="")
+    print(args, file=sys.stderr, *kwargs, end="")
+    print(NC, file=sys.stderr)
+
+
+if sys.version_info[0] == 2:
+    eprint("Please run with Python 3 as Python 2 is End-of-Life.")
+    exit(2)
+
+# get length of argv
+ARGC = len(sys.argv)
+
+def launch():
+    drauger_welcome.main_ui.welcome_show()
+
+
+if ARGC > 1:
+    if (sys.argv[1] == "-v" or sys.argv[1] == "--version"):
+        print("\n%s\n" % (VERSION))
+    elif (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
+        print(HELP % (VERSION))
+    else:
+        eprint("Option %s not recognized." % (sys.argv[1]))
+        eprint(HELP % (VERSION), color=NC)
+else:
+    launch()

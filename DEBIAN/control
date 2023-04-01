@@ -1,11 +1,11 @@
 Package: drauger-welcome
-Version: 4.8
+Version: 4.9.8
 Maintainer: Thomas Castleman <contact@draugeros.org>
 Section: misc
 Homepage: https://github.com/drauger-os-development/drauger-welcome
 Architecture: amd64
 Priority: optional
-Depends: python3 (>=3.5.1-3), gir1.2-gtk-3.0 (>=3.24.12-1ubuntu1), drauger-icons (>=0.0.2), bash, procps, xfconf
+Depends: python3 (>=3.5.1-3), gir1.2-gtk-3.0 (>=3.24.12-1ubuntu1), drauger-icons (>=0.0.2), bash, procps, xfconf, python3-apt, python3-urllib3 (>=1.25)
 Replaces: drauger-tutorial (>=1.0)
 Breaks: drauger-tutorial (>=1.0)
 Description: Welcome screen and tutorial All-in-One for Drauger OS

@@ -3,7 +3,7 @@
 #
 #  main_ui.py
 #
-#  Copyright 2020 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2023 Thomas Castleman <contact@draugeros.org>
 #  Additional contributors: Logan L Johnson <logan@cygo.network>
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -25,12 +25,19 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from os import system, path, getenv, remove
-from subprocess import Popen, check_output, check_call, CalledProcessError
+import os
+import subprocess
 import json
+import shlex
+import apt
 
-LANG = getenv("LANG").split(".")
+LANG = os.getenv("LANG").split(".")
 LANG = LANG[0]
+
+results = subprocess.Popen(['xrandr'], stdout=subprocess.PIPE).communicate()[0]
+results = results.decode().split("current")[1].split(",")[0]
+width = int(results.split("x")[0].strip())
+height = int(results.split("x")[1].strip())
 
 try:
     try:
@@ -134,8 +141,6 @@ try:
             tut_4 = each[1]
         elif (each[0] == "tut_5"):
             tut_5 = each[1]
-        elif (each[0] == "tut_6"):
-            tut_6 = each[1]
         elif (each[0] == "multi_ask"):
             multi_ask = each[1]
         elif (each[0] == "lang_sup3"):
@@ -145,7 +150,11 @@ try:
 
 except FileNotFoundError:
     message_show_remove = "\n\tThank you again for using Drauger OS. Would you like to uninstall drauger-welcome?\t\n"
-    message_show_tutorial = "\n\tThank you for downloading and installing Drauger OS, the free Linux gaming OS.\t\n"
+    message_show_tutorial = """
+\tThank you for downloading and installing Drauger OS, the free Linux gaming OS.\t
+
+\tIn this tutorial, you will recive a quick introduction regarding how to work Drauger OS.\t
+"""
     message_show_multi_desktop = "Having multiple desktops is the ability to switch back and forth between two 'desktops'.\n\tThis ability enables you to hide windows and tabs for apps on one desktop while you work in another.\t\n"
     welcome_label = "Welcome! <b>Thank you for choosing Drauger OS.</b>\n\tWe hope you'll enjoy gaming on it as much as we enjoyed developing it.\n\tPlease make yourself familiar with the new features, layout, and documentation.\n\tPlease, don't hesitate to send us your feedback, it's greatly appreciated!\n\n\tThe default admin password is <b>'toor'.</b>"
     website = "\n\tDrauger OS website\t\n"
@@ -177,21 +186,35 @@ except FileNotFoundError:
     sc_5 = "\n\tLock Screen\t\n"
     Next = "Next -->"
     Exit = "Exit"
-    tut_0 = "\n\tIn this tutorial, you will recive a quick introduction regarding how to work Drauger OS.  \n"
-    tut_1 = "\n\tThe bars on the top, left, and bottom of your screen are your desktop panels.\t\n\tThe left contains quick access to some the most commonly used apps and widgets.\t\n\tThe top one contains the the main menu, on the far left when you click on the Drauger OS logo,\t\n\tand the log out menu on the far right under your username.\t\n\tThe bottom pannel gives you a quick view of what's on each desktop, but more on that later.\t\n"
-    tut_2 = "\n\tIn order to see any apps in the left desktop panel that are not\t\n\tcurrently on display, simply click on the drop down arrow underneath\t\n\tthe icon\t\n"
-    tut_3 = "\n\tIn order to see any apps not on the left desktop panel, click the Drauger OS Logo\t\n\ton the far left of the top panel.\t\n"
-    tut_4 = "\n\tDrauger OS also has support for not only keyboards and mice,\t\n\tas well as touchpads and touchscreens,\t\n\tit also has support for most Xbox and Xbox 360 controllers,\t\n\tas well as some Playstation controllers.\t\n"
-    tut_5 = "\n\tFinally, the four rectangles on the bottom of your screen are the four current desktops.\t\n\tYou may not be able to see them very well considering they blend into the default wallpaper.\t\n"
-    tut_6 = "\n\tIf you wish to learn more about how to use the Drauger OS desktop, please visit:\n\t<a href=\"https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/\"> https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/ </a>\n\t"
+    tut_1 = """
+\tThe bars on the top, left, and bottom of your screen are your desktop panels.\t
+"""
+    tut_2 = """
+\tThis top bar provides the applications menu (the Drauger OS logo), clock, and power menu (accessed by clicking your username)\t
+"""
+    tut_3 = """
+\tThis left bar contains links, or launchers, for Steam, Firefox, and the Software Center.\t
+\tAlso, under the launchers for Steam and the Software Center, the arrows pointing to your right open sub-menus.\t
+\tThese allow you quicker access to other, related, apps.\t
+"""
+    tut_4 = """
+\tFinally, this bottom panel provides you with a quick view of what is on each virtual desktop,\t
+\tas well as the ability to switch between them using your mouse.\t
+
+\tMore on virtual desktops later.\t
+"""
+    tut_5 = """
+\tIf you wish to learn more about how to use the Drauger OS desktop, please visit:
+\t<a href="https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/"> https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/ </a>
+\t"""
     multi_ask = "\n\tWould you like to learn more about multiple desktops?\t\n"
     lang_sup3 = "\n\tInstall locale packages.\t\n"
     lang_sup4 = "\n\tMulti-lingual support settings.\t\n"
     Open = "Open"
 
 
-HOME = getenv("HOME")
-if (not path.exists("%s/.drauger-tut" % (HOME))):
+HOME = os.getenv("HOME")
+if (not os.path.exists("%s/.drauger-tut" % (HOME))):
     show_at_start_up = True
 else:
     show_at_start_up = False
@@ -206,11 +229,15 @@ class welcome(Gtk.Window):
 
     def __init__(self):
         Gtk.Window.__init__(self, title="Welcome to Drauger OS")
-        self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,)
+        self.grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL)
         self.add(self.grid)
-        self.set_icon_from_file("/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg")
+        self.icon = "/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg"
+        self.set_icon_from_file(self.icon)
 
+        self.drivers = []
         self.reset("clicked")
+
+
 
     def reset(self, button):
 
@@ -223,169 +250,131 @@ class welcome(Gtk.Window):
 Drauger OS %s
  """ % (s) + "</b>")
         self.label.set_justify(Gtk.Justification.CENTER)
+        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 8, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup(welcome_label)
         self.label.set_justify(Gtk.Justification.CENTER)
+        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 2, 8, 1)
 
         self.label1 = Gtk.Label()
         self.label1.set_markup(website)
         self.label1.set_justify(Gtk.Justification.CENTER)
+        self.label1 = self._set_default_margins(self.label1)
         self.grid.attach(self.label1, 1, 3, 1, 1)
 
         self.button1 = Gtk.Button.new_from_icon_name("cs-network", 3)
         self.button1.connect("clicked", self.onwebclicked)
+        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 1, 4, 1, 1)
 
         self.label2 = Gtk.Label()
         self.label2.set_markup(README)
         self.label2.set_justify(Gtk.Justification.CENTER)
+        self.label2 = self._set_default_margins(self.label2)
         self.grid.attach(self.label2, 6, 3, 1, 1)
 
         self.button2 = Gtk.Button.new_from_icon_name("document", 3)
         self.button2.connect("clicked", self.show_readme)
+        self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 6, 4, 1, 1)
 
         self.label3 = Gtk.Label()
         self.label3.set_markup(tutorial_label)
         self.label3.set_justify(Gtk.Justification.CENTER)
+        self.label3 = self._set_default_margins(self.label3)
         self.grid.attach(self.label3, 1, 5, 1, 1)
 
         self.button3 = Gtk.Button.new_from_icon_name("dictionary", 3)
         self.button3.connect("clicked", self.tutorial)
+        self.button3 = self._set_default_margins(self.button3)
         self.grid.attach(self.button3, 1, 6, 1, 1)
 
         self.label4 = Gtk.Label()
         self.label4.set_markup(help_button)
         self.label4.set_justify(Gtk.Justification.CENTER)
+        self.label4 = self._set_default_margins(self.label4)
         self.grid.attach(self.label4, 1, 7, 1, 1)
 
         self.button4 = Gtk.Button.new_from_icon_name("help", 3)
         self.button4.connect("clicked", self.onhelpclicked)
+        self.button4 = self._set_default_margins(self.button4)
         self.grid.attach(self.button4, 1, 8, 1, 1)
 
         self.label5 = Gtk.Label()
         self.label5.set_markup(drivers)
         self.label5.set_justify(Gtk.Justification.CENTER)
+        self.label5 = self._set_default_margins(self.label5)
         self.grid.attach(self.label5, 6, 7, 1, 1)
 
         self.button5 = Gtk.Button.new_from_icon_name("jockey", 3)
         self.button5.connect("clicked", self.ondriveclicked)
+        self.button5 = self._set_default_margins(self.button5)
         self.grid.attach(self.button5, 6, 8, 1, 1)
 
         self.label6 = Gtk.Label()
         self.label6.set_markup(lang_sup)
         self.label6.set_justify(Gtk.Justification.CENTER)
+        self.label6 = self._set_default_margins(self.label6)
         self.grid.attach(self.label6, 4, 5, 1, 1)
 
         self.button6 = Gtk.Button.new_from_icon_name("accessibility", 3)
         self.button6.connect("clicked", self.show_accessibility_settings)
+        self.button6 = self._set_default_margins(self.button6)
         self.grid.attach(self.button6, 4, 6, 1, 1)
 
         self.label7 = Gtk.Label()
         self.label7.set_markup(donate)
-        self.label.set_justify(Gtk.Justification.CENTER)
+        self.label7.set_justify(Gtk.Justification.CENTER)
+        self.label7 = self._set_default_margins(self.label7)
         self.grid.attach(self.label7, 4, 7, 1, 1)
 
         self.button7 = Gtk.Button.new_from_icon_name("money-manager-ex", 3)
         self.button7.connect("clicked", self.ondonateclicked)
+        self.button7 = self._set_default_margins(self.button7)
         self.grid.attach(self.button7, 4, 8, 1, 1)
 
         self.label8 = Gtk.Label()
         self.label8.set_markup(shortcuts)
         self.label8.set_justify(Gtk.Justification.CENTER)
+        self.label8 = self._set_default_margins(self.label8)
         self.grid.attach(self.label8, 6, 5, 1, 1)
 
         self.button8 = Gtk.Button.new_from_icon_name("keyboard", 3)
         self.button8.connect("clicked", self.onshortcutclicked)
+        self.button8 = self._set_default_margins(self.button8)
         self.grid.attach(self.button8, 6, 6, 1, 1)
 
         self.label9 = Gtk.Label()
-        self.label9.set_markup(uninstall)
+        self.label9.set_markup(lang_sup2)
         self.label9.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label9, 4, 9, 1, 1)
+        self.label9 = self._set_default_margins(self.label9)
+        self.grid.attach(self.label9, 4, 3, 1, 1)
 
-        self.button9 = Gtk.Button.new_from_icon_name("delete", 3)
-        self.button9.connect("clicked", self.removal_conf)
-        self.grid.attach(self.button9, 4, 10, 1, 1)
-
-        self.label10 = Gtk.Label()
-        self.label10.set_markup(lang_sup2)
-        self.label10.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label10, 4, 3, 1, 1)
-
-        self.button10 = Gtk.Button.new_from_icon_name("preferences-desktop-locale", 3)
-        self.button10.connect("clicked", self.onCYGOclicked)
-        self.grid.attach(self.button10, 4, 4, 1, 1)
+        self.button9 = Gtk.Button.new_from_icon_name("preferences-desktop-locale", 3)
+        self.button9.connect("clicked", self.onlangsupportclicked)
+        self.button9 = self._set_default_margins(self.button9)
+        self.grid.attach(self.button9, 4, 4, 1, 1)
 
         self.start_up = Gtk.CheckButton.new_with_label(start_up_label)
         self.start_up.set_active(show_at_start_up)
         self.start_up.connect("toggled", self.start_up_toggle)
+        self.start_up= self._set_default_margins(self.start_up)
         self.grid.attach(self.start_up, 1, 13, 2, 1)
-
-        width = self.get_size()[0]
-        width = int(width * 0.125)
-        self.button10.set_margin_start(width)
-        self.button10.set_margin_end(width)
-        self.button6.set_margin_start(width)
-        self.button6.set_margin_end(width)
-        self.button4.set_margin_start(width)
-        self.button2.set_margin_end(width)
-        self.button3.set_margin_start(width)
-        self.button1.set_margin_start(width)
-        self.button9.set_margin_end(width)
-        self.button9.set_margin_start(width)
-        self.button8.set_margin_end(width)
-        self.button7.set_margin_end(width)
-        self.button7.set_margin_start(width)
-        self.button5.set_margin_end(width)
-        self.label2.set_margin_end(width)
-        self.label8.set_margin_end(width)
-        self.label5.set_margin_end(width)
-        self.label7.set_margin_end(width)
-        self.label7.set_margin_start(width)
-        self.label4.set_margin_start(width)
-        self.label10.set_margin_start(width)
-        self.label9.set_margin_start(width)
-        self.label10.set_margin_end(width)
-        self.label9.set_margin_end(width)
-        self.label9.set_margin_start(width)
-        self.label6.set_margin_end(width)
-        self.label6.set_margin_start(width)
-        self.label1.set_margin_start(width)
-        self.start_up.set_margin_start(int(width / 2))
-        self.start_up.set_margin_bottom(int(width / 2))
 
         self.show_all()
 
     def show_readme(self, widget):
-        Popen(["xdg-open", "https://download.draugeros.org/docs/README.pdf"])
+        version = subprocess.check_output(["lsb_release", "-rs"]).decode()
+        subprocess.Popen(["xdg-open",
+                          f"https://download.draugeros.org/docs/{version}/README.pdf"])
 
     def start_up_toggle(self, widget):
         global show_at_start_up
         show_at_start_up = self.start_up.get_active()
         print(show_at_start_up)
-
-    def removal_conf(self, button):
-
-        self.clear_window()
-
-        self.label = Gtk.Label()
-        self.label.set_markup(message_show_remove)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 1, 3, 1)
-
-        self.button1 = Gtk.Button.new_with_label(label=YES)
-        self.button1.connect("clicked", self.onuninstallclicked)
-        self.grid.attach(self.button1, 1, 2, 1, 1)
-
-        self.button2 = Gtk.Button.new_with_label(label=NO)
-        self.button2.connect("clicked", self.reset)
-        self.grid.attach(self.button2, 3, 2, 1, 1)
-
-        self.show_all()
 
     def show_accessibility_settings(self, button):
         self.clear_window()
@@ -403,7 +392,7 @@ Drauger OS %s
 
         self.font_button = Gtk.FontButton()
         # get system font and font size
-        system_font = check_output(["xfconf-query", "--channel", "xsettings",
+        system_font = subprocess.check_output(["xfconf-query", "--channel", "xsettings",
                                     "--property", "/Gtk/FontName"])
         system_font = list(str(system_font))
         del(system_font[1])
@@ -458,13 +447,13 @@ Drauger OS %s
         self.show_all()
 
     def goto_accessibility(self, button):
-        Popen("xfce4-accessibility-settings")
+        subprocess.Popen("xfce4-accessibility-settings")
 
     def set_font(self, widget):
-        Popen(["xfconf-query", "--channel", "xsettings", "--property",
+        subprocess.Popen(["xfconf-query", "--channel", "xsettings", "--property",
                "/Gtk/FontName", "--set", self.font_button.get_font()])
 
-    def onCYGOclicked(self, button):
+    def onlangsupportclicked(self, button):
         self.clear_window()
 
         self.label = Gtk.Label()
@@ -520,17 +509,17 @@ Drauger OS %s
         self.show_all()
 
     def install_locale_packages(self, button):
-        lang = getenv("LANG").split(".")
+        lang = os.getenv("LANG").split(".")
         lang = lang[0]
         lang = lang.split("_")
         lang = "-".join(lang).lower()
         if lang[0:2] == "en":
-            check_call(["notify-send", "--app-name='Drauger Welcome'",
+            subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
                         "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                         "Locale packages do not need to be installed."])
         else:
             package_name = "drauger-locale-" + lang
-            packages = check_output(["apt", "search",
+            packages = subprocess.check_output(["apt", "search",
                                      "drauger-locale"]).decode()
             packages = packages.split("\n")
             for each in range(len(packages) - 1, -1, -1):
@@ -540,25 +529,25 @@ Drauger OS %s
                     packages[each] = packages[each].split("/")[0]
             if package_name in packages:
                 try:
-                    check_call(["pkexec", "apt", "--force-yes", "install",
+                    subprocess.check_call(["pkexec", "apt", "--force-yes", "install",
                                package_name])
-                    check_call(["notify-send", "--app-name='Drauger Welcome'",
+                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "%s installed." % (package_name)])
-                except CalledProcessError:
-                    check_call(["notify-send", "--app-name='Drauger Welcome'",
+                except subprocess.CalledProcessError:
+                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "Locale package could not be installed."])
 
     def onnextclicked(self, button):
         if self.check == 0:
-            self.label.set_text(multi_0)
+            self.label.set_markup(multi_0)
         elif self.check == 1:
-            self.label.set_text(multi_1)
+            self.label.set_markup(multi_1)
         elif self.check == 2:
             self.removal_conf("clicked")
         else:
-            check_call(["/usr/share/drauger-welcome/log-out", "2",
+            subprocess.check_call(["/usr/share/drauger-welcome/log-out", "2",
                         "/usr/share/drauger-welcome/multi_desktop.py",
                         "Unknown error. Variable self.check in function onnextclicked in class notify outside expected range",
                         "drauger-welcome", "UNKNOWN", "UNKNOWN"])
@@ -566,103 +555,432 @@ Drauger OS %s
         self.check = self.check + 1
 
     def onwebclicked(self, button):
-        Popen(["/usr/bin/xdg-open", "https://draugeros.org/go"])
+        subprocess.Popen(["/usr/bin/xdg-open", "https://draugeros.org/go"])
 
     def onhelpclicked(self, button):
-
         self.clear_window()
 
-        self.label = Gtk.Label()
-        self.label.set_markup(HELP)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 3, 3, 1)
+        label = Gtk.Label()
+        label.set_markup(HELP)
+        label.set_justify(Gtk.Justification.CENTER)
+        label = self._set_default_margins(label)
+        self.grid.attach(label, 1, 3, 3, 1)
 
-        self.label2 = Gtk.Label()
-        self.label2.set_markup("""
+        label2 = Gtk.Label()
+        label2.set_markup("""
 Telegram
 """)
-        self.label2.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label2, 1, 4, 1, 1)
+        label2.set_justify(Gtk.Justification.CENTER)
+        label2 = self._set_default_margins(label2)
+        self.grid.attach(label2, 1, 4, 1, 1)
 
-        self.label3 = Gtk.Label()
-        self.label3.set_markup("""
+        label3 = Gtk.Label()
+        label3.set_markup("""
 Discord
 """)
-        self.label3.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label3, 3, 4, 1, 1)
+        label3.set_justify(Gtk.Justification.CENTER)
+        label3 = self._set_default_margins(label3)
+        self.grid.attach(label3, 3, 4, 1, 1)
 
-        self.label5 = Gtk.Label()
-        self.label5.set_markup(help_yourself)
-        self.label5.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label5, 1, 1, 3, 1)
+        label5 = Gtk.Label()
+        label5.set_markup(help_yourself)
+        label5.set_justify(Gtk.Justification.CENTER)
+        label5 = self._set_default_margins(label5)
+        self.grid.attach(label5, 1, 1, 3, 1)
 
-        self.label6 = Gtk.Label()
-        self.label6.set_markup("""
+        label6 = Gtk.Label()
+        label6.set_markup("""
 myDrauger Support System
 """)
-        self.label6.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label6, 2, 4, 1, 1)
+        label6.set_justify(Gtk.Justification.CENTER)
+        label6 = self._set_default_margins(label6)
+        self.grid.attach(label6, 2, 4, 1, 1)
 
-        self.button2 = Gtk.Button.new_with_label(label="%s Telegram" % (Open))
-        self.button2.connect("clicked", self.open_telegram)
-        self.grid.attach(self.button2, 1, 5, 1, 1)
+        button2 = Gtk.Button.new_with_label(label="%s Telegram" % (Open))
+        button2.connect("clicked", self.open_telegram)
+        button2 = self._set_default_margins(button2)
+        self.grid.attach(button2, 1, 5, 1, 1)
 
-        self.button3 = Gtk.Button.new_with_label(label="%s Discord" % (Open))
-        self.button3.connect("clicked", self.open_discord)
-        self.grid.attach(self.button3, 3, 5, 1, 1)
+        button3 = Gtk.Button.new_with_label(label="%s Discord" % (Open))
+        button3.connect("clicked", self.open_discord)
+        button3 = self._set_default_margins(button3)
+        self.grid.attach(button3, 3, 5, 1, 1)
 
-        self.button5 = Gtk.Button.new_with_label(label="%s Drauger OS Wiki" % (Open))
-        self.button5.connect("clicked", self.open_wiki)
-        self.grid.attach(self.button5, 1, 2, 3, 1)
+        button5 = Gtk.Button.new_with_label(label="%s Drauger OS Wiki" % (Open))
+        button5.connect("clicked", self.open_wiki)
+        button5 = self._set_default_margins(button5)
+        self.grid.attach(button5, 1, 2, 3, 1)
 
-        self.button6 = Gtk.Button.new_with_label(label="%s myDrauger" % (Open))
-        self.button6.connect("clicked", self.open_mydrauger)
-        self.grid.attach(self.button6, 2, 5, 1, 1)
+        button6 = Gtk.Button.new_with_label(label="%s myDrauger" % (Open))
+        button6.connect("clicked", self.open_mydrauger)
+        button6 = self._set_default_margins(button6)
+        self.grid.attach(button6, 2, 5, 1, 1)
 
-        self.button1 = Gtk.Button.new_with_label(label=Back)
-        self.button1.connect("clicked", self.reset)
-        self.grid.attach(self.button1, 1, 20, 1, 1)
-
-        width = self.get_size()[0]
-        width = int(width * 0.025)
-        self.button5.set_margin_start(width)
-        self.button5.set_margin_end(width)
-        self.button2.set_margin_start(width)
-        self.button2.set_margin_end(width)
-        self.button3.set_margin_start(width)
-        self.button3.set_margin_end(width)
-        self.button6.set_margin_end(width)
-        self.button6.set_margin_start(width)
-        self.button1.set_margin_start(width)
-        self.button1.set_margin_end(width)
-        self.button1.set_margin_top(width)
-        self.button1.set_margin_bottom(width)
-        print(self.button1.get_size_request())
-        # self.button1.set_margin_top(int(width / 2))
-        # self.button1.set_margin_bottom(int(width / 2))
+        button1 = Gtk.Button.new_with_label(label=Back)
+        button1.connect("clicked", self.reset)
+        button1 = self._set_default_margins(button1)
+        self.grid.attach(button1, 1, 20, 1, 1)
 
         self.show_all()
 
     def open_discord(self, button):
-        Popen(["xdg-open", "https://discord.gg/JW8FGrc"])
+        cache = apt.cache.Cache()
+        cache.open()
+        installed = False
+        with cache.actiongroup():
+            for each in cache:
+                if "discord" == each.name:
+                    installed = each.is_installed
+                    break
+        if not installed:
+            check = subprocess.check_output("snap list | awk '{print $1}' | grep 'discord'",
+                                            shell=True).decode()[:-1]
+            if check == "discord":
+                installed = True
+        if not installed:
+            subprocess.check_call(["snap", "install", "discord"])
+        subprocess.Popen(["discord", "https://discord.gg/JW8FGrc"])
+
+    def _set_default_margins(self, widget):
+        """Set default margin size"""
+        widget.set_margin_start(10)
+        widget.set_margin_end(10)
+        widget.set_margin_top(10)
+        widget.set_margin_bottom(10)
+        return widget
 
     def open_mydrauger(self, button):
-        Popen(["xdg-open", "https://draugeros.org/go/my"])
+        subprocess.Popen(["xdg-open", "https://draugeros.org/go/my"])
 
     def open_telegram(self, button):
-        Popen(["xdg-open", "https://t.me/draugeros"])
+        cache = apt.cache.Cache()
+        cache.open()
+        installed = False
+        with cache.actiongroup():
+            for each in cache:
+                if "telegram-desktop" == each.name:
+                    installed = each.is_installed
+                    break
+        if not installed:
+            check = subprocess.check_output("snap list | awk '{print $1}' | grep 'telegram-desktop'",
+                                            shell=True).decode()[:-1]
+            if check == "telegram-desktop":
+                installed = True
+        if not installed:
+            subprocess.check_call(["snap", "install", "telegram-desktop"])
+        subprocess.Popen(["telegram-desktop", "https://t.me/draugeros"])
 
     def open_wiki(self, button):
-        Popen(["xdg-open", "https://draugeros.org/go/wiki"])
+        subprocess.Popen(["xdg-open", "https://draugeros.org/go/wiki"])
 
     def ondriveclicked(self, button):
-        Popen(["/usr/bin/software-properties-gtk", "--open-tab=4"])
+        self.clear_window()
+
+        # we need to make a window here to manage drivers
+        # start off by getting all our PCI devices
+        devices = subprocess.check_output(["lspci", "-qmmnn"]).decode()
+        # we need to parse this so that we can check for devices in need of drivers
+        # this will do most of that for us
+        data = devices.split("\n")
+        for each in range(len(data) - 1, -1, -1):
+            data[each] = shlex.split(data[each])
+
+        # now we need to get rid of anything that we don't need
+        for each in range(len(data) - 1, -1, -1):
+            if len(data[each]) < 2:
+                del data[each]
+                continue
+            if "VGA" in data[each][1]:
+                continue
+            elif data[each][1].lower() == "network controller":
+                continue
+            elif data[each][1].lower() == "ethernet controller": # these don't always need drivers. But sometimes they do.
+                continue
+            del data[each]
+
+        # now we have a list of all devices that MIGHT need drivers: GPUs, Wifi cards, Ethernet cards
+        # check if they have chips that need drivers or not
+        for each in range(len(data) - 1, -1, -1):
+            if "VGA" in data[each][1]: # GPUs
+                if "nvidia" not in data[each][2].lower():
+                    del data[each]
+            elif data[each][1].lower() in ("network controller",
+                                           "ethernet controller"): # Networking controllers (Wifi & Ethernet)
+                if "broadcom" in data[each][2].lower():
+                    continue
+                elif "realtek" in data[each][2].lower():
+                    continue
+                del data[each]
+
+        # now we have a list of JUST devices that need drivers
+        # now we need to figure out what drivers are suited to what generation of card and handle that accordingly.
+        drivers = {}
+        for each in data:
+            if "nvidia" in each[2].lower():
+                if "nvidia" not in drivers:
+                    drivers["nvidia"] = []
+                device = each[3].split(" ")
+                for each1 in device:
+                    if each1.isdigit():
+                        if len(each1) >= 4:
+                            device = each1[:2]
+                        else:
+                            device = each1[0]
+                        break
+                if device not in drivers["nvidia"]:
+                    drivers["nvidia"] = device
+                break
+            elif "broadcom" in each[2].lower():
+                if "broadcom" not in drivers:
+                    drivers["broadcom"] = []
+                device = each[3].split(" ")[-1][1:-1]
+                if device not in drivers["broadcom"]:
+                    drivers["broadcom"].append(device)
+                break
+            elif "realtek" in each[2].lower():
+                if "realtek" not in drivers:
+                    drivers["realtek"] = []
+                device = each[3].split(" ")[0].lower()
+                if device not in drivers["realtek"]:
+                    drivers["realtek"].append(device)
+                break
+
+        guide = {}
+        if "nvidia" in drivers:
+            path = "/etc/drauger-welcome"
+            with open(f"{path}/nvidia_driver_guide.json",
+                      "r") as file:
+                      guide.update({"nvidia": json.load(file)})
+        if "broadcom" in drivers:
+            with open(f"{path}/broadcom_driver_guide.json",
+                      "r") as file:
+                      guide.update({"broadcom": json.load(file)})
+        if "realtek" in drivers:
+            with open(f"{path}e/realtek_driver_guide.json",
+                      "r") as file:
+                      guide.update({"realtek": json.load(file)})
+
+        # we now have all the data and correlations to figure out what driver we need where
+        # just need to actually follow the correlations
+        to_install = {}
+        if "nvidia" in drivers:
+            to_install[f"nvidia-driver-{guide['nvidia'][drivers['nvidia']]}"] = {"installed": None, "desc": ""}
+
+        # check and see if the package is already installed. If it is, then the user is good to go
+        # so delete the package from the list
+        cache = apt.cache.Cache()
+        cache.open()
+        installed = False
+        with cache.actiongroup():
+            for pkg in to_install:
+                for each in cache:
+                    if pkg == each.name:
+                        to_install[pkg]["installed"] = each.is_installed
+                        to_install[pkg]["desc"] = each.versions[0].description
+
+        # this makes an if-statement later on easier to write
+        all_installed = True
+        for each in to_install:
+            if not to_install[each]["installed"]:
+                all_installed = False
+                break
+
+        self.drivers = to_install
+
+        label = Gtk.Label()
+        label.set_markup("<b>Below are all the drivers we suggest for your system</b>")
+        label.set_justify(Gtk.Justification.CENTER)
+        label = self._set_default_margins(label)
+        self.grid.attach(label, 1, 1, 5, 1)
+
+        label1 = Gtk.Label()
+        label1.set_markup("Alternatively, you may use Synaptic Package Manager to install drivers yourself.")
+        label1.set_justify(Gtk.Justification.CENTER)
+        label1 = self._set_default_margins(label1)
+        self.grid.attach(label1, 1, 2, 5, 1)
+
+        label2 = Gtk.Label()
+        label2.set_markup("<b>Package Name</b>")
+        label2.set_justify(Gtk.Justification.CENTER)
+        label2 = self._set_default_margins(label2)
+        self.grid.attach(label2, 1, 4, 1, 1)
+
+        label3 = Gtk.Label()
+        label3.set_markup("<b>Description</b>")
+        label3.set_justify(Gtk.Justification.CENTER)
+        label3 = self._set_default_margins(label3)
+        self.grid.attach(label3, 3, 4, 1, 1)
+
+        label4 = Gtk.Label()
+        label4.set_markup("<b>Installation Status</b>")
+        label4.set_justify(Gtk.Justification.CENTER)
+        label4 = self._set_default_margins(label4)
+        self.grid.attach(label4, 5, 4, 1, 1)
+
+        sep = Gtk.Separator.new(Gtk.Orientation.HORIZONTAL)
+        sep = self._set_default_margins(sep)
+        self.grid.attach(sep, 1, 5, 5, 1)
+
+        # labels detailing all drivers
+        x = 1
+        y = 6
+        for each in to_install:
+            label = Gtk.Label()
+            label.set_markup(f"<b>{each}</b>")
+            label.set_justify(Gtk.Justification.CENTER)
+            label = self._set_default_margins(label)
+            self.grid.attach(label, x, y, 1, 1)
+
+            label = Gtk.Label()
+            label.set_markup(f"{to_install[each]['desc']}")
+            label.set_justify(Gtk.Justification.CENTER)
+            label = self._set_default_margins(label)
+            self.grid.attach(label, x + 2, y, 1, 1)
+
+            label = Gtk.Label()
+            if to_install[each]["installed"]:
+                label.set_markup("Installed")
+            else:
+                label.set_markup("Installed")
+            label.set_justify(Gtk.Justification.CENTER)
+            label = self._set_default_margins(label)
+            self.grid.attach(label, x + 4, y, 1, 1)
+
+            y += 1
+
+        sep = Gtk.Separator.new(Gtk.Orientation.VERTICAL)
+        sep = self._set_default_margins(sep)
+        self.grid.attach(sep, 2, 4, 1, y)
+
+        sep = Gtk.Separator.new(Gtk.Orientation.VERTICAL)
+        sep = self._set_default_margins(sep)
+        self.grid.attach(sep, 4, 4, 1, y)
+
+        button1 = Gtk.Button.new_with_label(label=Back)
+        button1.connect("clicked", self.reset)
+        button1 = self._set_default_margins(button1)
+        self.grid.attach(button1, 1, 20, 1, 1)
+
+        if not all_installed:
+            button2 = Gtk.Button.new_with_label(label="Install Missing Drivers")
+            button2.connect("clicked", self.driver_install_confirmation)
+        else:
+            button2 = Gtk.Label()
+            button2.set_markup("<b>All Drivers Already Installed</b>")
+        button2 = self._set_default_margins(button2)
+        self.grid.attach(button2, 3, 20, 1, 1)
+
+
+        button3 = Gtk.Button.new_with_label(label="Open Synaptic")
+        button3.connect("clicked", self.open_synaptic)
+        button3 = self._set_default_margins(button3)
+        self.grid.attach(button3, 5, 20, 1, 1)
+
+        self.show_all()
+
+    def driver_install_confirmation(self, button):
+        self.clear_window()
+
+        label = Gtk.Label()
+        label.set_markup("<b>Are you sure you want to install the following packages?</b>")
+        label = self._set_default_margins(label)
+        self.grid.attach(label, 1, 1, 3, 1)
+
+        label2 = Gtk.Label()
+        label2.set_markup(", ".join(self.drivers))
+        label2 = self._set_default_margins(label2)
+        self.grid.attach(label2, 1, 2, 3, 1)
+
+        button = Gtk.Button.new_with_label(label="Cancel")
+        button.connect("clicked", self.reset)
+        button = self._set_default_margins(button)
+        self.grid.attach(button, 1, 3, 1, 1)
+
+        button2 = Gtk.Button.new_with_label(label="Install Missing Drivers")
+        button2.connect("clicked", self.install_missing_drivers)
+        button2 = self._set_default_margins(button2)
+        self.grid.attach(button2, 3, 3, 1, 1)
+
+        self.show_all()
+
+    def install_missing_drivers(self, button):
+        # filter down to just uninstalled drivers
+        to_install = []
+        for each in self.drivers:
+            if self.drivers[each]["installed"]:
+                continue
+            to_install.append(each)
+        if len(to_install) <= 0:
+            return
+        subprocess.Popen(["pkexec",
+                          "/usr/share/drauger-welcome/install_drivers.sh",
+                          " ".join(to_install),
+                          self.icon])
+        # cmd = cmd + to_install
+        # # this is arguably the easiest way to do this
+        # pid = os.fork()
+        # if pid == 0:
+        #     # this will run as a seperate thread. It's safe to call exit()
+        #     for each in self.drivers:
+        #         if "nvidia-driver-" in each:
+        #             if each != "nvidia-driver-latest":
+        #                 with open("/etc/modprobe.d/blacklist-nvidia-nouveau.conf",
+        #                           "w") as file:
+        #                     file.write("blacklist nouveau\noptions nouveau modeset=0")
+        #             break
+        #     try:
+        #         subprocess.check_call(cmd)
+        #     except subprocess.CalledProcessError:
+        #         subprocess.check_call(["notify-send", "-i", self.icon, "-a",
+        #                                "Drauger OS Welcome Screen",
+        #                                "Driver Installation Error",
+        #                                "Installing Drivers Encountered An Error. Please contact support."])
+        #         exit(2)
+        #     subprocess.check_call(["notify-send", "-i", self.icon, "-a",
+        #                            "Drauger OS Welcome Screen",
+        #                            "Driver Installation Success",
+        #                            "Drivers Successfully Installed. Please Reboot for changes to take effect."])
+        #     exit(0)
+        self.post_install_window()
+
+    def post_install_window(self):
+        self.clear_window()
+
+        label1 = Gtk.Label()
+        label1.set_markup("<b>Installing Drivers</b>")
+        label1.set_justify(Gtk.Justification.CENTER)
+        label1 = self._set_default_margins(label1)
+        self.grid.attach(label1, 1, 1, 4, 1)
+
+        label2 = Gtk.Label()
+        label2.set_markup("Please give the background process about 10 minutes max in order to install your drivers for you.")
+        label2.set_justify(Gtk.Justification.CENTER)
+        label2 = self._set_default_margins(label2)
+        self.grid.attach(label2, 1, 2, 4, 1)
+
+        label3 = Gtk.Label()
+        label3.set_markup("If you do not receive a notification about how installation went, please check System Monitor to see if installation is still ongoing.")
+        label3.set_justify(Gtk.Justification.CENTER)
+        label3 = self._set_default_margins(label3)
+        self.grid.attach(label3, 1, 3, 4, 1)
+
+        button1 = Gtk.Button.new_with_label(label=Back)
+        button1.connect("clicked", self.reset)
+        button1 = self._set_default_margins(button1)
+        self.grid.attach(button1, 1, 20, 1, 1)
+
+        self.show_all()
+
+
+    def open_synaptic(self, button):
+        subprocess.Popen(["synaptic-pkexec"])
 
     def onlanguageclicked(self, button):
-        Popen(["gnome-language-selector"])
+        subprocess.Popen(["gnome-language-selector"])
 
     def ondonateclicked(self, button):
-        Popen(["/usr/bin/xdg-open", "https://paypal.me/pools/c/89GtByYaTT"])
+        subprocess.Popen(["/usr/bin/xdg-open",
+               "https://liberapay.com/Drauger_OS_Development/donate"])
 
     def onshortcutclicked(self, button):
         self.clear_window()
@@ -756,17 +1074,6 @@ myDrauger Support System
 
         self.show_all()
 
-    def onuninstallclicked(self, button):
-        # have an uninstall comfirmation dialoge then uninstall based on
-        # the answer
-        try:
-            check_call("/usr/share/drauger-welcome/u.sh")
-        except CalledProcessError:
-            check_call(["/usr/share/drauger-welcome/log-out",
-                        "2", "/usr/share/drauger-welcome/main.py",
-                        "/etc/drauger-welcome/u.sh has failed. See error log entry for u.sh for more info.",
-                        "drauger-welcome", "UNKNOWN", "UNKNOWN"])
-
     def onyesclicked(self, button):
         self.onuninstallclicked("clicked")
 
@@ -774,25 +1081,28 @@ myDrauger Support System
         self.reset("clicked")
 
     def tutorial(self, button):
-
         self.clear_window()
         self.check = -1
 
         self.label = Gtk.Label()
         self.label.set_markup(message_show_tutorial)
         self.label.set_justify(Gtk.Justification.CENTER)
+        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 3, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=Next)
         self.button1.connect("clicked", self.onclicked)
+        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 3, 2, 1, 1)
 
         self.button2 = Gtk.Button.new_with_label(label=Back)
         self.button2.connect("clicked", self.onclicked)
+        self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 1, 2, 1, 1)
 
         self.button3 = Gtk.Button.new_with_label(label=Exit)
         self.button3.connect("clicked", self.reset)
+        self.button3 = self._set_default_margins(self.button3)
         self.grid.attach(self.button3, 2, 2, 1, 1)
 
         self.show_all()
@@ -803,39 +1113,47 @@ myDrauger Support System
         elif (button.get_label() == Back):
             self.check = self.check - 1
         if self.check == -1:
-            self.label.set_text(message_show_tutorial)
+            self.label.set_markup(message_show_tutorial)
         elif self.check == 0:
-            self.label.set_text(tut_0)
+            self.label.set_markup(tut_1)
         elif self.check == 1:
-            self.label.set_text(tut_1)
+            self.move((width / 2) - (self.get_size()[0] / 2), 65)
+            self.label.set_markup(tut_2)
         elif self.check == 2:
-            self.label.set_text(tut_2)
+            self.move(95, (height / 2) - (self.get_size()[1] / 2))
+            self.label.set_markup(tut_3)
         elif self.check == 3:
-            self.label.set_text(tut_3)
+            self.move((width / 2) - (self.get_size()[0] / 2),
+                      (height - 155) - self.get_size()[1])
+            self.label.set_markup(tut_4)
         elif self.check == 4:
-            self.label.set_text(tut_4)
+            self.move((width / 2) - (self.get_size()[0] / 2),
+                      (height / 2) - (self.get_size()[1] / 2))
+            self.label.set_markup(tut_5)
         elif self.check == 5:
-            self.label.set_text(tut_5)
-        elif self.check == 6:
-            self.label.set_markup(tut_6)
-        elif self.check == 7:
             self.multi_desktop("clicked")
+        elif self.check < -1:
+            self.reset("clicked")
+
+        self.show_all()
 
     def multi_desktop(self, button):
-
         self.clear_window()
 
         self.label = Gtk.Label()
         self.label.set_markup(multi_ask)
         self.label.set_justify(Gtk.Justification.CENTER)
+        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 3, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=YES)
         self.button1.connect("clicked", self.onmultiyesclicked)
+        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 1, 2, 1, 1)
 
         self.button2 = Gtk.Button.new_with_label(label=NO)
-        self.button2.connect("clicked", self.onmultinoclicked)
+        self.button2.connect("clicked", self.removal_conf)
+        self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 3, 2, 1, 1)
 
         self.show_all()
@@ -847,16 +1165,15 @@ myDrauger Support System
         self.label = Gtk.Label()
         self.label.set_markup(message_show_multi_desktop)
         self.label.set_justify(Gtk.Justification.CENTER)
+        self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 3, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=Next)
         self.button1.connect("clicked", self.onnextclicked)
+        self.button1 = self._set_default_margins(self.button1)
         self.grid.attach(self.button1, 3, 2, 1, 1)
 
         self.show_all()
-
-    def onmultinoclicked(self, button):
-        self.removal_conf("clicked")
 
     def exit(self, button):
         global show_at_start_up
@@ -867,8 +1184,8 @@ myDrauger Support System
                 flagfile.write("")
                 flagfile.close()
         else:
-            if (path.exists("%s/.drauger-tut" % (HOME))):
-                remove("%s/.drauger-tut" % (HOME))
+            if (os.path.exists("%s/.drauger-tut" % (HOME))):
+                os.remove("%s/.drauger-tut" % (HOME))
         print(1)
         exit(1)
 
@@ -876,6 +1193,7 @@ myDrauger Support System
         children = self.grid.get_children()
         for each in children:
             self.grid.remove(each)
+
 
 def welcome_show():
     window = welcome()
@@ -890,7 +1208,7 @@ if __name__ == '__main__':
     try:
         welcome_show()
     except:
-        check_call(["/usr/share/drauger-welcome/log-out",
+        subprocess.check_call(["/usr/share/drauger-welcome/log-out",
                     "2 /usr/share/drauger-welcome/main_ui.py",
                     "Unknown error. Function welcome_show has failed.",
                     "drauger-welcome", "UNKNOWN", "UNKNOWN"])

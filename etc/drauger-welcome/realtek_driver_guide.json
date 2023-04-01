@@ -1,0 +1,28 @@
+{
+	"r8125-dkms": [
+		"r8125"
+	],
+	"r8168-dkms": [
+		"rtl8111b",
+		"rtl8111c",
+		"rtl8111d",
+		"rtl8111e",
+		"rtl8111f",
+		"rtl8111g(s)",
+		"rtl8111h(s)",
+		"rtl8118(a)(s)",
+		"rtl8119i",
+		"rtl8111l",
+		"rtl8168b",
+		"rtl8168e",
+		"rtl8168h",
+		"rtl8111dp",
+		"rtl8111ep",
+		"rtl8111fp",
+		"rtl8411",
+		"rtl8411b",
+	],
+	"rtl8821ce-dkms": [
+		"rtl8821ce"
+	]
+}
