@@ -3,7 +3,7 @@
 #
 #  drauger-welcome
 #
-#  Copyright 2022 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2024 Thomas Castleman <contact@draugeros.org>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 from __future__ import print_function
 import sys
 import drauger_welcome
-VERSION = "4.9.8"
+VERSION = "5.0.0"
 HELP = """
 drauger-welcome, Version %s
 \t-h, --help              print this help dialoge.
@@ -36,6 +36,7 @@ R = "\033[0;31m"
 G = "\033[0;32m"
 Y = "\033[1;33m"
 NC = "\033[0m"
+
 
 def eprint(args, *kwargs, color=R):
     """Print to stderr easier"""
@@ -52,6 +53,7 @@ if sys.version_info[0] == 2:
 ARGC = len(sys.argv)
 
 def launch():
+    drauger_welcome.flatpak.repair(False)
     drauger_welcome.main_ui.welcome_show()
 
 

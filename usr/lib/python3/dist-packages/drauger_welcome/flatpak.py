@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-#  __init__.py
+#  flatpak.py
 #
-#  Copyright 2023 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2024 Thomas Castleman <batcastle@draugeros.org>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,25 @@
 #  MA 02110-1301, USA.
 #
 #
-"""__init__ for drauger-welcome"""
-from drauger_welcome import main_ui as main_ui
-from drauger_welcome import alerts as alerts
-from drauger_welcome import flatpak as flatpak
+"""Explain what this program does here!!!"""
+from __future__ import print_function
+import sys
+import subprocess as sp
+
+
+def __eprint__(*args, **kwargs):
+    """Make it easier for us to print to stderr"""
+    print(*args, file=sys.stderr, **kwargs)
+
+
+if sys.version_info[0] == 2:
+    __eprint__("Please run with Python 3 as Python 2 is End-of-Life.")
+    exit(2)
+
+
+def repair(lock: bool):
+    """Run `flatpak repair'"""
+    if lock:
+        sp.check_call(["flatpak", "repair"])
+    else:
+        sp.Popen(["flatpak", "repair"])
