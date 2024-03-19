@@ -27,7 +27,7 @@ import sys
 import os
 import subprocess as subproc
 import drauger_welcome
-VERSION = "5.0.0"
+VERSION = "5.0.1"
 HELP = """
 drauger-welcome, Version %s
 \t-h, --help              print this help dialoge.
