@@ -3,7 +3,7 @@
 #
 #  drauger-welcome
 #
-#  Copyright 2024 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2024 Thomas Castleman <batcastle@draugeros.org>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 """Explain what this program does here!!!"""
 from __future__ import print_function
 import sys
+import os
+import subprocess as subproc
 import drauger_welcome
 VERSION = "5.0.0"
 HELP = """
@@ -53,8 +55,11 @@ if sys.version_info[0] == 2:
 ARGC = len(sys.argv)
 
 def launch():
-    drauger_welcome.flatpak.repair(False)
-    drauger_welcome.main_ui.welcome_show()
+    if os.environ["EUID"] == "0":
+        drauger_welcome.flatpak.repair(False)
+        subproc.Popen(["/usr/share/drauger-welcome/tut.py"])
+    else:
+        drauger_welcome.main_ui.welcome_show()
 
 
 if ARGC > 1:
