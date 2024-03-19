@@ -55,7 +55,7 @@ if sys.version_info[0] == 2:
 ARGC = len(sys.argv)
 
 def launch():
-    if os.environ["EUID"] == "0":
+    if os.getuid() == 0:
         drauger_welcome.flatpak.repair(False)
         subproc.Popen(["/usr/share/drauger-welcome/tut.py"])
     else:
