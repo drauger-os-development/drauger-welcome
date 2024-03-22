@@ -27,9 +27,10 @@ import sys
 import os
 import subprocess as subproc
 import drauger_welcome
-VERSION = "5.0.1"
+VERSION = "5.0.2"
 HELP = """
 drauger-welcome, Version %s
+\t-b, --boot-time         Run boot time checks.
 \t-h, --help              print this help dialoge.
 \t-v, --version           print current version.
 Pass nothing to show welcome screen.
@@ -54,9 +55,8 @@ if sys.version_info[0] == 2:
 # get length of argv
 ARGC = len(sys.argv)
 
-def launch():
-    if os.getuid() == 0:
-        drauger_welcome.flatpak.repair(False)
+def launch(bool: boot_time):
+    if boot_time:
         subproc.Popen(["/usr/share/drauger-welcome/tut.py"])
     else:
         drauger_welcome.main_ui.welcome_show()
@@ -67,8 +67,10 @@ if ARGC > 1:
         print("\n%s\n" % (VERSION))
     elif (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
         print(HELP % (VERSION))
+    elif (sys.argv[1] == "-b") or (sys.argv[1] == "--boot-time"):
+        launch(True)
     else:
         eprint("Option %s not recognized." % (sys.argv[1]))
         eprint(HELP % (VERSION), color=NC)
 else:
-    launch()
+    launch(False)

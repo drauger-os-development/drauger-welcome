@@ -1,10 +1,11 @@
 [Desktop Entry]
 Name=Drauger Welcome
-Version=5.0
-Exec=/usr/bin/drauger-welcome
+Version=5.0.2
+Exec=/usr/bin/drauger-welcome --boot-time
 Comment=Welcome Screen for Drauger OS
 Type=Application
 Terminal=false
 StartupNotify=true
 Encoding=UTF-8
 Categories=Application;GTK;System;Utility;
+Icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg
