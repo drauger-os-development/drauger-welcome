@@ -126,7 +126,7 @@ else:
 # check if system-installer will be running, if it is, do not show the welcome screen
 with open("/proc/cmdline", "r") as cmdline_file:
     cmdline = cmdline_file.read()
-if "system-installer" in cmdline:
+if ("system-installer" in cmdline) or ("edamame" in cmdline):
     # Not wanted to be running ootb
     if ((support_status == 2) and (show_settings["EWR"])):
         # notify of lack of support

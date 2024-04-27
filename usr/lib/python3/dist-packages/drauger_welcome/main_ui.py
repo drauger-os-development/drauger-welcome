@@ -3,7 +3,7 @@
 #
 #  main_ui.py
 #
-#  Copyright 2023 Thomas Castleman <contact@draugeros.org>
+#  Copyright 2024 Thomas Castleman <contact@draugeros.org>
 #  Additional contributors: Logan L Johnson <logan@cygo.network>
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -276,7 +276,7 @@ Drauger OS %s
         self.label2 = self._set_default_margins(self.label2)
         self.grid.attach(self.label2, 6, 3, 1, 1)
 
-        self.button2 = Gtk.Button.new_from_icon_name("document", 3)
+        self.button2 = Gtk.Button.new_from_icon_name("dictionary", 3)
         self.button2.connect("clicked", self.show_readme)
         self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 6, 4, 1, 1)
@@ -287,7 +287,7 @@ Drauger OS %s
         self.label3 = self._set_default_margins(self.label3)
         self.grid.attach(self.label3, 1, 5, 1, 1)
 
-        self.button3 = Gtk.Button.new_from_icon_name("dictionary", 3)
+        self.button3 = Gtk.Button.new_from_icon_name("help-about", 3)
         self.button3.connect("clicked", self.tutorial)
         self.button3 = self._set_default_margins(self.button3)
         self.grid.attach(self.button3, 1, 6, 1, 1)
@@ -298,7 +298,7 @@ Drauger OS %s
         self.label4 = self._set_default_margins(self.label4)
         self.grid.attach(self.label4, 1, 7, 1, 1)
 
-        self.button4 = Gtk.Button.new_from_icon_name("help", 3)
+        self.button4 = Gtk.Button.new_from_icon_name("help-faq", 3)
         self.button4.connect("clicked", self.onhelpclicked)
         self.button4 = self._set_default_margins(self.button4)
         self.grid.attach(self.button4, 1, 8, 1, 1)
