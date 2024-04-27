@@ -27,7 +27,7 @@ import sys
 import os
 import subprocess as subproc
 import drauger_welcome
-VERSION = "5.0.2"
+VERSION = "5.0.3"
 HELP = """
 drauger-welcome, Version %s
 \t-b, --boot-time         Run boot time checks.
@@ -55,7 +55,7 @@ if sys.version_info[0] == 2:
 # get length of argv
 ARGC = len(sys.argv)
 
-def launch(bool: boot_time):
+def launch(boot_time: bool) -> None:
     if boot_time:
         subproc.Popen(["/usr/share/drauger-welcome/tut.py"])
     else:
