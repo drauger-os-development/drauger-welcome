@@ -555,7 +555,7 @@ Drauger OS %s
         self.check = self.check + 1
 
     def onwebclicked(self, button):
-        subprocess.Popen(["/usr/bin/xdg-open", "https://draugeros.org/go"])
+        subprocess.Popen(["/usr/bin/xdg-open", "https://draugeros.org"])
 
     def onhelpclicked(self, button):
         self.clear_window()
