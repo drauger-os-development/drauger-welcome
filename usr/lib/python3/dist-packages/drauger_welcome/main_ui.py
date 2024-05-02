@@ -590,7 +590,7 @@ Discord
 
         label6 = Gtk.Label()
         label6.set_markup("""
-myDrauger Support System
+Reddit
 """)
         label6.set_justify(Gtk.Justification.CENTER)
         label6 = self._set_default_margins(label6)
@@ -611,8 +611,8 @@ myDrauger Support System
         button5 = self._set_default_margins(button5)
         self.grid.attach(button5, 1, 2, 3, 1)
 
-        button6 = Gtk.Button.new_with_label(label="%s myDrauger" % (Open))
-        button6.connect("clicked", self.open_mydrauger)
+        button6 = Gtk.Button.new_with_label(label="%s Reddit" % (Open))
+        button6.connect("clicked", self.open_reddit)
         button6 = self._set_default_margins(button6)
         self.grid.attach(button6, 2, 5, 1, 1)
 
@@ -649,8 +649,8 @@ myDrauger Support System
         widget.set_margin_bottom(10)
         return widget
 
-    def open_mydrauger(self, button):
-        subprocess.Popen(["xdg-open", "https://draugeros.org/go/my"])
+    def open_reddit(self, button):
+        subprocess.Popen(["xdg-open", "https://www.reddit.com/r/DraugerOS/"])
 
     def open_telegram(self, button):
         cache = apt.cache.Cache()
