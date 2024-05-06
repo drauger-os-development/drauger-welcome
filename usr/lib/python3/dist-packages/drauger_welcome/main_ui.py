@@ -367,7 +367,7 @@ Drauger OS %s
         self.show_all()
 
     def show_readme(self, widget):
-        version = subprocess.check_output(["lsb_release", "-rs"]).decode()
+        version = subprocess.check_output(["lsb_release", "-rs"]).decode()[:-1]
         subprocess.Popen(["xdg-open",
                           f"https://download.draugeros.org/docs/{version}/README.pdf"])
 
