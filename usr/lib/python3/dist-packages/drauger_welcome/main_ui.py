@@ -980,7 +980,11 @@ myDrauger Support System
         subprocess.Popen(["synaptic-pkexec"])
 
     def onlanguageclicked(self, button):
-        subprocess.Popen(["gnome-language-selector"])
+         if os.eviron["XDG_CURRENT_DESKTOP"].lower() in ("xfce", "gnome"):
+            subprocess.Popen(["gnome-language-selector"])
+        elif os.eviron["XDG_CURRENT_DESKTOP"].lower() == "kde":
+            subprocess.Popen(["systemsettings", "kcm_translations"])
+
 
     def ondonateclicked(self, button):
         subprocess.Popen(["/usr/bin/xdg-open",
