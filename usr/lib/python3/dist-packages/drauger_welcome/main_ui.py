@@ -447,7 +447,11 @@ Drauger OS %s
         self.show_all()
 
     def goto_accessibility(self, button):
-        subprocess.Popen("xfce4-accessibility-settings")
+        """Open system accessability settings"""
+        if os.eviron["XDG_CURRENT_DESKTOP"].lower() == "xfce":
+            subprocess.Popen("xfce4-accessibility-settings")
+        elif os.eviron["XDG_CURRENT_DESKTOP"].lower() == "kde":
+            subprocess.Popen(["systemsettings", "kcm_access"])
 
     def set_font(self, widget):
         subprocess.Popen(["xfconf-query", "--channel", "xsettings", "--property",
