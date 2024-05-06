@@ -205,7 +205,7 @@ except FileNotFoundError:
 """
     tut_5 = """
 \tIf you wish to learn more about how to use the Drauger OS desktop, please visit:
-\t<a href="https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/"> https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/ </a>
+\t<a href="https://userbase.kde.org/Plasma/HowTo/4.5"> https://userbase.kde.org/Plasma/HowTo/4.5 </a>
 \t"""
     multi_ask = "\n\tWould you like to learn more about multiple desktops?\t\n"
     lang_sup3 = "\n\tInstall locale packages.\t\n"
