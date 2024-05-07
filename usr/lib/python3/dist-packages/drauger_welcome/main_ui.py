@@ -177,7 +177,7 @@ except FileNotFoundError:
     multi_1 = "\n\tTo switch from one desktop to another, click on any of the rectangles at the bottom of the screen,\t\n\tor, hit Ctrl+Alt+Right to move right and Ctrl+Alt+Left to move left.\t\n"
     HELP = "\t\nIf you can't find a solution, let us know using one\t\n\tof these methods, and we will try our best to assist!\t\n"
     help_yourself = "\n\tIf you are having a problem, try checking our wiki, or other online\t\n\tsources for a solution to it\t\n"
-    TITLE_sc = "\n\tKeyboard shortcuts for Drauger OS\t\n"
+    TITLE_sc = "\n\tBasic Keyboard shortcuts for Drauger OS\t\n"
     sc_0 = "\n\tOpen Terminal\t\n"
     sc_1 = "\n\tToggle Full Screen on an App\t\n"
     sc_2 = "\n\tLaunch Audacious\t\n"
@@ -448,9 +448,9 @@ Drauger OS %s
 
     def goto_accessibility(self, button):
         """Open system accessability settings"""
-        if os.eviron["XDG_CURRENT_DESKTOP"].lower() == "xfce":
+        if os.environ["XDG_CURRENT_DESKTOP"].lower() == "xfce":
             subprocess.Popen("xfce4-accessibility-settings")
-        elif os.eviron["XDG_CURRENT_DESKTOP"].lower() == "kde":
+        elif os.environ["XDG_CURRENT_DESKTOP"].lower() == "kde":
             subprocess.Popen(["systemsettings", "kcm_access"])
 
     def set_font(self, widget):
@@ -980,9 +980,9 @@ myDrauger Support System
         subprocess.Popen(["synaptic-pkexec"])
 
     def onlanguageclicked(self, button):
-         if os.eviron["XDG_CURRENT_DESKTOP"].lower() in ("xfce", "gnome"):
+         if os.environ["XDG_CURRENT_DESKTOP"].lower() in ("xfce", "gnome"):
             subprocess.Popen(["gnome-language-selector"])
-        elif os.eviron["XDG_CURRENT_DESKTOP"].lower() == "kde":
+         elif os.environ["XDG_CURRENT_DESKTOP"].lower() == "kde":
             subprocess.Popen(["systemsettings", "kcm_translations"])
 
 
@@ -1021,30 +1021,6 @@ myDrauger Support System
         self.label.set_markup(sc_1)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 3, 3, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup("""
-<b>Ctrl+Alt+M</b>
-""")
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 4, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup(sc_2)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 3, 4, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup("""
-<b>Alt+F</b>
-""")
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 5, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup(sc_3)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 3, 5, 1, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup("""
