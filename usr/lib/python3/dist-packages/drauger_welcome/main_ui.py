@@ -518,7 +518,7 @@ Drauger OS %s
         lang = lang.split("_")
         lang = "-".join(lang).lower()
         if lang[0:2] == "en":
-            subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
+            subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
                         "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                         "Locale packages do not need to be installed."])
         else:
@@ -535,11 +535,11 @@ Drauger OS %s
                 try:
                     subprocess.check_call(["pkexec", "apt", "--force-yes", "install",
                                package_name])
-                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
+                    subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "%s installed." % (package_name)])
                 except subprocess.CalledProcessError:
-                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
+                    subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "Locale package could not be installed."])
 
@@ -642,7 +642,14 @@ myDrauger Support System
             if check == "discord":
                 installed = True
         if not installed:
-            subprocess.check_call(["snap", "install", "discord"])
+            check = subprocess.check_output(["flatpak", "list", "--columns=application"]).decode().split("\n")
+            if "com.discordapp.Discord" in check:
+                installed = True
+        if not installed:
+            subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
+                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                        "You do not have Discord installed. Please wait while we install it for you."])
+            subprocess.check_call(["flatpak", "install", "--user", "--noninteractive", "com.discordapp.Discord"])
         subprocess.Popen(["discord", "https://discord.gg/JW8FGrc"])
 
     def _set_default_margins(self, widget):
@@ -671,7 +678,14 @@ myDrauger Support System
             if check == "telegram-desktop":
                 installed = True
         if not installed:
-            subprocess.check_call(["snap", "install", "telegram-desktop"])
+            check = subprocess.check_output(["flatpak", "list", "--columns=application"]).decode().split("\n")
+            if "org.telegram.desktop" in check:
+                installed = True
+        if not installed:
+            subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
+                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                        "You do not have Telegram installed. Please wait while we install it for you."])
+            subprocess.check_call(["flatpak", "install", "--user", "--noninteractive", "org.telegram.desktop"])
         subprocess.Popen(["telegram-desktop", "https://t.me/draugeros"])
 
     def open_wiki(self, button):
