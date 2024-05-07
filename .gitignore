@@ -1,0 +1,6 @@
+# Ignore editor swap files
+*.kate-swp
+
+# Ignore Python bytecode
+__pycache__
+*.pyc
