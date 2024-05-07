@@ -177,7 +177,7 @@ except FileNotFoundError:
     multi_1 = "\n\tTo switch from one desktop to another, click on any of the rectangles at the bottom of the screen,\t\n\tor, hit Ctrl+Alt+Right to move right and Ctrl+Alt+Left to move left.\t\n"
     HELP = "\t\nIf you can't find a solution, let us know using one\t\n\tof these methods, and we will try our best to assist!\t\n"
     help_yourself = "\n\tIf you are having a problem, try checking our wiki, or other online\t\n\tsources for a solution to it\t\n"
-    TITLE_sc = "\n\tKeyboard shortcuts for Drauger OS\t\n"
+    TITLE_sc = "\n\tBasic Keyboard shortcuts for Drauger OS\t\n"
     sc_0 = "\n\tOpen Terminal\t\n"
     sc_1 = "\n\tToggle Full Screen on an App\t\n"
     sc_2 = "\n\tLaunch Audacious\t\n"
@@ -367,7 +367,7 @@ Drauger OS %s
         self.show_all()
 
     def show_readme(self, widget):
-        version = subprocess.check_output(["lsb_release", "-rs"]).decode()
+        version = subprocess.check_output(["lsb_release", "-rs"]).decode()[:-1]
         subprocess.Popen(["xdg-open",
                           f"https://download.draugeros.org/docs/{version}/README.pdf"])
 
@@ -447,7 +447,11 @@ Drauger OS %s
         self.show_all()
 
     def goto_accessibility(self, button):
-        subprocess.Popen("xfce4-accessibility-settings")
+        """Open system accessability settings"""
+        if os.environ["XDG_CURRENT_DESKTOP"].lower() == "xfce":
+            subprocess.Popen("xfce4-accessibility-settings")
+        elif os.environ["XDG_CURRENT_DESKTOP"].lower() == "kde":
+            subprocess.Popen(["systemsettings", "kcm_access"])
 
     def set_font(self, widget):
         subprocess.Popen(["xfconf-query", "--channel", "xsettings", "--property",
@@ -514,7 +518,7 @@ Drauger OS %s
         lang = lang.split("_")
         lang = "-".join(lang).lower()
         if lang[0:2] == "en":
-            subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
+            subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
                         "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                         "Locale packages do not need to be installed."])
         else:
@@ -531,11 +535,11 @@ Drauger OS %s
                 try:
                     subprocess.check_call(["pkexec", "apt", "--force-yes", "install",
                                package_name])
-                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
+                    subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "%s installed." % (package_name)])
                 except subprocess.CalledProcessError:
-                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
+                    subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "Locale package could not be installed."])
 
@@ -555,7 +559,7 @@ Drauger OS %s
         self.check = self.check + 1
 
     def onwebclicked(self, button):
-        subprocess.Popen(["/usr/bin/xdg-open", "https://draugeros.org/go"])
+        subprocess.Popen(["/usr/bin/xdg-open", "https://draugeros.org"])
 
     def onhelpclicked(self, button):
         self.clear_window()
@@ -638,7 +642,14 @@ myDrauger Support System
             if check == "discord":
                 installed = True
         if not installed:
-            subprocess.check_call(["snap", "install", "discord"])
+            check = subprocess.check_output(["flatpak", "list", "--columns=application"]).decode().split("\n")
+            if "com.discordapp.Discord" in check:
+                installed = True
+        if not installed:
+            subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
+                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                        "You do not have Discord installed. Please wait while we install it for you."])
+            subprocess.check_call(["flatpak", "install", "--user", "--noninteractive", "com.discordapp.Discord"])
         subprocess.Popen(["discord", "https://discord.gg/JW8FGrc"])
 
     def _set_default_margins(self, widget):
@@ -667,7 +678,14 @@ myDrauger Support System
             if check == "telegram-desktop":
                 installed = True
         if not installed:
-            subprocess.check_call(["snap", "install", "telegram-desktop"])
+            check = subprocess.check_output(["flatpak", "list", "--columns=application"]).decode().split("\n")
+            if "org.telegram.desktop" in check:
+                installed = True
+        if not installed:
+            subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
+                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                        "You do not have Telegram installed. Please wait while we install it for you."])
+            subprocess.check_call(["flatpak", "install", "--user", "--noninteractive", "org.telegram.desktop"])
         subprocess.Popen(["telegram-desktop", "https://t.me/draugeros"])
 
     def open_wiki(self, button):
@@ -976,7 +994,11 @@ myDrauger Support System
         subprocess.Popen(["synaptic-pkexec"])
 
     def onlanguageclicked(self, button):
-        subprocess.Popen(["gnome-language-selector"])
+         if os.environ["XDG_CURRENT_DESKTOP"].lower() in ("xfce", "gnome"):
+            subprocess.Popen(["gnome-language-selector"])
+         elif os.environ["XDG_CURRENT_DESKTOP"].lower() == "kde":
+            subprocess.Popen(["systemsettings", "kcm_translations"])
+
 
     def ondonateclicked(self, button):
         subprocess.Popen(["/usr/bin/xdg-open",
@@ -1013,30 +1035,6 @@ myDrauger Support System
         self.label.set_markup(sc_1)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 3, 3, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup("""
-<b>Ctrl+Alt+M</b>
-""")
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 4, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup(sc_2)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 3, 4, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup("""
-<b>Alt+F</b>
-""")
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 5, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup(sc_3)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 3, 5, 1, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup("""
