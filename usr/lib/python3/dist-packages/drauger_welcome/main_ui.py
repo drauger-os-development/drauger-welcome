@@ -187,27 +187,29 @@ except FileNotFoundError:
     Next = "Next -->"
     Exit = "Exit"
     tut_1 = """
-\tThe bars on the top, left, and bottom of your screen are your desktop panels.\t
+\tThe bar on the bottom of your screen is your desktop panel.\t
 """
     tut_2 = """
-\tThis top bar provides the applications menu (the Drauger OS logo), clock, and power menu (accessed by clicking your username)\t
+\tThis bar provides the applications menu (the KDE logo), clock, and power menu (accessed by clicking the applications menu)\t
 """
     tut_3 = """
-\tThis left bar contains links, or launchers, for Steam, Firefox, and the Software Center.\t
-\tAlso, under the launchers for Steam and the Software Center, the arrows pointing to your right open sub-menus.\t
-\tThese allow you quicker access to other, related, apps.\t
+\tThis bar can be edited with links, or launchers, for Steam, Firefox, and the Software Center.\t
+\tBy default, it has launchers for your settings, the App Store, the file manager, and Firefox\t
+\tTo edit what is on this panel, simply either click an item on the panel, then "Unpin from Task Manager"\t
+\tOr, right click the item with want to pin to the panel, and click "Pin to Task Manager".\t
+\tYou can also freely move the items on the panel with easy by clicking and dragging at any time.\t
 """
     tut_4 = """
-\tFinally, this bottom panel provides you with a quick view of what is on each virtual desktop,\t
+\tFinally, this bottom panel also provides you with a quick view of what is on each virtual desktop,\t
 \tas well as the ability to switch between them using your mouse.\t
 
 \tMore on virtual desktops later.\t
 """
     tut_5 = """
 \tIf you wish to learn more about how to use the Drauger OS desktop, please visit:
-\t<a href="https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/"> https://draugeros.org/go/wiki/basics-of-the-drauger-os-desktop/ </a>
+\t<a href="https://userbase.kde.org/Plasma"> https://userbase.kde.org/Plasma </a>
 \t"""
-    multi_ask = "\n\tWould you like to learn more about multiple desktops?\t\n"
+    multi_ask = "\n\tWould you like to learn more about virtual desktops?\t\n"
     lang_sup3 = "\n\tInstall locale packages.\t\n"
     lang_sup4 = "\n\tMulti-lingual support settings.\t\n"
     Open = "Open"
