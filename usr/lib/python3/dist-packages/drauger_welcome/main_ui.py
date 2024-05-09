@@ -41,7 +41,7 @@ height = int(results.split("x")[1].strip())
 
 try:
     try:
-        with open("/etc/drauger-locales/%s/drauger-installer.conf" % (LANG),
+        with open("/etc/drauger-locales/%s/drauger-welcome.conf" % (LANG),
                   "r") as FILE:
             contents = FILE.read()
         contents = contents.split("\n")
@@ -53,7 +53,7 @@ try:
         for each in range(len(contents)):
             contents[each] = "".join(contents[each])
     except FileNotFoundError:
-        with open("/etc/drauger-locales/%s/drauger-installer.json" % (LANG),
+        with open("/etc/drauger-locales/%s/drauger-welcome.json" % (LANG),
                   "r") as FILE:
             contents = json.read(FILE)
         if "data" in contents.keys():
@@ -174,10 +174,10 @@ except FileNotFoundError:
     Back = "<-- Back"
     access_label = "\t\tSystem Accessibility Settings\t\t"
     multi_0 = "\n\tThis allows for greater organization, privacy, control,\t\n\tand productivity.\t"
-    multi_1 = "\n\tTo switch from one desktop to another, click on any of the rectangles at the bottom of the screen,\t\n\tor, hit Ctrl+Alt+Right to move right and Ctrl+Alt+Left to move left.\t\n"
+    multi_1 = "\n\tTo switch from one desktop to another, click on any of the rectangles to the immediate right of the application menu, on the pannel at the bottom of your screen,\t\n\tor, hit Ctrl+Alt+Right to move right and Ctrl+Alt+Left to move left.\t\n"
     HELP = "\t\nIf you can't find a solution, let us know using one\t\n\tof these methods, and we will try our best to assist!\t\n"
     help_yourself = "\n\tIf you are having a problem, try checking our wiki, or other online\t\n\tsources for a solution to it\t\n"
-    TITLE_sc = "\n\tKeyboard shortcuts for Drauger OS\t\n"
+    TITLE_sc = "\n\tBasic Keyboard shortcuts for Drauger OS\t\n"
     sc_0 = "\n\tOpen Terminal\t\n"
     sc_1 = "\n\tToggle Full Screen on an App\t\n"
     sc_2 = "\n\tLaunch Audacious\t\n"
@@ -187,27 +187,29 @@ except FileNotFoundError:
     Next = "Next -->"
     Exit = "Exit"
     tut_1 = """
-\tThe bars on the top, left, and bottom of your screen are your desktop panels.\t
+\tThe bar down here at the bottom of your screen is your desktop panel.\t
 """
     tut_2 = """
-\tThis top bar provides the applications menu (the Drauger OS logo), clock, and power menu (accessed by clicking your username)\t
+\tThis bar provides the applications menu (the KDE logo), clock, and power menu (accessed by clicking the applications menu)\t
 """
     tut_3 = """
-\tThis left bar contains links, or launchers, for Steam, Firefox, and the Software Center.\t
-\tAlso, under the launchers for Steam and the Software Center, the arrows pointing to your right open sub-menus.\t
-\tThese allow you quicker access to other, related, apps.\t
+\tThis bar can be edited with links, or launchers, for any app you wish.\t
+\tBy default, it has launchers for your settings, the App Store, the file manager, and Firefox\t
+\tTo edit what is on this panel, simply either click an item on the panel, then "Unpin from Task Manager"\t
+\tOr, right click the item with want to pin to the panel, and click "Pin to Task Manager".\t
+\tYou can also freely move the items on the panel with easy by clicking and dragging at any time.\t
 """
     tut_4 = """
-\tFinally, this bottom panel provides you with a quick view of what is on each virtual desktop,\t
+\tFinally, this bottom panel also provides you with a quick view of what is on each virtual desktop,\t
 \tas well as the ability to switch between them using your mouse.\t
 
 \tMore on virtual desktops later.\t
 """
     tut_5 = """
-\tIf you wish to learn more about KDE Plasma, the Desktop Environment Drauger OS is based on, please visit:
+\tIf you wish to learn more about KDE Plasma, the Desktop Environment Drauger OS uses, please visit:
 \t<a href="https://userbase.kde.org/Plasma"> https://userbase.kde.org/Plasma </a>
 \t"""
-    multi_ask = "\n\tWould you like to learn more about multiple desktops?\t\n"
+    multi_ask = "\n\tWould you like to learn more about virtual desktops?\t\n"
     lang_sup3 = "\n\tInstall locale packages.\t\n"
     lang_sup4 = "\n\tMulti-lingual support settings.\t\n"
     Open = "Open"
@@ -367,7 +369,7 @@ Drauger OS %s
         self.show_all()
 
     def show_readme(self, widget):
-        version = subprocess.check_output(["lsb_release", "-rs"]).decode()
+        version = subprocess.check_output(["lsb_release", "-rs"]).decode()[:-1]
         subprocess.Popen(["xdg-open",
                           f"https://download.draugeros.org/docs/{version}/README.pdf"])
 
@@ -447,7 +449,11 @@ Drauger OS %s
         self.show_all()
 
     def goto_accessibility(self, button):
-        subprocess.Popen("xfce4-accessibility-settings")
+        """Open system accessability settings"""
+        if os.environ["XDG_CURRENT_DESKTOP"].lower() == "xfce":
+            subprocess.Popen("xfce4-accessibility-settings")
+        elif os.environ["XDG_CURRENT_DESKTOP"].lower() == "kde":
+            subprocess.Popen(["systemsettings", "kcm_access"])
 
     def set_font(self, widget):
         subprocess.Popen(["xfconf-query", "--channel", "xsettings", "--property",
@@ -514,7 +520,7 @@ Drauger OS %s
         lang = lang.split("_")
         lang = "-".join(lang).lower()
         if lang[0:2] == "en":
-            subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
+            subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
                         "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                         "Locale packages do not need to be installed."])
         else:
@@ -531,11 +537,11 @@ Drauger OS %s
                 try:
                     subprocess.check_call(["pkexec", "apt", "--force-yes", "install",
                                package_name])
-                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
+                    subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "%s installed." % (package_name)])
                 except subprocess.CalledProcessError:
-                    subprocess.check_call(["notify-send", "--app-name='Drauger Welcome'",
+                    subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
                                 "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
                                 "Locale package could not be installed."])
 
@@ -545,7 +551,7 @@ Drauger OS %s
         elif self.check == 1:
             self.label.set_markup(multi_1)
         elif self.check == 2:
-            self.removal_conf("clicked")
+            self.reset("clicked")
         else:
             subprocess.check_call(["/usr/share/drauger-welcome/log-out", "2",
                         "/usr/share/drauger-welcome/multi_desktop.py",
@@ -630,16 +636,28 @@ Reddit
         with cache.actiongroup():
             for each in cache:
                 if "discord" == each.name:
-                    installed = each.is_installed
+                    if each.is_installed:
+                        installed = "apt"
                     break
         if not installed:
             check = subprocess.check_output("snap list | awk '{print $1}' | grep 'discord'",
                                             shell=True).decode()[:-1]
             if check == "discord":
-                installed = True
+                installed = "snap"
         if not installed:
-            subprocess.check_call(["snap", "install", "discord"])
-        subprocess.Popen(["discord", "https://discord.gg/JW8FGrc"])
+            check = subprocess.check_output(["flatpak", "list", "--columns=application"]).decode().split("\n")
+            if "com.discordapp.Discord" in check:
+                installed = "flatpak"
+        if not installed:
+            subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
+                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                        "You do not have Discord installed. Please wait while we install it for you."])
+            subprocess.check_call(["flatpak", "install", "--user", "--noninteractive", "com.discordapp.Discord"])
+            installed = "flatpak"
+        if installed in ("apt", "snap"):
+            subprocess.Popen(["discord", "https://discord.gg/JW8FGrc"])
+        else:
+            subprocess.Popen(["flatpak", "run", "com.discordapp.Discord", "https://discord.gg/JW8FGrc"])
 
     def _set_default_margins(self, widget):
         """Set default margin size"""
@@ -659,16 +677,28 @@ Reddit
         with cache.actiongroup():
             for each in cache:
                 if "telegram-desktop" == each.name:
-                    installed = each.is_installed
+                    if each.is_installed:
+                        installed = "apt"
                     break
         if not installed:
             check = subprocess.check_output("snap list | awk '{print $1}' | grep 'telegram-desktop'",
                                             shell=True).decode()[:-1]
             if check == "telegram-desktop":
-                installed = True
+                installed = "snap"
         if not installed:
-            subprocess.check_call(["snap", "install", "telegram-desktop"])
-        subprocess.Popen(["telegram-desktop", "https://t.me/draugeros"])
+            check = subprocess.check_output(["flatpak", "list", "--columns=application"]).decode().split("\n")
+            if "org.telegram.desktop" in check:
+                installed = "flatpak"
+        if not installed:
+            subprocess.check_call(["notify-send", "--app-name=Drauger Welcome",
+                        "--icon=/usr/share/icons/Drauger/scalable/menus/drauger_os-logo.svg",
+                        "You do not have Telegram installed. Please wait while we install it for you."])
+            subprocess.check_call(["flatpak", "install", "--user", "--noninteractive", "org.telegram.desktop"])
+            installed = "flatpak"
+        if installed in ("snap", "apt"):
+            subprocess.Popen(["telegram-desktop", "https://t.me/draugeros"])
+        else:
+            subprocess.Popen(["flatpak", "run", "org.telegram.desktop", "https://t.me/draugeros"])
 
     def open_wiki(self, button):
         subprocess.Popen(["xdg-open", "https://draugeros.org/go/wiki"])
@@ -976,7 +1006,11 @@ Reddit
         subprocess.Popen(["synaptic-pkexec"])
 
     def onlanguageclicked(self, button):
-        subprocess.Popen(["gnome-language-selector"])
+         if os.environ["XDG_CURRENT_DESKTOP"].lower() in ("xfce", "gnome"):
+            subprocess.Popen(["gnome-language-selector"])
+         elif os.environ["XDG_CURRENT_DESKTOP"].lower() == "kde":
+            subprocess.Popen(["systemsettings", "kcm_translations"])
+
 
     def ondonateclicked(self, button):
         subprocess.Popen(["/usr/bin/xdg-open",
@@ -1013,30 +1047,6 @@ Reddit
         self.label.set_markup(sc_1)
         self.label.set_justify(Gtk.Justification.CENTER)
         self.grid.attach(self.label, 3, 3, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup("""
-<b>Ctrl+Alt+M</b>
-""")
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 4, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup(sc_2)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 3, 4, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup("""
-<b>Alt+F</b>
-""")
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 5, 1, 1)
-
-        self.label = Gtk.Label()
-        self.label.set_markup(sc_3)
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 3, 5, 1, 1)
 
         self.label = Gtk.Label()
         self.label.set_markup("""
@@ -1115,15 +1125,19 @@ Reddit
         if self.check == -1:
             self.label.set_markup(message_show_tutorial)
         elif self.check == 0:
+            self.move((width / 2) - (self.get_size()[0] / 2),
+                      (height - 155) - self.get_size()[1])
             self.label.set_markup(tut_1)
         elif self.check == 1:
-            self.move((width / 2) - (self.get_size()[0] / 2), 65)
+            self.move((width / 2) - (self.get_size()[0] / 2),
+                      (height - 155) - self.get_size()[1])
             self.label.set_markup(tut_2)
         elif self.check == 2:
-            self.move(95, (height / 2) - (self.get_size()[1] / 2))
+            self.move((width / 2) - (self.get_size()[0] / 2),
+                      (height - 155) - self.get_size()[1])
             self.label.set_markup(tut_3)
         elif self.check == 3:
-            self.move((width / 2) - (self.get_size()[0] / 2),
+            self.move((width / 2) - (self.get_size()[0] / 2) - 200,
                       (height - 155) - self.get_size()[1])
             self.label.set_markup(tut_4)
         elif self.check == 4:
@@ -1152,7 +1166,7 @@ Reddit
         self.grid.attach(self.button1, 1, 2, 1, 1)
 
         self.button2 = Gtk.Button.new_with_label(label=NO)
-        self.button2.connect("clicked", self.removal_conf)
+        self.button2.connect("clicked", self.reset)
         self.button2 = self._set_default_margins(self.button2)
         self.grid.attach(self.button2, 3, 2, 1, 1)
 
@@ -1167,6 +1181,11 @@ Reddit
         self.label.set_justify(Gtk.Justification.CENTER)
         self.label = self._set_default_margins(self.label)
         self.grid.attach(self.label, 1, 1, 3, 1)
+
+        self.button3 = Gtk.Button.new_with_label(label=Exit)
+        self.button3.connect("clicked", self.reset)
+        self.button3 = self._set_default_margins(self.button3)
+        self.grid.attach(self.button3, 2, 2, 1, 1)
 
         self.button1 = Gtk.Button.new_with_label(label=Next)
         self.button1.connect("clicked", self.onnextclicked)
