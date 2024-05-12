@@ -379,85 +379,11 @@ Drauger OS %s
         print(show_at_start_up)
 
     def show_accessibility_settings(self, button):
-        self.clear_window()
-
-        self.label = Gtk.Label()
-        self.label.set_markup("""
-    \t\t<b>%s</b>\t\t\t
-""" % (lang_sup))
-        self.label.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label, 1, 1, 2, 1)
-
-        self.label3 = Gtk.Label()
-        self.label3.set_markup(font)
-        self.grid.attach(self.label3, 1, 3, 1, 1)
-
-        self.font_button = Gtk.FontButton()
-        # get system font and font size
-        system_font = subprocess.check_output(["xfconf-query", "--channel", "xsettings",
-                                    "--property", "/Gtk/FontName"])
-        system_font = list(str(system_font))
-        del(system_font[1])
-        del(system_font[0])
-        length = len(system_font) - 1
-        x = 0
-        while x <= 2:
-            del(system_font[length - x])
-            x = x + 1
-        system_font = "".join(system_font)
-        # set font and size for button
-        self.font_button.set_font(system_font)
-        self.font_button.connect("font-set", self.set_font)
-        self.grid.attach(self.font_button, 2, 3, 1, 1)
-
-        self.label4 = Gtk.Label()
-        self.label4.set_markup("%s" % (access_label))
-        self.label4.set_justify(Gtk.Justification.CENTER)
-        self.grid.attach(self.label4, 1, 4, 1, 1)
-
-        self.button6 = Gtk.Button.new_from_icon_name("accessibility", 3)
-        self.button6.connect("clicked", self.goto_accessibility)
-        self.grid.attach(self.button6, 2, 4, 1, 1)
-
-        self.button1 = Gtk.Button.new_with_label(label=Back)
-        self.button1.connect("clicked", self.reset)
-        self.grid.attach(self.button1, 1, 20, 1, 1)
-
-        width = self.get_size()[0]
-        height = int(width * 0.025)
-        width = int(width * 0.05)
-        # self.label4.set_margin_top(height)
-        self.label4.set_margin_bottom(height)
-        self.label4.set_margin_start(width)
-        # self.label4.set_margin_end(width)
-        # self.label3.set_margin_end(width)
-        self.label3.set_margin_start(width)
-        # self.label3.set_margin_top(height)
-        self.label3.set_margin_bottom(height)
-        self.button6.set_margin_top(height)
-        self.button6.set_margin_bottom(height)
-        self.button6.set_margin_start(width)
-        self.button6.set_margin_end(width)
-        self.button1.set_margin_bottom(height)
-        self.button1.set_margin_start(width)
-        self.button1.set_margin_end(width)
-        self.font_button.set_margin_end(width)
-        self.font_button.set_margin_start(width)
-        self.font_button.set_margin_top(height)
-        self.font_button.set_margin_bottom(height)
-
-        self.show_all()
-
-    def goto_accessibility(self, button):
         """Open system accessability settings"""
         if os.environ["XDG_CURRENT_DESKTOP"].lower() == "xfce":
             subprocess.Popen("xfce4-accessibility-settings")
         elif os.environ["XDG_CURRENT_DESKTOP"].lower() == "kde":
             subprocess.Popen(["systemsettings", "kcm_access"])
-
-    def set_font(self, widget):
-        subprocess.Popen(["xfconf-query", "--channel", "xsettings", "--property",
-               "/Gtk/FontName", "--set", self.font_button.get_font()])
 
     def onlangsupportclicked(self, button):
         self.clear_window()
