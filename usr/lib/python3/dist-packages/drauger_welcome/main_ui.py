@@ -66,7 +66,6 @@ try:
         if "data" in contents.keys():
             contents = contents["data"]
     for each in contents:
-        print(f'{each[1]}')
         if type(contents) == dict:
             each = [each, contents[each]]
         if (each[0] == "message_show_remove"):
