@@ -41,7 +41,7 @@ height = int(results.split("x")[1].strip())
 
 try:
     try:
-        with open("/etc/drauger-locales/%s/drauger-installer.conf" % (LANG),
+        with open("/etc/drauger-locales/%s/drauger-welcome.conf" % (LANG),
                   "r") as FILE:
             contents = FILE.read()
         contents = contents.split("\n")
@@ -52,13 +52,21 @@ try:
                 del(contents[length])
         for each in range(len(contents)):
             contents[each] = "".join(contents[each])
+        for each in range(len(contents)):
+            if "\t" in contents[each]:
+                key, value = contents[each].split("\t", 1)
+                if value.startswith('"') and value.endswith('"'):
+                    value = value.strip('"')
+                value = value.replace("\\n", "\n").replace("\\t", "\t")
+                contents[each] = [key, value]
     except FileNotFoundError:
-        with open("/etc/drauger-locales/%s/drauger-installer.json" % (LANG),
+        with open("/etc/drauger-locales/%s/drauger-welcome.json" % (LANG),
                   "r") as FILE:
             contents = json.read(FILE)
         if "data" in contents.keys():
             contents = contents["data"]
     for each in contents:
+        print(f'{each[1]}')
         if type(contents) == dict:
             each = [each, contents[each]]
         if (each[0] == "message_show_remove"):
