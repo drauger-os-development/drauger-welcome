@@ -52,6 +52,13 @@ try:
                 del(contents[length])
         for each in range(len(contents)):
             contents[each] = "".join(contents[each])
+        for each in range(len(contents)):
+            if "\t" in contents[each]:
+                key, value = contents[each].split("\t", 1)
+                if value.startswith('"') and value.endswith('"'):
+                    value = value.strip('"')
+                value = value.replace("\\n", "\n").replace("\\t", "\t")
+                contents[each] = [key, value]
     except FileNotFoundError:
         with open("/etc/drauger-locales/%s/drauger-welcome.json" % (LANG),
                   "r") as FILE:
