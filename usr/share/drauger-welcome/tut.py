@@ -140,7 +140,7 @@ sudo apt update
 sudo apt install drauger-upgrade-script
 upgrade-drauger
 </tt>
-""")
+""", "EWR")
     elif ((support_status == 3) and (show_settings["EBA"])):
         alerts.post_alert("No Longer Supported, Upgrade No Longer Available", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is no
@@ -148,7 +148,7 @@ longer supported, and upgrading to the next version must be
 done manually, or you must install a new OS.
 
 You have been warned.
-""")
+""", "EBA")
     elif ((support_status == 4) and (show_settings["EOL"])):
         alerts.post_alert("Extremely Old Release", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is extremely old
@@ -157,7 +157,7 @@ risky, as is continuing to run this version of Drauger OS.
 
 Here be dragons. Proceed at your own peril.
 <b>You have been warned.</b>
-""")
+""", "EOL")
     elif ((support_status == 1) and (show_settings["AEL"])):
         post_alert("Support Ending Soon", f"""<b>NOTICE</b>
 Your current version of Drauger OS ({ get_release() }) is going to
@@ -170,7 +170,7 @@ sudo apt update
 sudo apt install drauger-upgrade-script
 upgrade-drauger
 </tt>
-""")
+""", "AEL")
     sys.exit(0)
 if ((not os.path.exists(HOME + "/.drauger-tut")) and (not os.path.exists("/etc/system-installer/oem-post-install.flag"))):
     try:
@@ -190,7 +190,7 @@ sudo apt update
 sudo apt install drauger-upgrade-script
 upgrade-drauger
 </tt>
-""")
+""", "EWR")
 elif ((support_status == 3) and (show_settings["EBA"])):
     alerts.post_alert("\tNo Longer Supported, Upgrade No Longer Available\t", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is no
@@ -198,7 +198,7 @@ longer supported, and upgrading to the next version must be
 done manually, or you must install a new OS.
 
 You have been warned.
-""")
+""", "EBA")
 elif ((support_status == 4) and (show_settings["EOL"])):
     alerts.post_alert("Extremely Old Release", f"""<b>WARNING</b>
 Your current version of Drauger OS ({ get_release() }) is extremely old
@@ -207,7 +207,7 @@ risky, as is continuing to run this version of Drauger OS.
 
 Here be dragons. Proceed at your own peril.
 <b>You have been warned.</b>
-""")
+""", "EOL")
 elif ((support_status == 1) and (show_settings["AEL"])):
     alerts.post_alert("Support Ending Soon", f"""<b>NOTICE</b>
 Your current version of Drauger OS ({ get_release() }) is going to
@@ -220,4 +220,4 @@ sudo apt update
 sudo apt install drauger-upgrade-script
 upgrade-drauger
 </tt>
-""")
+""", "AEL")
