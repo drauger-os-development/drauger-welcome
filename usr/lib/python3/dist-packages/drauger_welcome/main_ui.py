@@ -62,7 +62,7 @@ try:
     except FileNotFoundError:
         with open("/etc/drauger-locales/%s/drauger-welcome.json" % (LANG),
                   "r") as FILE:
-            contents = json.read(FILE)
+            contents = json.load(FILE)
         if "data" in contents.keys():
             contents = contents["data"]
     for each in contents:
@@ -154,6 +154,8 @@ try:
             lang_sup3 = each[1]
         elif (each[0] == "lang_sup4"):
             lang_sup4 = each[1]
+        elif (each[0] == "Open"):
+            Open = each[1]
 
 except FileNotFoundError:
     message_show_remove = "\n\tThank you again for using Drauger OS. Would you like to uninstall drauger-welcome?\t\n"
