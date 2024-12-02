@@ -22,6 +22,7 @@
 #  MA 02110-1301, USA.
 #
 #
+import urllib.request
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -377,8 +378,17 @@ Drauger OS %s
 
     def show_readme(self, widget):
         version = subprocess.check_output(["lsb_release", "-rs"]).decode()[:-1]
-        subprocess.Popen(["xdg-open",
-                          f"https://download.draugeros.org/docs/{version}/README.pdf"])
+        url = f"https://download.draugeros.org/docs/{version}/README-{LANG}.pdf"
+        headers = {"User-Agent": "drauger-welcome/1.0"}
+        request = urllib.request.Request(url, headers=headers)
+
+        try:
+            response = urllib.request.urlopen(request)
+            response.close()
+            subprocess.Popen(["xdg-open", url])
+        except:
+            subprocess.Popen(["xdg-open",
+                              f"https://download.draugeros.org/docs/{version}/README.pdf"])
 
     def start_up_toggle(self, widget):
         global show_at_start_up
