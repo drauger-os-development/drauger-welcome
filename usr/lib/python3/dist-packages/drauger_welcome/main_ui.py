@@ -390,8 +390,8 @@ Drauger OS %s
             subprocess.Popen(["xdg-open", url])
         except HTTPError:
             subprocess.Popen(["xdg-open",
-                              f"https://download.draugeros.org/docs/{version}/"\
-                              "README.pdf"])
+                              "https://download.draugeros.org/docs/"\
+                              f"{version}/README.pdf"])
 
     def start_up_toggle(self, widget):
         global show_at_start_up
