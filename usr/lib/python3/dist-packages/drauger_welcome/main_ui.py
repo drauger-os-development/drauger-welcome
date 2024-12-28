@@ -22,6 +22,8 @@
 #  MA 02110-1301, USA.
 #
 #
+import urllib.request
+from urllib.error import HTTPError
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -62,7 +64,7 @@ try:
     except FileNotFoundError:
         with open("/etc/drauger-locales/%s/drauger-welcome.json" % (LANG),
                   "r") as FILE:
-            contents = json.read(FILE)
+            contents = json.load(FILE)
         if "data" in contents.keys():
             contents = contents["data"]
     for each in contents:
@@ -154,6 +156,8 @@ try:
             lang_sup3 = each[1]
         elif (each[0] == "lang_sup4"):
             lang_sup4 = each[1]
+        elif (each[0] == "Open"):
+            Open = each[1]
 
 except FileNotFoundError:
     message_show_remove = "\n\tThank you again for using Drauger OS. Would you like to uninstall drauger-welcome?\t\n"
@@ -377,8 +381,19 @@ Drauger OS %s
 
     def show_readme(self, widget):
         version = subprocess.check_output(["lsb_release", "-rs"]).decode()[:-1]
-        subprocess.Popen(["xdg-open",
-                          f"https://download.draugeros.org/docs/{version}/README.pdf"])
+        url = f"https://download.draugeros.org/docs/{version}/"\
+              f"README-{LANG}.pdf"
+        headers = {"User-Agent": "drauger-welcome/1.0"}
+        request = urllib.request.Request(url, headers=headers)
+
+        try:
+            response = urllib.request.urlopen(request)
+            response.close()
+            subprocess.Popen(["xdg-open", url])
+        except HTTPError:
+            subprocess.Popen(["xdg-open",
+                              "https://download.draugeros.org/docs/"
+                              f"{version}/README.pdf"])
 
     def start_up_toggle(self, widget):
         global show_at_start_up
