@@ -97,6 +97,8 @@ def has_support(url):
         support_policy = support_policy[release]
     except (KeyError, IndexError):
         return 0
+    if support_policy == "AAU":
+        return 0
     if support_policy == "AEL":
         return 1
     if support_policy == "EWR":

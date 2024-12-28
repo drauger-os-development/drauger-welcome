@@ -27,7 +27,7 @@ import sys
 import os
 import subprocess as subproc
 import drauger_welcome
-VERSION = "5.1.1"
+VERSION = "5.1.3"
 HELP = """
 drauger-welcome, Version %s
 \t-b, --boot-time         Run boot time checks.
